@@ -1,0 +1,1 @@
+AirPadApp.config(function($stateProvider, $urlRouterProvider) {};

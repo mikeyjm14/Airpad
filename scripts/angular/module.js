@@ -1,0 +1,1 @@
+var AirPadApp = angular.module('AirPad',['ui.router', 'summernote']);
