@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="styles/angular/summernote.css">
+    <link href="styles/sidebar/simple-sidebar.css" rel="stylesheet">
     <!-- http://fontawesome.io/icons/ for icons -->
 
     <!-- My CSS -->
@@ -22,9 +23,9 @@
     <!-- Angular Scripts -->
     <script type="text/javascript" src="scripts/summernote/summernote.min.js"></script>
     <script type="text/javascript" src="scripts/summernote/angular-summernote.js"></script>
-    <script type="text/javascript" src="scripts/angular/modules.js"></script>
-    <script type="text/javascript" src="scripts/angular/factories.js"></script>
-    <script type="text/javascript" src="scripts/angular/controllers.js"></script>
+    <script type="text/javascript" src="scripts/angular/module.js"></script>
+    <script type="text/javascript" src="scripts/angular/factory.js"></script>
+    <script type="text/javascript" src="scripts/angular/controller.js"></script>
     <script type="text/javascript" src="scripts/angular/config.js"></script>
 
     <!-- My Scripts -->
@@ -32,17 +33,50 @@
 
 </head>
 
-<body ng-app="MovieDatabase">
-    <header>
-        <section id="image"></section>
-    </header>
+<body ng-app="AirPad">
+    <div id="sidebar-wrapper">
+        <a href="#"><section id="logo" class="center"></section></a>
+        <ul class="sidebar-nav">
+            <li class="sidebar-brand padding-bottom">
+                <a href="#">
+                    Nothing`
+                </a>
+            </li>
+            <li>
+                <a href="#">Dashboard</a>
+            </li>
+            <li>
+                <a href="#">Shortcuts</a>
+            </li>
+            <li>
+                <a href="#">Overview</a>
+            </li>
+            <li>
+                <a href="#">Events</a>
+            </li>
+            <li>
+                <a href="#">About</a>
+            </li>
+            <li>
+                <a href="#">Services</a>
+            </li>
+            <li>
+                <a href="#">Contact</a>
+            </li>
+        </ul>
+    </div>
 
     <!-- injected content -->
-    <section>
-        <section ui-view></section>
+    <section id="contentSection">
+        <section id="contentArea" class="center">
+            <section class="border" ui-view>Content Area</section>
+        </section>
+
+        <footer class="border center">
+            Footer
+        </footer>
     </section>
 
-    <footer>
-    </footer>
+
 </body>
 </html>
