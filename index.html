@@ -24,6 +24,7 @@
     <script type="text/javascript" src="scripts/summernote/summernote.min.js"></script>
     <script type="text/javascript" src="scripts/summernote/angular-summernote.js"></script>
     <script type="text/javascript" src="scripts/angular/module.js"></script>
+    <script type="text/javascript" src="scripts/angular/filter.js"></script>
     <script type="text/javascript" src="scripts/angular/factory.js"></script>
     <script type="text/javascript" src="scripts/angular/controller.js"></script>
     <script type="text/javascript" src="scripts/angular/config.js"></script>
@@ -33,48 +34,46 @@
 
 </head>
 
-<body ng-app="AirPad">
-    <div id="sidebar-wrapper">
-        <a href="#"><section id="logo" class="center"></section></a>
-        <ul class="sidebar-nav">
-            <li class="sidebar-brand padding-bottom">
-                <a href="#">
-                    Nothing`
-                </a>
-            </li>
-            <li>
-                <a href="#">Dashboard</a>
-            </li>
-            <li>
-                <a href="#">Shortcuts</a>
-            </li>
-            <li>
-                <a href="#">Overview</a>
-            </li>
-            <li>
-                <a href="#">Events</a>
-            </li>
-            <li>
-                <a href="#">About</a>
-            </li>
-            <li>
-                <a href="#">Services</a>
-            </li>
-            <li>
-                <a href="#">Contact</a>
-            </li>
-        </ul>
-    </div>
-
-    <!-- injected content -->
+<body ng-app="AirPad" ng-controller="NotePad">
     <section id="contentSection">
-        <section id="contentArea" class="center">
-            <section class="border" ui-view>Content Area</section>
+        <section id="sidebar-wrapper">
+            <section id="insidebar-wrapper">
+                <a href="" ui-sref="home"><section id="logo" class="center"></section></a>
+                <ul class="sidebar-nav">
+                    <li id="menuWelcome" class="alignText easeTransition">
+                        <a href="" class="menuTitleText" ui-sref="profile">
+                            Welcome,<br/>
+                            <span class="name">
+                                {{currUser}}
+                            </span>
+                        </a>
+                    </li>
+                    <li class="menuIItemTitleText easeTransition">
+                        <a href="" ui-sref="home"><i class="fa fa-home" ></i> Home</a>
+                    </li>
+                    <li class="menuIItemTitleText easeTransition">
+                        <a href="" ui-sref="addnote"><i class="fa fa-plus-circle" ></i> Add Note</a>
+                    </li>
+                    <li class="menuIItemTitleText easeTransition">
+                        <a href="" ui-sref="viewnotes"><i class="fa fa-file-word-o"></i> View Notes</a>
+                    </li>
+                </ul>
+            </section>
         </section>
 
-        <footer class="border center">
+        <!-- injected content -->
+
+        <section id="contentArea" class="center">
+            <section class="border" ui-view>
+                Content Area
+            </section>
+
+        </section>
+        <footer class="border">
             Footer
         </footer>
+
+
     </section>
 
 
