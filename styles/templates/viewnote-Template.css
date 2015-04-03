@@ -1,0 +1,38 @@
+.textTitle {
+    font-size: medium;
+    font-weight: bold;
+    font-variant: all-petite-caps;
+}
+
+.headerColor {
+    color: darkgoldenrod;
+}
+
+#note-details-area {
+    font-size: large;
+}
+
+.inlineText {
+    display: inline;
+}
+
+.black-text {
+    color: black;
+}
+
+.padding-top-10 {
+    padding-top: 10px;
+}
+
+.noteText, #note-details-area, .padding-left-20 {
+    padding-left: 20px;
+}
+
+.noteText {
+    font-size: x-large;
+    font-stretch: extra-expanded;
+}
+
+.lineStyle {
+    margin-right: 10px;
+}

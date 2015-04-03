@@ -1,1 +1,64 @@
-List of notes: {{notes}}.
+<table id="notesTable" class="center border">
+    <thead>
+    <tr>
+        <th colspan="4">
+            <h2 class="headerColor alignText">{{currUser}}'s Notes</h2>
+        </th>
+    </tr>
+    <tr>
+        <th id="title"
+            class="alignText tableTitle border">
+            Title
+        </th>
+        <th id="created"
+            class="alignText tableTitle border">
+            Created On
+        </th>
+        <th id="edited"
+            class="alignText tableTitle border">
+            Edited On
+        </th>
+        <th id="icons"
+            class="alignText tableTitle border">
+        </th>
+    </tr>
+    </thead>
+    <tbody ng-show="listOfNotes.notes.length != 0" ng-repeat="note in listOfNotes.notes">
+    <tr class="border-bottom padding-bottom-5">
+        <td class="border-left-right alignText">
+            <a href="" ng-click="GoToNote()"><span>{{note.title}}</span></a>
+        </td>
+        <td class="border-left-right alignText">
+            <span>{{note.creationDate}}</span>
+        </td>
+        <td class="border-left-right alignText">
+            <span>{{note.recentEditDate}}</span>
+        </td>
+        <td class="border-left-right alignText">
+            <span>
+                <a href="" ng-click="EditNote(note)">
+                    <i class="fa fa-pencil-square-o fa-lg"></i>
+                </a>&nbsp;&nbsp;
+                <a href="" ng-click="DeleteNote(note)">
+                    <i class="fa fa-trash fa-lg"></i>
+                </a>&nbsp;&nbsp;
+                <a href="" ng-click="ShareNote(note)">
+                    <i class="fa fa-share-alt fa-lg"></i>
+                </a>
+            </span>
+        </td>
+    </tr>
+    <tr class="border-bottom padding-bottom-5">
+        <td class="alignText" colspan="4">
+            <span class="textTitle">Tags: </span><span ng-repeat="categories in note.categories">{{categories}}; </span>
+        </td>
+    </tr>
+    </tbody>
+    <tbody ng-show="listOfNotes.notes.length === 0">
+    <tr class="border padding-bottom-5">
+        <td class="border alignText" colspan="4">
+            <a href="" ng-click="GoToAddNote()"><span>Please add a note.</span></a>
+        </td>
+    </tr>
+    </tbody>
+</table>

@@ -15,14 +15,15 @@
 }
 
 #sidebar-wrapper {
+    position: relative;
+    display: inline-block;
     height: 100%;
+    clear: left;
+    float: left;
 }
 
 #sidebar-wrapper, #insidebar-wrapper {
     width: 160px;
-    position: relative;
-    float: left;
-    overflow-y: hidden;
     padding-bottom: 15px;
     background: black;
     margin-left: 0;

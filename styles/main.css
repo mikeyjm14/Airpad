@@ -1,12 +1,12 @@
 body {
     padding-top: 20px;
+    padding-bottom: 20px;
     width: 90%;
-    min-width: 550px;
-    height: 1000px;
+    min-width: 480px;
+    height: 100%;
     margin: 0 auto;
     background-color: whitesmoke;
     vertical-align: text-top;
-    overflow-x: hidden;
 }
 
 header {
@@ -28,17 +28,15 @@ header {
     color: whitesmoke !important;
 }
 
-#contentArea footer {
+#contentArea, footer {
     width: 85%;
-    margin-left: 200px;
-    clear: right;
+    display: inline-block;
+    margin-left: 160px;
 }
 
 #contentSection {
     width: 100%;
-    height: 1000px;
-    clear: right;
-    overflow: visible;
+    height: 100%;
 }
 
 #logo {
@@ -80,4 +78,25 @@ header {
 
 .alignText {
     text-align: center;
+}
+
+.innerContentSection {
+    width: 100%;
+    padding-left: 10px;
+}
+
+.burlywood-background {
+    background-color: burlywood;
+}
+
+.blanchedalmond-background {
+    background-color: blanchedalmond;
+}
+
+.whitesmoke-background {
+    background-color: whitesmoke;
+}
+
+.overflow-y-hidden {
+    overflow-y: hidden;
 }
