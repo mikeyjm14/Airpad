@@ -1,0 +1,33 @@
+section
+    section.innerContentSection
+        section
+            h2.headerColor Note Details
+
+            section#note-details-area
+                span.textTitle Creator:
+                |  {{currUser}}
+                br
+
+                span.textTitle Date of Creation:
+                | (Some Date)
+                br
+
+                span.textTitle Recent Edit Date:
+                |  (Some Date)
+                br
+
+                span.textTitle Categories:
+                |  (None)
+        hr.border.lineStyle
+
+        section.padding-top-10
+            h2.inlineText.headerColor
+                | Note Title:
+                span.black-text Text
+
+            h2.headerColor
+                | Note Content:
+
+            p.noteText
+                | Some text here.
+            // span(summernote='', config='optionsTitle') Some Text Here

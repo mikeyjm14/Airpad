@@ -1,0 +1,27 @@
+extends layout
+
+block content
+    section#contentSection
+        section#insidebar-wrapper
+            a(href='', ui-sref='home')
+                section#logo.center
+            ul.sidebar-nav
+                li#menuWelcome.alignText.easeTransition
+                    a.menuTitleText(href='', ui-sref='profile') Welcome,
+                        br
+                        span.name {{currUser}}
+                li.menuIItemTitleText.easeTransition
+                    a(href='', ui-sref='home')
+                        i.fa.fa-home Home
+                li.menuIItemTitleText.easeTransition
+                    a(href='', ui-sref='addnote')
+                        i.fa.fa-plus-circle Add Note
+                li.menuIItemTitleText.easeTransition
+                    a(href='', ui-sref='viewnotes')
+                        i.fa.fa-file-word-o View Notes
+
+        // injected content
+        section#contentArea
+            section.border(ui-view='') Content Area
+        footer.border Footer
+
