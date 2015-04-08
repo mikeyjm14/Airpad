@@ -8,30 +8,30 @@ AirPadApp.config(function($stateProvider, $urlRouterProvider) {
         // Home
         .state('home', {
             url: '/home',
-            templateUrl: '../../../views/home.jade'
+            templateUrl: 'home.jade'
         })
 
         // Add Note
         .state('addnote', {
             url: '/add_note',
-            templateUrl: '../../../views/addnote.jade'
+            templateUrl: 'addnote.jade'
         })
 
         // View Note
         .state('viewnote', {
             url: '/view_note/:noteID',
-            templateUrl: '../../../views/viewnote.jade'
+            templateUrl: 'viewnote.jade'
         })
 
         // View Notes
         .state('viewnotes', {
             url: '/view_notes',
-            templateUrl: '../../../views/viewnotes.jade'
+            templateUrl: 'viewnotes.jade'
         })
 
         // View Notes
         .state('profile', {
             url: '/profile',
-            templateUrl: '../../../views/profile.jade'
+            templateUrl: 'profile.jade'
         });
 });
