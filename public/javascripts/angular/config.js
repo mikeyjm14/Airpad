@@ -4,6 +4,7 @@ AirPadApp.config(function($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.when('/note/:userID', '/note/:userID');/*/redirect*/
 	$urlRouterProvider.when('/view_note/:noteID', '/view_note/:noteID');/*/redirect*/
 
+
     $stateProvider
 
         // Home
@@ -36,9 +37,51 @@ AirPadApp.config(function($stateProvider, $urlRouterProvider) {
             templateUrl: '/viewfavorites.html'
         })
 
-        // View Profile
+        // Login/Sign Up
+        .state('login', {
+            url: '/login',
+            templateUrl: '/loginView/userLogin.html',
+            controller: 'LoginController'
+        })
+
+        // Login
+        .state('login.login', {
+            url: '^/userLogin',
+            templateUrl: '/userLogin.html',
+            controller: 'LoginController'
+        })
+
+        // Sign Up
+        .state('login.signUp', {
+            url: '^/signUp',
+            templateUrl: '/userSignup.html',
+            controller: 'LoginController'
+        })
+
+        // User Profile
         .state('profile', {
-            url: '/profile',
-            templateUrl: '/profile.html'
-        });
+            url: '/profile/:userID',
+            templateUrl: '/userProfile.html',
+            controller: 'ProfileController'
+        })
+
+        .state('profile.redirect', {
+            url: '/redirect',
+            templateUrl: '/public/htmls/userProfileViews/redirect.html'
+        })
+
+        .state('profile.view', {
+            url: '/view',
+            templateUrl: '/public/htmls/userProfileViews/viewUserProfile.html'
+        })
+
+        .state('profile.edit', {
+            url: '/edit',
+            templateUrl: '/public/htmls/userProfileViews/editUserProfile.html'
+        })
+
+        .state('profile.noUser', {
+            url: '/no-user',
+            templateUrl: '/public/htmls/userProfileViews/userNotFound.html'
+        })
 });
