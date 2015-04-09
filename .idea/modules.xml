@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/AirPad-CS3212.iml" filepath="$PROJECT_DIR$/.idea/AirPad-CS3212.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/AirPadOnServer.iml" filepath="$PROJECT_DIR$/.idea/AirPadOnServer.iml" />
     </modules>
   </component>
 </project>

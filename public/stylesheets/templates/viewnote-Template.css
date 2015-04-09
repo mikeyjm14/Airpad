@@ -1,11 +1,13 @@
 .textTitle {
-    font-size: medium;
-    font-weight: bold;
-    font-variant: all-petite-caps;
+    font-size: 25px;
+    font-weight: bolder;
+    text-transform: uppercase;
 }
 
-.headerColor {
-    color: darkgoldenrod;
+#header-view-note {
+	padding-left: 10px;
+	font-weight: bolder;
+	font-size: 60px;
 }
 
 #note-details-area {
@@ -35,4 +37,5 @@
 
 .lineStyle {
     margin-right: 10px;
+	border-color: whitesmoke;
 }

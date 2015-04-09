@@ -1,0 +1,12 @@
+<section class="center alignText">
+	<section id="full-length-section-left-align">
+		<h2 id="header-add-note" class="whitesmokeText">Add a Note...</h2>
+	</section>
+	<input ng-model="form.title" class="noteTitle-addnote invisibleField whitesmokeText" placeholder="Title" type="text" name="title" maxlength="10"/>
+	<span ng-model="form.body" class="noteBody whitesmokeText center"  placeholder="TEXT" summernote config="optionsTitle"></span>
+	<section class="center buttonSection">
+		<button type="button" ng-click="addNote()">Add Note</button>&nbsp;&nbsp;
+		<button type="button" ng-click="clearValues()">Clear All</button>
+		<label ng-show="!noError" class="error">Please enter a value into both fields.</label>
+	</section>
+</section>
