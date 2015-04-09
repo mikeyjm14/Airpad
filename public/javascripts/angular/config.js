@@ -1,7 +1,6 @@
 AirPadApp.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
 	$locationProvider.html5Mode(false);
-    $urlRouterProvider.when('/', '/home');
-
+	$urlRouterProvider.when('/', '/home');
     $urlRouterProvider.when('/note/:userID', '/note/:userID/redirect');/*/redirect*/
 	$urlRouterProvider.when('/view_note/:noteID', '/view_note/:noteID/redirect');/*/redirect*/
 

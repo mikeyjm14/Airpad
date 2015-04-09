@@ -20,7 +20,12 @@
 		</section>
 	</section>
 	<section id="itemSection" class="center" ng-hide="listOfDeletedNotes.notes.length > 0">
-		<h2 id="header-view-notes" class="whitesmokeText">No notes here!</h2>
-		<a href="" ng-click="GoToViewNotes()"><span class="noNotesError">Click here to delete a note.</span></a>
+		<h2 id="header-view-notes" class="whitesmokeText">No Notes Here!</h2>
+		<span class="burlywoodText noNotesError">
+			Click
+			<a href="" ng-click="GoToViewNotes()">
+				<i class="fa fa-dribbble fa-spin"></i>
+			</a> 
+			to delete a note.</span>
 	</section>
 </section>

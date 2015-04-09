@@ -109,6 +109,10 @@ var notepad = function($scope, $state, $stateParams) {
         $state.go("viewfavnotes");
     };
 	
+	$scope.GoToHome = function() {
+        $state.go("home");
+    };
+	
 	$scope.ShareNote = function(note) {
 		console.log("Currently does nothing.");
 	};
