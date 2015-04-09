@@ -12,7 +12,7 @@
             <br/>
             <label style="color: white;" class="bold smallerMinorTitle labelAlign">Password:</label>
             <input align="left"
-                    type="password"
+                   type="password"
                    placeholder="Password"
                    class="inputAlign"
                    ng-model="incomingUser.password"
@@ -22,7 +22,7 @@
             <button ng-show="!isLoggedOut()" class="alignCenter" type="submit">Log In</button>
             <button ng-show="isLoggedOut()" class="alignCenter" type="button" ng-click="logout()">Log Out</button>
             <span ng-show="!isLoggedOut()"> | </span>
-            <a style="font-weight: bold;" ng-show="!isLoggedOut()" class="alignCenter" ng-click="toSignupState()">Create an Account</a>
+            <button ng-show="!isLoggedOut()" class="alignCenter" type="button" ng-click="toSignupState()">Create an Account</button>
         </section>
         <span class="errorText">{{errorMessage}}</span>
     </section>
