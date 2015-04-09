@@ -21,7 +21,7 @@
 
 .item {
 	width: 160px;
-	height: 140px;
+	height: 145px;
 	margin: 10px 10px;
 	border: solid whitesmoke medium;
 	text-decoration: none;
@@ -31,7 +31,7 @@
 
 .item:hover {
 	margin-bottom: 0px;
-	background-color: burlywood;
+	background-color: grey;
 }
 
 .options {

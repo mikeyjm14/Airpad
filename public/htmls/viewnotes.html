@@ -12,8 +12,14 @@
 						<a href="" ng-click="ShareNote(note)">
 							<i class="fa fa-share-alt fa-lg"></i>
 						</a>&nbsp;&nbsp;
-						<a href="" ng-click="AddNoteToFavorites(note)">
-							<i class="fa fa-star fa-lg"></i>
+						<span>
+							<a ng-show="!note.favored" href="" ng-click="AddNoteToFavorites(note)">
+								<i class="fa fa-star-o fa-lg"></i>
+							</a>
+							<i ng-show="note.favored" class="fa fa-star fa-lg"></i>
+						</span>&nbsp;&nbsp;
+						<a href="" ng-click="DeleteNote(note)">
+							<i class="fa fa-trash fa-lg"></i>
 						</a>
 					</section>
 			</section>
@@ -21,6 +27,6 @@
 	</section>
 	<section id="itemSection" class="center" ng-hide="listOfNotes.notes.length > 0">
 		<h2 id="header-view-notes" class="whitesmokeText">No notes here!</h2>
-		<a href="" ng-click="GoToAddNote()"><span class="noNotesError">Please add a note first.</span></a>
+		<a href="" ng-click="GoToAddNote()"><span class="noNotesError">Click here to add a note.</span></a>
 	</section>
 </section>

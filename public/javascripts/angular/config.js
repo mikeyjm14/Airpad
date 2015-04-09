@@ -1,8 +1,9 @@
-AirPadApp.config(function($stateProvider, $urlRouterProvider) {
+AirPadApp.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
+	$locationProvider.html5Mode(false);
     $urlRouterProvider.when('/', '/home');
 
-    $urlRouterProvider.when('/note/:userID', '/note/:userID');/*/redirect*/
-	$urlRouterProvider.when('/view_note/:noteID', '/view_note/:noteID');/*/redirect*/
+    $urlRouterProvider.when('/note/:userID', '/note/:userID/redirect');/*/redirect*/
+	$urlRouterProvider.when('/view_note/:noteID', '/view_note/:noteID/redirect');/*/redirect*/
 
 
     $stateProvider
@@ -24,6 +25,11 @@ AirPadApp.config(function($stateProvider, $urlRouterProvider) {
             url: '/view_note/:noteID',
             templateUrl: '/viewnote.html'
         })
+		
+		.state('viewnote.redirect', {
+            url: '/redirect',
+            templateUrl: '/ViewNoteTemplates/redirect.html'
+        })
 
         // View Notes
         .state('viewnotes', {
@@ -35,6 +41,12 @@ AirPadApp.config(function($stateProvider, $urlRouterProvider) {
         .state('viewfavnotes', {
             url: '/view_fav_notes',
             templateUrl: '/viewfavorites.html'
+        })
+		
+		// View Deleted Notes
+        .state('viewdeletednotes', {
+            url: '/view_del_notes',
+            templateUrl: '/viewdeletednotes.html'
         })
 
         // Login/Sign Up

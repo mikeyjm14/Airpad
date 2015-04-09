@@ -14,6 +14,10 @@ var notepad = function($scope, $state, $stateParams) {
 		favs: []
 	}
 	
+	$scope.listOfDeletedNotes = {
+		notes: []
+	}
+	
 	$scope.noError = true;
 	
 	$scope.listOfNotes = {
@@ -25,7 +29,8 @@ var notepad = function($scope, $state, $stateParams) {
                 creationDate: theDate(1),
                 recentEditDate: theDate(0),
                 categories: ["none yet", "none added yet", "none to add yet"],
-                id: randomString(10)
+                id: randomString(10),
+				favored: false
             },
             {
                 title: "Note 2",
@@ -34,7 +39,8 @@ var notepad = function($scope, $state, $stateParams) {
                 creationDate: theDate(1),
                 recentEditDate: theDate(0),
                 categories: ["none yet"],
-                id: randomString(10)
+                id: randomString(10),
+				favored: false
             },
             {
                 title: "Note 3",
@@ -43,7 +49,8 @@ var notepad = function($scope, $state, $stateParams) {
                 creationDate: theDate(1),
                 recentEditDate: theDate(0),
                 categories: ["none yet"],
-                id: randomString(10)
+                id: randomString(10),
+				favored: false
             },
             {
                 title: "Note 4",
@@ -52,7 +59,8 @@ var notepad = function($scope, $state, $stateParams) {
                 creationDate: theDate(1),
                 recentEditDate: theDate(0),
                 categories: ["none yet"],
-                id: randomString(10)
+                id: randomString(10),
+				favored: false
             },
             {
                 title: "Note 5",
@@ -61,22 +69,40 @@ var notepad = function($scope, $state, $stateParams) {
                 creationDate: theDate(1),
                 recentEditDate: theDate(0),
                 categories: ["none yet"],
-                id: randomString(10)
+                id: randomString(10),
+				favored: false
             }
         ]
     };
+	
+	$scope.ToViewNoteState = function() {
+		var noteID = $stateParams.noteID;
+		console.log(noteID);
+		var note = getNoteByID(noteID, $scope.listOfNotes.notes);
+		console.log(note);
+		$scope.GoToNote(note);
+	};
 
     $scope.GoToNote = function(note) {
+		console.log(note);
 		if (note === null || note === undefined) {
 			return;
 		}
 		
         $state.go("viewnote", {noteID: note.id});
-		$scope.currNote = getNoteByID(note.id, $scope.listOfNotes);
+		$scope.currNote = getNoteByID(note.id, $scope.listOfNotes.notes);
+    };
+	
+	$scope.GoToAddNote = function() {
+        $state.go("addnote");
     };
 	
 	$scope.GoToViewNotes = function() {
         $state.go("viewnotes");
+    };
+	
+	$scope.GoToViewDeletedNotes = function() {
+        $state.go("viewdeletednotes");
     };
 	
 	$scope.GoToViewFavoriteNotes = function() {
@@ -125,6 +151,8 @@ var notepad = function($scope, $state, $stateParams) {
 				title: tempNote.title
 			}
 		);
+		
+		note.favored = true;
 	};
 	
 	$scope.RemoveNoteFromFavorites = function(note) {
@@ -133,7 +161,32 @@ var notepad = function($scope, $state, $stateParams) {
 			return;
 		}
 		
+		var realNote = getNoteByID(note.id, $scope.listOfNotes.notes);
+		realNote.favored = false;
 		$scope.listOfFavorites.favs.splice(noteIndex, 1);
+	};
+	
+	$scope.DeleteNote = function(note) {
+		$scope.RemoveNoteFromFavorites(note);
+		
+		var noteIndex = getNoteIndexByID(note.id, $scope.listOfNotes.notes);
+		$scope.listOfNotes.notes.splice(noteIndex, 1);
+		
+		$scope.listOfDeletedNotes.notes.push(note);
+		$scope.GoToViewDeletedNotes();
+	};
+	
+	$scope.DeleteNoteForever = function(note) {	
+		var noteIndex = getNoteIndexByID(note.id, $scope.listOfDeletedNotes.notes);
+		$scope.listOfDeletedNotes.notes.splice(noteIndex, 1);
+	};
+	
+	$scope.RestoreNote = function(note) {
+		var noteIndex = getNoteIndexByID(note.id, $scope.listOfDeletedNotes.notes);
+		$scope.listOfDeletedNotes.notes.splice(noteIndex, 1);
+		
+		$scope.listOfNotes.notes.push(note);
+		$scope.GoToViewNotes();
 	};
 	
 	$scope.clearValues = function () {
@@ -162,6 +215,7 @@ var notepad = function($scope, $state, $stateParams) {
 				}
 			);
 			$scope.clearValues();
+			$scope.GoToViewNotes();
 		} else {
 			$scope.noError = false;
 		}
