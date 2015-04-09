@@ -24,8 +24,14 @@
 
 .labelAlign {
     text-align: left;
+	color: white;
 }
 
 #buttonSection {
     margin-bottom: 10px;
+}
+
+#loginBox {
+	background-color: rgba(0, 0, 0, 0.4); 
+	border-color: white;
 }
