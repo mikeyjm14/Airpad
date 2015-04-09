@@ -15,7 +15,12 @@
 	font-size: 60px;
 }
 
-#full-length-section-left-align {
+#add-note-section {
+	height: 100%;
+	overflow: auto;
+}
+
+.full-length-section-left-align {
 	text-align: left;
 	width: 100%;
 }
@@ -37,7 +42,7 @@
 .noteBody {
     width: 90%;
     padding: 10px;
-    height: 70%;
+    height: 50%;
     font-size: x-large;
     line-height: 20px;
     border: solid whitesmoke thick;

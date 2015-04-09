@@ -68,7 +68,6 @@ var notepad = function($scope, $state, $stateParams) {
 
     $scope.GoToNote = function(note) {
 		if (note === null || note === undefined) {
-			console.log("Null note");
 			return;
 		}
 		
@@ -77,12 +76,10 @@ var notepad = function($scope, $state, $stateParams) {
     };
 	
 	$scope.GoToViewNotes = function() {
-		console.log("Currently does nothing.");
         $state.go("viewnotes");
     };
 	
 	$scope.GoToViewFavoriteNotes = function() {
-		console.log("Currently does nothing.");
         $state.go("viewfavnotes");
     };
 	
@@ -117,16 +114,29 @@ var notepad = function($scope, $state, $stateParams) {
 			return;
 		}
 		
+		var existingNote = getNoteByID(tempNote.id, $scope.listOfFavorites.favs);
+		if (existingNote !== null) {
+			return;
+		}
+		
 		$scope.listOfFavorites.favs.push(
 			{
-				noteID: tempNote.id,
-				noteTitle: tempNote.title
+				id: tempNote.id,
+				title: tempNote.title
 			}
 		);
 	};
 	
+	$scope.RemoveNoteFromFavorites = function(note) {
+		var noteIndex = getNoteIndexByID(note.id, $scope.listOfFavorites.favs);
+		if (noteIndex === -1) {
+			return;
+		}
+		
+		$scope.listOfFavorites.favs.splice(noteIndex, 1);
+	};
+	
 	$scope.clearValues = function () {
-        console.log($scope.form.title + " : " + $scope.form.body);
         $scope.form = null;
 
         $scope.form = {
@@ -152,6 +162,8 @@ var notepad = function($scope, $state, $stateParams) {
 				}
 			);
 			$scope.clearValues();
+		} else {
+			$scope.noError = false;
 		}
 	}
 };

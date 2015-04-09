@@ -33,7 +33,7 @@ AirPadApp.config(function($stateProvider, $urlRouterProvider) {
 		// View Favorite Notes
         .state('viewfavnotes', {
             url: '/view_fav_notes',
-            templateUrl: '/viewfavoritenotes.html'
+            templateUrl: '/viewfavorites.html'
         })
 
         // View Profile

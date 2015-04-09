@@ -20,7 +20,11 @@ function randomString(length){
 }
 
 function getNoteByID(id, notes) {
-    var note = null;
+	var note = null;
+	if (notes.length === 0) {
+		return note;
+	}
+	
     for (var i = 0; i < notes.length; i++) {
         if ((id === notes[i].id)) {
             note = notes[i];
@@ -29,4 +33,20 @@ function getNoteByID(id, notes) {
     }
 
     return note;
+}
+
+function getNoteIndexByID(id, notes) {
+	var noteIndex = -1;
+	if (notes.length === 0) {
+		return noteIndex;
+	}
+	
+    for (var i = 0; i < notes.length; i++) {
+        if ((id === notes[i].id)) {
+            noteIndex = i;
+            i = notes.length;
+        }
+    }
+
+    return noteIndex;
 }

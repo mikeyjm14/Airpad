@@ -1,7 +1,7 @@
 <section id="items" class="center">
-	<section id="itemSection" class="center" ng-show="listOfFavorites.favs.length != 0">
+	<section id="itemSection" class="center" ng-show="listOfFavorites.favs.length > 0">
 		<section id="full-length-section-left-align">
-			<h2 id="header-view-notes" class="whitesmokeText">{{currUser}}'s Notes</h2>
+			<h2 id="header-view-notes" class="whitesmokeText">{{currUser}}'s Favorite Notes</h2>
 		</section>
 		<section class="item-width" ng-repeat="note in listOfFavorites.favs">
 			<section id="item" class="item alignText border">
@@ -12,16 +12,15 @@
 					<a href="" ng-click="ShareNote(note)">
 						<i class="fa fa-share-alt fa-lg"></i>
 					</a>&nbsp;&nbsp;
-					<a href="" ng-click="AddNoteToFavorites(note)">
-						<i class="fa fa-heart fa-lg"></i>
+					<a href="" ng-click="RemoveNoteFromFavorites(note)">
+						<i class="fa fa-trash fa-lg"></i>
 					</a>
 				</section>
+			</section>
 		</section>
 	</section>
-	<section ng-show="listOfFavorites.favs.length === 0">
-		<section class="border alignText">
-			<h2 id="header-view-notes" class="whitesmokeText">No Notes Here!</h2>
-			<a href="" ng-click="GoToViewNotes()"><span>Please add a note to your favorites first.</span></a>
-		</section>
+	<section id="itemSection" class="center" ng-hide="listOfFavorites.favs.length > 0">
+		<h2 id="header-view-notes" class="whitesmokeText">No Notes Here!</h2>
+		<a href="" ng-click="GoToViewNotes()"><span class="noNotesError">Please favorite a note first.</span></a>
 	</section>
 </section>
