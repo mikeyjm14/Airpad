@@ -162,3 +162,18 @@ AirPadApp.controller('NotePad', [
     '$stateParams',
     notepad
 ]);
+
+AirPadApp.controller('LoginController', [
+    '$scope',
+    '$state',
+    'User',
+    'Users',
+    loginSignup
+]);
+
+var loginSignup = function($scope, $state, user, users) {
+    $scope.incomingUser = {
+        username: "",
+        password: ""
+    };
+}

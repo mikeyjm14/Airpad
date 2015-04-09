@@ -1,0 +1,31 @@
+#loginBox {
+    text-align: center;
+    width: 390px;
+}
+
+#signupBox {
+    text-align: center;
+    width: 390px;
+}
+
+#loginFrame {
+    width: 93%;
+    margin: 10px 0;
+    overflow: hidden;
+}
+
+.inputAlign {
+    float: right;
+    display: inline-block;
+    margin-top: 0;
+    width: 180px;
+    height: 20px;
+}
+
+.labelAlign {
+    text-align: left;
+}
+
+#buttonSection {
+    margin-bottom: 10px;
+}
