@@ -30,7 +30,7 @@
 }
 
 .item:hover {
-	margin-bottom: 0px;
+	margin-bottom: 0;
 	background-color: grey;
 }
 
@@ -49,7 +49,7 @@
 	font-size: x-large;
     font-weight: bolder;
 	overflow-x: auto;
-	overflow-y: fixed;
+	overflow-y: auto;
     text-overflow:ellipsis;
 	height: 40px;
 	width: 100%;

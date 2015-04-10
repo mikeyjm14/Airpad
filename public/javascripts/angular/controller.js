@@ -32,11 +32,11 @@ var notepad = function($scope, $state, $stateParams) {
 	
 	$scope.listOfFavorites = {
 		favs: []
-	}
+	};
 	
 	$scope.listOfDeletedNotes = {
 		notes: []
-	}
+	};
 	
 	$scope.noError = true;
 	
