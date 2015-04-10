@@ -26,16 +26,28 @@
     padding-top: 10px;
 }
 
-.noteText, #note-details-area, .padding-left-20 {
+#note-details-area, .padding-left-20 {
     padding-left: 20px;
 }
 
 .noteText {
     font-size: x-large;
     font-stretch: extra-expanded;
+	background-color: rgba(0,0,0,.5);
+	color: whitesmoke;
 }
 
 .lineStyle {
     margin-right: 10px;
 	border-color: whitesmoke;
+}
+
+.noteBody-ViewNote {
+	width: 90%;
+    padding: 10px;
+    font-size: x-large;
+    line-height: 20px;
+    border: solid whitesmoke thick;
+	background-color: rgba(0,0,0,.5);
+	text-align: left;
 }

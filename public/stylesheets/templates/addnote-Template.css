@@ -47,6 +47,7 @@
     line-height: 20px;
     border: solid whitesmoke thick;
 	background-color: rgba(0,0,0,.5);
+	text-align: left;
 }
 
 .noteTitle-addnote::-webkit-input-placeholder,

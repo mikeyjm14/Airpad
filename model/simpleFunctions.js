@@ -35,6 +35,11 @@ function getNoteByID(id, notes) {
     return note;
 }
 
+function injectHTML(elementID, text) {
+	document.getElementById(elementID).innerHTML = text;
+}
+
+
 function getNoteIndexByID(id, notes) {
 	var noteIndex = -1;
 	if (notes.length === 0) {

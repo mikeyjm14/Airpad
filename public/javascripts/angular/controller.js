@@ -1,3 +1,16 @@
+AirPadApp.value('user', {
+	id: '',
+    firstName: '',
+    lastName: '',
+    email: ''
+});
+
+AirPadApp.constant('config', {
+    appName: 'My App',
+    appVersion: 2.0,
+    apiUrl: 'http://www.google.com?api'
+});
+
 var notepad = function($scope, $state, $stateParams) {
 	$scope.currUser = "John Doe";
 
@@ -6,8 +19,15 @@ var notepad = function($scope, $state, $stateParams) {
     $scope.notes = "John Doe";
 	
 	$scope.form = {
+		id: "",
+		title: ""
+	};
+	
+	$scope.editform = {
+		id: "",
 		title: "",
-		body: ""
+		body: "",
+		tags: []
 	};
 	
 	$scope.listOfFavorites = {
@@ -19,6 +39,8 @@ var notepad = function($scope, $state, $stateParams) {
 	}
 	
 	$scope.noError = true;
+	
+	$scope.noInvalidIDError = true;
 	
 	$scope.listOfNotes = {
         notes: [
@@ -44,7 +66,7 @@ var notepad = function($scope, $state, $stateParams) {
             },
             {
                 title: "Note 3",
-                content: "<h3>Content</h3>",
+                content: "<ol><li>Content</li></ol>",
                 creator: $scope.currUser,
                 creationDate: theDate(1),
                 recentEditDate: theDate(0),
@@ -54,7 +76,7 @@ var notepad = function($scope, $state, $stateParams) {
             },
             {
                 title: "Note 4",
-                content: "<h1>Content</h1>",
+                content: "<table class='table table-bordered'><tbody><tr><td><br></td><td><br></td><td><br></td></tr><tr><td><br></td><td><br></td><td><br></td></tr><tr><td><br></td><td><br></td><td><br></td></tr></tbody></table>",
                 creator: $scope.currUser,
                 creationDate: theDate(1),
                 recentEditDate: theDate(0),
@@ -77,20 +99,48 @@ var notepad = function($scope, $state, $stateParams) {
 	
 	$scope.ToViewNoteState = function() {
 		var noteID = $stateParams.noteID;
-		console.log(noteID);
 		var note = getNoteByID(noteID, $scope.listOfNotes.notes);
-		console.log(note);
+		
 		$scope.GoToNote(note);
+	};
+	
+	$scope.ToEditNoteState = function() {
+		var noteID = $stateParams.noteID;
+		var note = getNoteByID(noteID, $scope.listOfNotes.notes);
+		
+		$scope.GoToEditNote(note);
 	};
 
     $scope.GoToNote = function(note) {
-		console.log(note);
 		if (note === null || note === undefined) {
 			return;
 		}
 		
         $state.go("viewnote", {noteID: note.id});
 		$scope.currNote = getNoteByID(note.id, $scope.listOfNotes.notes);
+    };
+	
+	$scope.GoToEditNote = function(note) {
+		console.log(note);
+		if (note === null || note === undefined) {
+			return;
+		}
+		
+        $state.go("editnote", {noteID: note.id});
+		
+		var currNote = getNoteByID(note.id, $scope.listOfNotes.notes);
+		if (currNote !== null) {
+			$scope.editform = {
+				id: currNote.id,
+				title: currNote.title,
+				body: currNote.content,
+				tags: currNote.categories
+			};
+			
+			$scope.noInvalidIDError = true;
+		} else {
+			$scope.noInvalidIDError = false;
+		}
     };
 	
 	$scope.GoToAddNote = function() {
@@ -113,10 +163,6 @@ var notepad = function($scope, $state, $stateParams) {
         $state.go("home");
     };
 	
-	$scope.ShareNote = function(note) {
-		console.log("Currently does nothing.");
-	};
-	
     $scope.optionsTitle = {
         styleWithSpan: true,
         focus: true,
@@ -136,6 +182,19 @@ var notepad = function($scope, $state, $stateParams) {
             ['help', ['help']]
         ]
     };
+	
+	$scope.optionsTitleView = {
+        styleWithSpan: true,
+        focus: true,
+        airMode: false,
+        toolbar: [
+            ['view', ['codeview']]
+        ]
+    };
+	
+	$scope.InjectContent = function(elementID, note) {
+		injectHTML(elementID, note.content);
+	};
 	
 	$scope.AddNoteToFavorites = function(note) {
 		var tempNote = getNoteByID(note.id, $scope.listOfNotes.notes);
@@ -204,6 +263,20 @@ var notepad = function($scope, $state, $stateParams) {
 		$scope.noError = true;
     };
 	
+	$scope.clearEditValues = function () {
+		var id = $scope.editform.id;
+        $scope.editform = null;
+
+        $scope.editform = {
+			id: id,
+			title: "",
+			body: "",
+			tags: []
+		};
+		
+		$scope.noError = true;
+    };
+	
 	$scope.addNote = function() {
 		if ($scope.form.title.length > 0 && $scope.form.body.length > 0) {
 			$scope.noError = true;
@@ -218,6 +291,23 @@ var notepad = function($scope, $state, $stateParams) {
 					id: randomString(10)
 				}
 			);
+			$scope.clearValues();
+			$scope.GoToViewNotes();
+		} else {
+			$scope.noError = false;
+		}
+	};
+	
+	$scope.updateNote = function() {
+		if ($scope.editform.title.length > 0 && $scope.editform.body.length > 0) {
+			$scope.noError = true;
+			
+			var noteIndex = getNoteIndexByID($scope.editform.id, $scope.listOfNotes.notes);
+			
+			$scope.listOfNotes.notes[noteIndex].title = $scope.editform.title;
+			$scope.listOfNotes.notes[noteIndex].content = $scope.editform.body;
+			$scope.listOfNotes.notes[noteIndex].recentEditDate = theDate(0);
+			
 			$scope.clearValues();
 			$scope.GoToViewNotes();
 		} else {

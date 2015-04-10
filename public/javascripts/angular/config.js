@@ -3,6 +3,7 @@ AirPadApp.config(function($stateProvider, $urlRouterProvider, $locationProvider)
 	$urlRouterProvider.when('/', '/home');
     $urlRouterProvider.when('/note/:userID', '/note/:userID/redirect');/*/redirect*/
 	$urlRouterProvider.when('/view_note/:noteID', '/view_note/:noteID/redirect');/*/redirect*/
+	$urlRouterProvider.when('/edit_note/:noteID', '/edit_note/:noteID/redirect');/*/redirect*/
 
 
     $stateProvider
@@ -17,6 +18,17 @@ AirPadApp.config(function($stateProvider, $urlRouterProvider, $locationProvider)
         .state('addnote', {
             url: '/add_note',
             templateUrl: '/addnote.html'
+        })
+		
+		// Edit Note
+        .state('editnote', {
+            url: '/edit_note/:noteID',
+            templateUrl: '/editnote.html'
+        })
+		
+		.state('editnote.redirect', {
+            url: '/redirect',
+            templateUrl: '/EditNoteTemplates/redirect.html'
         })
 
         // View Note

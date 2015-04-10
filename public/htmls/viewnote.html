@@ -20,10 +20,8 @@
                 Note Content:
             </h2>
             <p class="noteText">
-                <code>{{currNote.content}}</code>
+				<section id="noteContent" class="noteBody-ViewNote whitesmokeText center" ng-init="InjectContent('noteContent', currNote)"></section>
             </p>
-
-            <!--<span class="" summernote config="optionsTitle">Some Text Here</span>-->
         </section>
     </section>
     <section ng-show="currNote === null" class="innerContentSection">
