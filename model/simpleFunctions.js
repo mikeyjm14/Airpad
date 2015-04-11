@@ -39,6 +39,10 @@ function injectHTML(elementID, text) {
 	document.getElementById(elementID).innerHTML = text;
 }
 
+function removeNote(index, notes, amount) {
+	var noteArray = notes.splice(index, amount);
+	return noteArray.length > 0;
+}
 
 function getNoteIndexByID(id, notes) {
 	var noteIndex = -1;

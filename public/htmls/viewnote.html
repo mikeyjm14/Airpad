@@ -6,8 +6,6 @@
                 <span class="textTitle whitesmokeText">Creator:</span> {{currNote.creator}}<br/>
                 <span class="textTitle whitesmokeText">Date of Creation:</span> {{currNote.creationDate}}<br/>
                 <span class="textTitle whitesmokeText">Recent Edit Date:</span> {{currNote.recentEditDate}}<br/>
-                <span class="textTitle whitesmokeText">Categories:</span>
-				<pre><span ng-repeat="tag in currNote.categories">{{tag}}; </span></pre>
             </section>
         </section>
 		<hr class="border lineStyle">
@@ -23,6 +21,8 @@
 				<section id="noteContent" class="noteBody-ViewNote whitesmokeText center" ng-init="InjectContent('noteContent', currNote)"></section>
             </p>
         </section>
+		<span class="textTitle whitesmokeText">Categories:</span>
+		<pre><span ng-repeat="tag in currNote.categories">{{tag}}; </span></pre>
     </section>
     <section ng-show="currNote === null" class="innerContentSection">
 		<h2 id="header-view-note" class="whitesmokeText">Invalid Note ID!</h2>

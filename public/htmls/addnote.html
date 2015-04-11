@@ -4,10 +4,11 @@
 		<label ng-hide="noError" class="error">Please enter a value into both fields.</label>
 	</section>
 	<input ng-model="form.title" class="noteTitle-addnote invisibleField whitesmokeText" placeholder="Title" type="text" name="title" maxlength="10"/>
-	<span ng-model="form.body" class="noteBody whitesmokeText center"  placeholder="TEXT" summernote config="optionsTitle"></span>
+	<span ng-model="form.body" class="noteBody whitesmokeText center"  placeholder="TEXT" summernote airMode></span>
 	<section class="center buttonSection">
-		<button type="button" ng-click="addNote()">Add Note</button>&nbsp;&nbsp;
-		<button type="button" ng-click="clearValues()">Clear All</button>
+		<button type="button" ng-click="AddNote()">Add Note</button>&nbsp;&nbsp;
+		<button type="button" ng-click="ClearValues()">Clear All</button>&nbsp;&nbsp;
+		<button type="button" ng-click="GoToViewNotes()">Cancel</button>
 	</section>
 	<section class="full-length-section-left-align">
 		<h2 id="header-add-note" class="whitesmokeText">Add Some Tags...</h2>

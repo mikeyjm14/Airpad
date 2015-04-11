@@ -1,147 +1,11 @@
-AirPadApp.value('user', {
-	id: '',
-    firstName: '',
-    lastName: '',
-    email: ''
-});
-
 AirPadApp.constant('config', {
     appName: 'My App',
     appVersion: 2.0,
     apiUrl: 'http://www.google.com?api'
 });
 
-var notepad = function($scope, $state, $stateParams) {
-	$scope.currUser = "John Doe";
-
-    $scope.currNote = null;
-
-    $scope.notes = "John Doe";
-	
-	$scope.form = {
-		id: "",
-		title: ""
-	};
-	
-	$scope.editform = {
-		id: "",
-		title: "",
-		body: "",
-		tags: []
-	};
-	
-	$scope.listOfFavorites = {
-		favs: []
-	};
-	
-	$scope.listOfDeletedNotes = {
-		notes: []
-	};
-	
-	$scope.noError = true;
-	
-	$scope.noInvalidIDError = true;
-	
-	$scope.listOfNotes = {
-        notes: [
-            {
-                title: "Note 1",
-                content: "Content",
-                creator: $scope.currUser,
-                creationDate: theDate(1),
-                recentEditDate: theDate(0),
-                categories: ["none yet", "none added yet", "none to add yet"],
-                id: randomString(10),
-				favored: false
-            },
-            {
-                title: "Note 2",
-                content: "<ul><li>Content</li></ul>",
-                creator: $scope.currUser,
-                creationDate: theDate(1),
-                recentEditDate: theDate(0),
-                categories: ["none yet"],
-                id: randomString(10),
-				favored: false
-            },
-            {
-                title: "Note 3",
-                content: "<ol><li>Content</li></ol>",
-                creator: $scope.currUser,
-                creationDate: theDate(1),
-                recentEditDate: theDate(0),
-                categories: ["none yet"],
-                id: randomString(10),
-				favored: false
-            },
-            {
-                title: "Note 4",
-                content: "<table class='table table-bordered'><tbody><tr><td><br></td><td><br></td><td><br></td></tr><tr><td><br></td><td><br></td><td><br></td></tr><tr><td><br></td><td><br></td><td><br></td></tr></tbody></table>",
-                creator: $scope.currUser,
-                creationDate: theDate(1),
-                recentEditDate: theDate(0),
-                categories: ["none yet"],
-                id: randomString(10),
-				favored: false
-            },
-            {
-                title: "Note 5",
-                content: "<pre>Content</pre>",
-                creator: $scope.currUser,
-                creationDate: theDate(1),
-                recentEditDate: theDate(0),
-                categories: ["none yet"],
-                id: randomString(10),
-				favored: false
-            }
-        ]
-    };
-	
-	$scope.ToViewNoteState = function() {
-		var noteID = $stateParams.noteID;
-		var note = getNoteByID(noteID, $scope.listOfNotes.notes);
-		
-		$scope.GoToNote(note);
-	};
-	
-	$scope.ToEditNoteState = function() {
-		var noteID = $stateParams.noteID;
-		var note = getNoteByID(noteID, $scope.listOfNotes.notes);
-		
-		$scope.GoToEditNote(note);
-	};
-
-    $scope.GoToNote = function(note) {
-		if (note === null || note === undefined) {
-			return;
-		}
-		
-        $state.go("viewnote", {noteID: note.id});
-		$scope.currNote = getNoteByID(note.id, $scope.listOfNotes.notes);
-    };
-	
-	$scope.GoToEditNote = function(note) {
-		console.log(note);
-		if (note === null || note === undefined) {
-			return;
-		}
-		
-        $state.go("editnote", {noteID: note.id});
-		
-		var currNote = getNoteByID(note.id, $scope.listOfNotes.notes);
-		if (currNote !== null) {
-			$scope.editform = {
-				id: currNote.id,
-				title: currNote.title,
-				body: currNote.content,
-				tags: currNote.categories
-			};
-			
-			$scope.noInvalidIDError = true;
-		} else {
-			$scope.noInvalidIDError = false;
-		}
-    };
+var notepad = function($scope, $state, $stateParams, favorites, currUser, $anchorScroll, $location) {
+	$scope.currUser = currUser;
 	
 	$scope.GoToAddNote = function() {
         $state.go("addnote");
@@ -186,15 +50,60 @@ var notepad = function($scope, $state, $stateParams) {
 	$scope.optionsTitleView = {
         styleWithSpan: true,
         focus: true,
-        airMode: false,
+        airMode: true,
         toolbar: [
             ['view', ['codeview']]
         ]
     };
+};
+
+var viewnotes = function($scope, $state, favorites, notes, deletedNotes, currUser, $anchorScroll, $location) {
+	$scope.listOfNotes = notes;
+	$scope.currUser = currUser.name;
 	
-	$scope.InjectContent = function(elementID, note) {
-		injectHTML(elementID, note.content);
-	};
+	$scope.scrollTo = function(id) {
+      var newHash = id;
+      if ($location.hash() !== newHash) {
+        $location.hash(id);
+      } else {
+        $anchorScroll();
+      }
+    };
+	
+	$scope.GoToAddNote = function() {
+        $state.go("addnote");
+    };
+	
+	$scope.GoToEditNote = function(note) {
+		if (note === null || note === undefined) {
+			return;
+		}
+		
+        $state.go("editnote", {noteID: note.id});
+		
+		var currNote = getNoteByID(note.id, $scope.listOfNotes.notes);
+		if (currNote !== null) {
+			$scope.editform = {
+				id: currNote.id,
+				title: currNote.title,
+				body: currNote.content,
+				tags: currNote.categories
+			};
+			
+			$scope.noInvalidIDError = true;
+		} else {
+			$scope.noInvalidIDError = false;
+		}
+    };
+
+    $scope.GoToNote = function(note) {
+		if (note === null || note === undefined) {
+			return;
+		}
+		
+        $state.go("viewnote", {noteID: note.id});
+		$scope.currNote = getNoteByID(note.id, $scope.listOfNotes.notes);
+    };
 	
 	$scope.AddNoteToFavorites = function(note) {
 		var tempNote = getNoteByID(note.id, $scope.listOfNotes.notes);
@@ -203,12 +112,12 @@ var notepad = function($scope, $state, $stateParams) {
 			return;
 		}
 		
-		var existingNote = getNoteByID(tempNote.id, $scope.listOfFavorites.favs);
+		var existingNote = getNoteByID(tempNote.id, favorites.favs);
 		if (existingNote !== null) {
 			return;
 		}
 		
-		$scope.listOfFavorites.favs.push(
+		favorites.favs.unshift(
 			{
 				id: tempNote.id,
 				title: tempNote.title
@@ -218,52 +127,193 @@ var notepad = function($scope, $state, $stateParams) {
 		note.favored = true;
 	};
 	
+	$scope.DeleteNote = function(note) {
+		if (note === null || note === undefined) {
+			return;
+		}
+		
+		var noteFavIndex = getNoteIndexByID(note.id, favorites.favs);
+		if (noteFavIndex !== -1) {
+			removeNote(noteFavIndex, favorites.favs, 1);
+		}
+		
+		var noteMainIndex = getNoteIndexByID(note.id, $scope.listOfNotes.notes);
+		if (noteMainIndex !== -1) {
+			removeNote(noteMainIndex, notes.notes, 1);
+		} else {
+			return;
+		}
+		
+		deletedNotes.notes.push(note);
+		console.log(deletedNotes);
+	};
+};
+
+var viewnote = function($scope, $state, $stateParams, notes) {
+	if (notes === null) {
+		return;
+	}
+	$scope.currNote = getNoteByID($stateParams.noteID, notes.notes);
+	
+	$scope.InjectContent = function(elementID, note) {
+		if (note === null) {
+			return;
+		}
+		
+		injectHTML(elementID, note.content);
+	};
+	
+	$scope.ToViewNoteState = function() {
+		var noteID = $stateParams.noteID;
+		var note = getNoteByID(noteID, notes.notes);
+		
+		$scope.GoToNote(note);
+	};
+
+    $scope.GoToNote = function(note) {
+		if (note === null || note === undefined) {
+			return;
+		}
+		$scope.currNote = getNoteByID(note.id, notes.notes);
+        $state.go("viewnote", {noteID: note.id});
+    };
+};
+
+var viewfavoritenotes = function($scope, $state, $anchorScroll, $location, favorites, notes, currUser) {
+	$scope.listOfFavorites = favorites;
+	$scope.currUser = currUser.name;
+	
+	$scope.scrollTo = function(id) {
+      var newHash = id;
+      if ($location.hash() !== newHash) {
+        $location.hash(id);
+      } else {
+        $anchorScroll();
+      }
+    };
+	
+	$scope.GoToViewNotes = function() {
+        $state.go("viewnotes");
+    };
+	
+	$scope.GoToNote = function(note) {
+		if (note === null || note === undefined) {
+			return;
+		}
+		
+        $state.go("viewnote", {noteID: note.id});
+		$scope.currNote = getNoteByID(note.id, notes.notes);
+    };
+	
 	$scope.RemoveNoteFromFavorites = function(note) {
 		var noteIndex = getNoteIndexByID(note.id, $scope.listOfFavorites.favs);
 		if (noteIndex === -1) {
 			return;
 		}
 		
-		var realNote = getNoteByID(note.id, $scope.listOfNotes.notes);
+		var realNote = getNoteByID(note.id, notes.notes);
 		realNote.favored = false;
+		
 		$scope.listOfFavorites.favs.splice(noteIndex, 1);
 	};
+};
+
+var addnote = function($scope, $state, notes, currUser) {
+	$scope.noError = true;
 	
-	$scope.DeleteNote = function(note) {
-		$scope.RemoveNoteFromFavorites(note);
-		
-		var noteIndex = getNoteIndexByID(note.id, $scope.listOfNotes.notes);
-		$scope.listOfNotes.notes.splice(noteIndex, 1);
-		
-		$scope.listOfDeletedNotes.notes.push(note);
-		$scope.GoToViewDeletedNotes();
+	$scope.form = {
+		title: "",
+		body: "",
+		tags: []
 	};
 	
-	$scope.DeleteNoteForever = function(note) {	
-		var noteIndex = getNoteIndexByID(note.id, $scope.listOfDeletedNotes.notes);
-		$scope.listOfDeletedNotes.notes.splice(noteIndex, 1);
-	};
-	
-	$scope.RestoreNote = function(note) {
-		var noteIndex = getNoteIndexByID(note.id, $scope.listOfDeletedNotes.notes);
-		$scope.listOfDeletedNotes.notes.splice(noteIndex, 1);
+	$scope.ToViewNoteState = function() {
+		var noteID = $stateParams.noteID;
+		var note = getNoteByID(noteID, $scope.listOfNotes.notes);
 		
-		$scope.listOfNotes.notes.push(note);
-		$scope.GoToViewNotes();
+		$scope.GoToNote(note);
 	};
 	
-	$scope.clearValues = function () {
+	$scope.GoToViewNotes = function() {
+        $state.go("viewnotes");
+    };
+	
+	$scope.ClearValues = function () {
         $scope.form = null;
 
         $scope.form = {
             title: "",
-            body: ""
+            body: "",
+			tags: []
         };
 		
 		$scope.noError = true;
     };
 	
-	$scope.clearEditValues = function () {
+	$scope.AddNote = function() {
+		if ($scope.form.title.length > 0 && $scope.form.body.length > 0) {
+			$scope.noError = true;
+			notes.notes.unshift(
+				{
+					title: $scope.form.title,
+					content: $scope.form.body,
+					creator: currUser.name,
+					creationDate: theDate(1),
+					recentEditDate: theDate(0),
+					categories: ["none yet"],
+					id: randomString(10),
+					favored: false
+				}
+			);
+			$scope.ClearValues();
+			currUser.amountOfNotes = notes.notes.length;
+			$scope.GoToViewNotes();
+		} else {
+			$scope.noError = false;
+		}
+	};
+};
+
+var editnote = function($scope, $state, $stateParams, notes, currUser) {
+	$scope.noError = true;
+	$scope.noInvalidIDError = true;
+	
+	$scope.editform = {
+		id: "",
+		title: "",
+		body: "",
+		tags: []
+	};
+	
+	$scope.ToEditNoteState = function() {
+		var noteID = $stateParams.noteID;
+		var note = getNoteByID(noteID, $scope.listOfNotes.notes);
+		
+		$scope.GoToEditNote(note);
+	};
+	
+	$scope.TestNoteID = function() {
+		var currNote = getNoteByID($stateParams.noteID, notes.notes);
+		console.log($stateParams.noteID);
+		if (currNote !== null) {
+			$scope.editform = {
+				id: currNote.id,
+				title: currNote.title,
+				body: currNote.content,
+				tags: currNote.categories
+			};
+			
+			$scope.noInvalidIDError = true;
+		} else {
+			$scope.noInvalidIDError = false;
+		}
+	}
+	
+	$scope.GoToViewNotes = function() {
+        $state.go("viewnotes");
+    };
+	
+	$scope.ClearEditValues = function () {
 		var id = $scope.editform.id;
         $scope.editform = null;
 
@@ -277,44 +327,57 @@ var notepad = function($scope, $state, $stateParams) {
 		$scope.noError = true;
     };
 	
-	$scope.addNote = function() {
-		if ($scope.form.title.length > 0 && $scope.form.body.length > 0) {
+	$scope.UpdateNote = function() {
+		if ($scope.editform.title.length > 0 && $scope.editform.body.length > 0) {
 			$scope.noError = true;
-			$scope.listOfNotes.notes.push(
-				{
-					title: $scope.form.title,
-					content: $scope.form.body,
-					creator: $scope.currUser,
-					creationDate: theDate(1),
-					recentEditDate: theDate(0),
-					categories: ["none yet"],
-					id: randomString(10)
-				}
-			);
-			$scope.clearValues();
+			
+			var noteIndex = getNoteIndexByID($scope.editform.id, notes.notes);
+			
+			notes.notes[noteIndex].title = $scope.editform.title;
+			notes.notes[noteIndex].content = $scope.editform.body;
+			notes.notes[noteIndex].recentEditDate = theDate(0);
+			
+			$scope.ClearEditValues();
 			$scope.GoToViewNotes();
 		} else {
 			$scope.noError = false;
 		}
 	};
+}
+
+var viewdeletednotes = function($scope, $state, notes, deletedNotes, $anchorScroll, $location) {
+	$scope.listOfDeletedNotes = deletedNotes;
 	
-	$scope.updateNote = function() {
-		if ($scope.editform.title.length > 0 && $scope.editform.body.length > 0) {
-			$scope.noError = true;
-			
-			var noteIndex = getNoteIndexByID($scope.editform.id, $scope.listOfNotes.notes);
-			
-			$scope.listOfNotes.notes[noteIndex].title = $scope.editform.title;
-			$scope.listOfNotes.notes[noteIndex].content = $scope.editform.body;
-			$scope.listOfNotes.notes[noteIndex].recentEditDate = theDate(0);
-			
-			$scope.clearValues();
-			$scope.GoToViewNotes();
-		} else {
-			$scope.noError = false;
+	$scope.scrollTo = function(id) {
+      var newHash = id;
+      if ($location.hash() !== newHash) {
+        $location.hash(id);
+      } else {
+        $anchorScroll();
+      }
+    };
+	
+	$scope.GoToViewNotes = function() {
+        $state.go("viewnotes");
+    };
+	
+	$scope.DeleteNoteForever = function(note) {	
+		var noteIndex = getNoteIndexByID(note.id, $scope.listOfDeletedNotes.notes);
+		if (noteIndex !== -1) {
+			removeNote(noteIndex, $scope.listOfDeletedNotes.notes, 1);
 		}
-	}
-};
+	};
+	
+	$scope.RestoreNote = function(note) {
+		var noteIndex = getNoteIndexByID(note.id, $scope.listOfDeletedNotes.notes);
+		if (noteIndex !== -1) {
+			removeNote(noteIndex, $scope.listOfDeletedNotes.notes, 1);
+		}
+		
+		notes.notes.unshift(note);
+		$scope.GoToViewNotes();
+	};
+}
 
 var profile = function($scope, $stateParams, $state, user, users) {
     var userID = $stateParams.userID;
@@ -594,7 +657,69 @@ AirPadApp.controller('NotePad', [
 	'$scope',
     '$state',
     '$stateParams',
+	'FavoriteNotes',
+	'CurrUser',
+	'$anchorScroll',
+	'$location',
     notepad
+]);
+
+AirPadApp.controller('ViewNotes', [
+	'$scope',
+    '$state',
+	'FavoriteNotes',
+	'Notes',
+	'DeletedNotes',
+	'CurrUser',
+	'$anchorScroll',
+	'$location',
+    viewnotes
+]);
+
+AirPadApp.controller('ViewNote', [
+	'$scope',
+    '$state',
+	'$stateParams',
+	'Notes',
+    viewnote
+]);
+
+AirPadApp.controller('ViewFavoriteNotes', [
+	'$scope',
+    '$state',
+	'$anchorScroll',
+	'$location',
+	'FavoriteNotes',
+	'Notes',
+	'CurrUser',
+    viewfavoritenotes
+]);
+
+AirPadApp.controller('AddNote', [
+	'$scope',
+    '$state',
+	'Notes',
+	'CurrUser',
+    addnote
+]);
+
+AirPadApp.controller('EditNote', [
+	'$scope',
+    '$state',
+	'$stateParams',
+	'Notes',
+	'CurrUser',
+    editnote
+]);
+
+AirPadApp.controller('ViewDeletedNotes', [
+	'$scope',
+    '$state',
+	'Notes',
+	'DeletedNotes',
+	'$anchorScroll',
+	'$location',
+    viewdeletednotes
 ]);
 
 AirPadApp.controller('LoginController', [

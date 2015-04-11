@@ -11,19 +11,22 @@ AirPadApp.config(function($stateProvider, $urlRouterProvider, $locationProvider)
         // Home
         .state('home', {
             url: '/home',
-            templateUrl: '/home.html'
+            templateUrl: '/home.html',
+			controller: 'NotePad'
         })
 
         // Add Note
         .state('addnote', {
             url: '/add_note',
-            templateUrl: '/addnote.html'
+            templateUrl: '/addnote.html',
+			controller: 'AddNote'
         })
 		
 		// Edit Note
         .state('editnote', {
             url: '/edit_note/:noteID',
-            templateUrl: '/editnote.html'
+            templateUrl: '/editnote.html',
+			controller: 'EditNote'
         })
 		
 		.state('editnote.redirect', {
@@ -34,7 +37,8 @@ AirPadApp.config(function($stateProvider, $urlRouterProvider, $locationProvider)
         // View Note
         .state('viewnote', {
             url: '/view_note/:noteID',
-            templateUrl: '/viewnote.html'
+            templateUrl: '/viewnote.html',
+			controller: 'ViewNote'
         })
 		
 		.state('viewnote.redirect', {
@@ -45,19 +49,22 @@ AirPadApp.config(function($stateProvider, $urlRouterProvider, $locationProvider)
         // View Notes
         .state('viewnotes', {
             url: '/view_notes',
-            templateUrl: '/viewnotes.html'
+            templateUrl: '/viewnotes.html',
+			controller: 'ViewNotes'
         })
 		
 		// View Favorite Notes
         .state('viewfavnotes', {
             url: '/view_fav_notes',
-            templateUrl: '/viewfavorites.html'
+            templateUrl: '/viewfavorites.html',
+			controller: 'ViewFavoriteNotes'
         })
 		
 		// View Deleted Notes
         .state('viewdeletednotes', {
             url: '/view_del_notes',
-            templateUrl: '/viewdeletednotes.html'
+            templateUrl: '/viewdeletednotes.html',
+			controller: 'ViewDeletedNotes'
         })
 
         // Login/Sign Up

@@ -8,15 +8,26 @@
 	margin: 0 auto;
 }
 
-#header-view-notes {
+#headerViewNotes {
 	padding-left: 10px;
 	font-weight: bolder;
 	font-size: 60px;
 }
 
+#backToTop {
+	width: 100%;
+	border-radius: 6px 6px 6px 6px;
+	cursor: pointer;
+}
+
+#backToTop:hover {
+	background-color: grey;
+}
+
 .item-width {
 	display: inline-block;
 	width: 170px;
+	/*cursor: pointer;*/
 }
 
 .item {
@@ -30,13 +41,13 @@
 }
 
 .item:hover {
-	margin-bottom: 0;
 	background-color: grey;
 }
 
 .options {
 	margin-top: 15px;
 	visibility: hidden;
+	z-index = 1;
 }
 
 .item:hover .options{

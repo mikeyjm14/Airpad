@@ -32,6 +32,8 @@ header {
 
 a:link, a:visited, a:hover, a:active {
 	text-decoration: none; color: whitesmoke;
+	cursor: url(images/jet.cur), auto;
+	/*http://www.cursor.cc/*/
 }
 
 #wrapper, .sidebar-nav li:hover,
