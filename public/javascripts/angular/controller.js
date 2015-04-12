@@ -7,6 +7,12 @@ AirPadApp.constant('config', {
 var notepad = function($scope, $state, $stateParams, favorites, currUser, $anchorScroll, $location) {
 	$scope.currUser = currUser;
 	
+	$scope.IsLoggedIn = function() {
+		if (currUser.username === null) {
+			$state.go("login");
+		}
+	};
+	
 	$scope.GoToAddNote = function() {
         $state.go("addnote");
     };
@@ -60,6 +66,12 @@ var notepad = function($scope, $state, $stateParams, favorites, currUser, $ancho
 var viewnotes = function($scope, $state, favorites, notes, deletedNotes, currUser, $anchorScroll, $location) {
 	$scope.listOfNotes = notes;
 	$scope.currUser = currUser.name;
+	
+	$scope.IsLoggedIn = function() {
+		if (currUser.username === null) {
+			$state.go("login");
+		}
+	};
 	
 	$scope.scrollTo = function(id) {
       var newHash = id;
@@ -149,10 +161,17 @@ var viewnotes = function($scope, $state, favorites, notes, deletedNotes, currUse
 	};
 };
 
-var viewnote = function($scope, $state, $stateParams, notes) {
+var viewnote = function($scope, $state, $stateParams, notes, currUser) {
 	if (notes === null) {
 		return;
 	}
+	
+	$scope.IsLoggedIn = function() {
+		if (currUser.username === null) {
+			$state.go("login");
+		}
+	};
+	
 	$scope.currNote = getNoteByID($stateParams.noteID, notes.notes);
 	
 	$scope.InjectContent = function(elementID, note) {
@@ -182,6 +201,12 @@ var viewnote = function($scope, $state, $stateParams, notes) {
 var viewfavoritenotes = function($scope, $state, $anchorScroll, $location, favorites, notes, currUser) {
 	$scope.listOfFavorites = favorites;
 	$scope.currUser = currUser.name;
+	
+	$scope.IsLoggedIn = function() {
+		if (currUser.username === null) {
+			$state.go("login");
+		}
+	};
 	
 	$scope.scrollTo = function(id) {
       var newHash = id;
@@ -219,6 +244,12 @@ var viewfavoritenotes = function($scope, $state, $anchorScroll, $location, favor
 };
 
 var addnote = function($scope, $state, notes, currUser) {
+	$scope.IsLoggedIn = function() {
+		if (currUser.username === null) {
+			$state.go("login");
+		}
+	};
+	
 	$scope.noError = true;
 	
 	$scope.form = {
@@ -275,6 +306,12 @@ var addnote = function($scope, $state, notes, currUser) {
 };
 
 var editnote = function($scope, $state, $stateParams, notes, currUser) {
+	$scope.IsLoggedIn = function() {
+		if (currUser.username === null) {
+			$state.go("login");
+		}
+	};
+	
 	$scope.noError = true;
 	$scope.noInvalidIDError = true;
 	
@@ -345,7 +382,13 @@ var editnote = function($scope, $state, $stateParams, notes, currUser) {
 	};
 }
 
-var viewdeletednotes = function($scope, $state, notes, deletedNotes, $anchorScroll, $location) {
+var viewdeletednotes = function($scope, $state, notes, deletedNotes, $anchorScroll, $location, currUser) {
+	$scope.IsLoggedIn = function() {
+		if (currUser.username === null) {
+			$state.go("login");
+		}
+	};
+	
 	$scope.listOfDeletedNotes = deletedNotes;
 	
 	$scope.scrollTo = function(id) {
@@ -379,9 +422,15 @@ var viewdeletednotes = function($scope, $state, notes, deletedNotes, $anchorScro
 	};
 }
 
-var profile = function($scope, $stateParams, $state, user, users) {
+var profile = function($scope, $stateParams, $state, currUser, users) {
     var userID = $stateParams.userID;
-
+	
+	$scope.IsLoggedIn = function() {
+		if (currUser.username === null) {
+			$state.go("login");
+		}
+	};
+	
     $scope.user = {
         name: "",
         username: "",
@@ -391,7 +440,13 @@ var profile = function($scope, $stateParams, $state, user, users) {
         amountOfReviews: "",
         amountOfEdits: ""
     };
-
+	
+	$scope.IsLoggedIn = function() {
+		if (currUser.username === null) {
+			$state.go("login");
+		}
+	};
+	
     $scope.toNoUserFoundState = function () {
         $state.go('profile.noUser');
         $scope.message = "Please log in to view your profile.";
@@ -477,7 +532,7 @@ var profile = function($scope, $stateParams, $state, user, users) {
     };
 };
 
-var loginSignup = function($scope, $state, user, users) {
+var loginSignup = function($scope, $state, currUser, users) {
     $scope.incomingUser = {
         username: "",
         password: ""
@@ -681,6 +736,7 @@ AirPadApp.controller('ViewNote', [
     '$state',
 	'$stateParams',
 	'Notes',
+	'CurrUser',
     viewnote
 ]);
 
@@ -719,13 +775,14 @@ AirPadApp.controller('ViewDeletedNotes', [
 	'DeletedNotes',
 	'$anchorScroll',
 	'$location',
+	'CurrUser',
     viewdeletednotes
 ]);
 
 AirPadApp.controller('LoginController', [
     '$scope',
     '$state',
-    'User',
+	'CurrUser',
     'Users',
     loginSignup
 ]);
@@ -734,7 +791,7 @@ AirPadApp.controller('ProfileController', [
     '$scope',
     '$stateParams',
     '$state',
-    'User',
+	'CurrUser',
     'Users',
     profile
 ]);
