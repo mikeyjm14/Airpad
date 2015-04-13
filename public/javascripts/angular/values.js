@@ -1,11 +1,31 @@
 AirPadApp.value('CurrUser', {
-	id: randomString(15),
-    name: 'John Doe',
+	id: null,
+	name: null,
 	username: null,
-	amountOfNotes: 0,
-	amountFavorited: 0,
-	amountDeleted: 0,
-	notes: [],
-	favs: [],
-	deleted: []
+	email: null,
+	password: null,
+	about: null,
+	signupDate: null,
+	amountOfNotes: -1,
+	amountFavorited: -1,
+	amountDeleted: -1,
+	notes: null,
+	favs: null,
+	deleted: null
+});
+
+AirPadApp.value('InitialUser', {
+	id: null,
+	name: null,
+	username: null,
+	email: null,
+	password: null,
+	about: null,
+	signupDate: null,
+	amountOfNotes: -1,
+	amountFavorited: -1,
+	amountDeleted: -1,
+	notes: null,
+	favs: null,
+	deleted: null
 });

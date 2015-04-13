@@ -40,7 +40,7 @@
 	<script type="text/javascript" src="/values.js"></script>
 </head>
 
-<body ng-app="AirPad">
+<body ng-app="AirPad" ng-controller="NotePad">
 	<span ng-init="GoToHome()"></span>
     <section id="wrapper">
         <!-- Sidebar -->
@@ -51,12 +51,27 @@
             <ul class="sidebar-nav">
 				<hr>
                 <li class="menuItemTitleText easeTransition">
-                    <a href="" class="bold" ui-sref="login">
-						<span class="name">
-							<i class="fa fa-user"></i>&nbsp;&nbsp;Log In/Out
-						</span>
-					</a>
-                </li><hr>
+					<span class="adjustLineHeight">
+						<a href="" class="bold" ui-sref="login">
+							<span class="name" ng-show="LoggedIn() === false">
+								<i class="fa fa-sign-in"></i>&nbsp;&nbsp;Log In
+							</span>
+							<span class="name" ng-show="LoggedIn() === true">
+								<i class="fa fa-sign-out"></i>&nbsp;&nbsp;Log Out
+							</span>
+						</a>
+					</span>
+                </li>
+				<li class="menuItemTitleText easeTransition">
+					<span class="adjustLineHeight">
+						<a href="" ng-show="LoggedIn() === true" class="bold" ng-click="GoToProfile()">
+							<span class="name">
+								<i class="fa fa-user"></i>&nbsp;&nbsp;{{SetName()}}
+							</span>
+						</a>
+					</span>
+                </li>
+				<hr>
 				<li href="" class="menuItemTitleText easeTransition">
 					<a href="" ui-sref="home"><i class="fa fa-home" ></i> Home</a>
 				</li>

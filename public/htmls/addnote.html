@@ -4,7 +4,7 @@
 		<h2 id="header-add-note" class="whitesmokeText">Add a Note...</h2>
 		<label ng-hide="noError" class="error">Please enter a value into both fields.</label>
 	</section>
-	<input ng-model="form.title" class="noteTitle-addnote invisibleField whitesmokeText" placeholder="Title" type="text" name="title" maxlength="10"/>
+	<input ng-model="form.title" class="noteTitle-addnote invisibleField whitesmokeText" placeholder="Title" type="text" name="title"/>
 	<span ng-model="form.body" class="noteBody whitesmokeText center"  placeholder="TEXT" summernote airMode></span>
 	<section class="center buttonSection">
 		<button type="button" ng-click="AddNote()">Add Note</button>&nbsp;&nbsp;
@@ -13,5 +13,23 @@
 	</section>
 	<section class="full-length-section-left-align">
 		<h2 id="header-add-note" class="whitesmokeText">Add Some Tags...</h2>
+		<!--Think of a way to collect and display tags. One way is to convert the tag after a key is press.
+		
+		app.directive('ngEnter', function () {
+			return function (scope, element, attrs) {
+				element.bind("keydown keypress", function (event) {
+					if(event.which === 13) {
+						scope.$apply(function (){
+							scope.$eval(attrs.ngEnter);
+						});
+
+						event.preventDefault();
+					}
+				});
+			};
+		});
+		
+		http://stackoverflow.com/questions/18360202/how-can-i-detect-keydown-or-keypress-event-in-angular-js
+		-->
 	</section>
 </section>

@@ -30,14 +30,22 @@ header {
     width: 100%;
 }
 
+a:hover, a:active {
+	font-weight: bold;
+}
+
 a:link, a:visited, a:hover, a:active {
 	text-decoration: none; color: whitesmoke;
+}
+
+button, input, a:link, a:visited, a:hover, a:active {
 	cursor: url(images/jet.cur), auto;
 	/*http://www.cursor.cc/*/
 }
 
 #wrapper, .sidebar-nav li:hover,
-.sidebar-nav li a:hover, .easeTransition {
+.sidebar-nav li a:hover, a:hover,
+.easeTransition {
     padding-left: 0;
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
@@ -249,4 +257,8 @@ a:link, a:visited, a:hover, a:active {
 	font-weight: bolder;
 	color: yellow;
 	font-size: 20px;
+}
+
+.adjustLineHeight {
+	line-height: auto;
 }

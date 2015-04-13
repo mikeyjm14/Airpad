@@ -4,14 +4,40 @@ AirPadApp.constant('config', {
     apiUrl: 'http://www.google.com?api'
 });
 
-var notepad = function($scope, $state, $stateParams, favorites, currUser, $anchorScroll, $location) {
+var notepad = function($scope, $state, currUser) {
+	$scope.SetName = function() {
+		return currUser.username;
+	};
+	
+	var setUserID = function() {
+		return currUser.id;
+	}
+	
+	$scope.LoggedIn = function() {
+		return (currUser.id !== null);
+	}
+	
+	$scope.GoToLogin = function() {
+		$state.go('login');
+    };
+	
+	$scope.GoToProfile = function() {
+        $state.go('profile', {userID: currUser.id});
+    };
+};
+
+var home = function($scope, $state, $stateParams, currUser, $anchorScroll, $location) {
 	$scope.currUser = currUser;
 	
 	$scope.IsLoggedIn = function() {
-		if (currUser.username === null) {
+		if (currUser.id === null) {
 			$state.go("login");
 		}
 	};
+	
+	$scope.LoggedIn = function() {
+		return (currUser.id !== null);
+	}
 	
 	$scope.GoToAddNote = function() {
         $state.go("addnote");
@@ -63,12 +89,15 @@ var notepad = function($scope, $state, $stateParams, favorites, currUser, $ancho
     };
 };
 
-var viewnotes = function($scope, $state, favorites, notes, deletedNotes, currUser, $anchorScroll, $location) {
-	$scope.listOfNotes = notes;
+var viewnotes = function($scope, $state, currUser, $anchorScroll, $location) {
+	$scope.listOfNotes = {
+		notes: currUser.notes
+	};
+	
 	$scope.currUser = currUser.name;
 	
 	$scope.IsLoggedIn = function() {
-		if (currUser.username === null) {
+		if (currUser.id === null) {
 			$state.go("login");
 		}
 	};
@@ -93,7 +122,7 @@ var viewnotes = function($scope, $state, favorites, notes, deletedNotes, currUse
 		
         $state.go("editnote", {noteID: note.id});
 		
-		var currNote = getNoteByID(note.id, $scope.listOfNotes.notes);
+		var currNote = getNoteByID(note.id, currUser.notes);
 		if (currNote !== null) {
 			$scope.editform = {
 				id: currNote.id,
@@ -103,6 +132,7 @@ var viewnotes = function($scope, $state, favorites, notes, deletedNotes, currUse
 			};
 			
 			$scope.noInvalidIDError = true;
+			currNote.recentEditDate = theDate(1);
 		} else {
 			$scope.noInvalidIDError = false;
 		}
@@ -114,22 +144,22 @@ var viewnotes = function($scope, $state, favorites, notes, deletedNotes, currUse
 		}
 		
         $state.go("viewnote", {noteID: note.id});
-		$scope.currNote = getNoteByID(note.id, $scope.listOfNotes.notes);
+		$scope.currNote = getNoteByID(note.id, currUser.notes);
     };
 	
 	$scope.AddNoteToFavorites = function(note) {
-		var tempNote = getNoteByID(note.id, $scope.listOfNotes.notes);
+		var tempNote = getNoteByID(note.id, currUser.notes);
 		
 		if (tempNote === null || tempNote === undefined) {
 			return;
 		}
 		
-		var existingNote = getNoteByID(tempNote.id, favorites.favs);
+		var existingNote = getNoteByID(tempNote.id, currUser.favs);
 		if (existingNote !== null) {
 			return;
 		}
 		
-		favorites.favs.unshift(
+		currUser.favs.unshift(
 			{
 				id: tempNote.id,
 				title: tempNote.title
@@ -137,6 +167,7 @@ var viewnotes = function($scope, $state, favorites, notes, deletedNotes, currUse
 		);
 		
 		note.favored = true;
+		currUser.amountFavorited = currUser.favs.length;
 	};
 	
 	$scope.DeleteNote = function(note) {
@@ -144,35 +175,35 @@ var viewnotes = function($scope, $state, favorites, notes, deletedNotes, currUse
 			return;
 		}
 		
-		var noteFavIndex = getNoteIndexByID(note.id, favorites.favs);
+		var noteFavIndex = getNoteIndexByID(note.id, currUser.favs);
 		if (noteFavIndex !== -1) {
-			removeNote(noteFavIndex, favorites.favs, 1);
+			removeNote(noteFavIndex, currUser.favs, 1);
 		}
 		
-		var noteMainIndex = getNoteIndexByID(note.id, $scope.listOfNotes.notes);
+		var noteMainIndex = getNoteIndexByID(note.id, currUser.notes);
 		if (noteMainIndex !== -1) {
-			removeNote(noteMainIndex, notes.notes, 1);
+			removeNote(noteMainIndex, currUser.notes, 1);
 		} else {
 			return;
 		}
 		
-		deletedNotes.notes.push(note);
-		console.log(deletedNotes);
+		currUser.deleted.push(note);
+		currUser.amountDeleted = currUser.deleted.length;
 	};
 };
 
-var viewnote = function($scope, $state, $stateParams, notes, currUser) {
-	if (notes === null) {
+var viewnote = function($scope, $state, $stateParams, currUser) {
+	if (currUser.notes === null) {
 		return;
 	}
 	
 	$scope.IsLoggedIn = function() {
-		if (currUser.username === null) {
+		if (currUser.id === null) {
 			$state.go("login");
 		}
 	};
 	
-	$scope.currNote = getNoteByID($stateParams.noteID, notes.notes);
+	$scope.currNote = getNoteByID($stateParams.noteID, currUser.notes);
 	
 	$scope.InjectContent = function(elementID, note) {
 		if (note === null) {
@@ -184,7 +215,7 @@ var viewnote = function($scope, $state, $stateParams, notes, currUser) {
 	
 	$scope.ToViewNoteState = function() {
 		var noteID = $stateParams.noteID;
-		var note = getNoteByID(noteID, notes.notes);
+		var note = getNoteByID(noteID, currUser.notes);
 		
 		$scope.GoToNote(note);
 	};
@@ -193,17 +224,20 @@ var viewnote = function($scope, $state, $stateParams, notes, currUser) {
 		if (note === null || note === undefined) {
 			return;
 		}
-		$scope.currNote = getNoteByID(note.id, notes.notes);
+		$scope.currNote = getNoteByID(note.id, currUser.notes);
         $state.go("viewnote", {noteID: note.id});
     };
 };
 
-var viewfavoritenotes = function($scope, $state, $anchorScroll, $location, favorites, notes, currUser) {
-	$scope.listOfFavorites = favorites;
+var viewfavoritenotes = function($scope, $state, $anchorScroll, $location, currUser) {
+	$scope.listOfFavorites = {
+		favs: currUser.favs
+	};
+	
 	$scope.currUser = currUser.name;
 	
 	$scope.IsLoggedIn = function() {
-		if (currUser.username === null) {
+		if (currUser.id === null) {
 			$state.go("login");
 		}
 	};
@@ -227,25 +261,26 @@ var viewfavoritenotes = function($scope, $state, $anchorScroll, $location, favor
 		}
 		
         $state.go("viewnote", {noteID: note.id});
-		$scope.currNote = getNoteByID(note.id, notes.notes);
+		$scope.currNote = getNoteByID(note.id, currUser.notes);
     };
 	
 	$scope.RemoveNoteFromFavorites = function(note) {
-		var noteIndex = getNoteIndexByID(note.id, $scope.listOfFavorites.favs);
+		var noteIndex = getNoteIndexByID(note.id, currUser.favs);
 		if (noteIndex === -1) {
 			return;
 		}
 		
-		var realNote = getNoteByID(note.id, notes.notes);
+		var realNote = getNoteByID(note.id, currUser.notes);
 		realNote.favored = false;
 		
-		$scope.listOfFavorites.favs.splice(noteIndex, 1);
+		currUser.favs.splice(noteIndex, 1);
+		currUser.amountFavorited = currUser.favs.length;
 	};
 };
 
-var addnote = function($scope, $state, notes, currUser) {
+var addnote = function($scope, $state, currUser) {
 	$scope.IsLoggedIn = function() {
-		if (currUser.username === null) {
+		if (currUser.id === null) {
 			$state.go("login");
 		}
 	};
@@ -260,7 +295,7 @@ var addnote = function($scope, $state, notes, currUser) {
 	
 	$scope.ToViewNoteState = function() {
 		var noteID = $stateParams.noteID;
-		var note = getNoteByID(noteID, $scope.listOfNotes.notes);
+		var note = getNoteByID(noteID, currUser.notes);
 		
 		$scope.GoToNote(note);
 	};
@@ -284,7 +319,7 @@ var addnote = function($scope, $state, notes, currUser) {
 	$scope.AddNote = function() {
 		if ($scope.form.title.length > 0 && $scope.form.body.length > 0) {
 			$scope.noError = true;
-			notes.notes.unshift(
+			currUser.notes.unshift(
 				{
 					title: $scope.form.title,
 					content: $scope.form.body,
@@ -297,7 +332,7 @@ var addnote = function($scope, $state, notes, currUser) {
 				}
 			);
 			$scope.ClearValues();
-			currUser.amountOfNotes = notes.notes.length;
+			currUser.amountOfNotes = currUser.notes.length;
 			$scope.GoToViewNotes();
 		} else {
 			$scope.noError = false;
@@ -305,7 +340,7 @@ var addnote = function($scope, $state, notes, currUser) {
 	};
 };
 
-var editnote = function($scope, $state, $stateParams, notes, currUser) {
+var editnote = function($scope, $state, $stateParams, currUser) {
 	$scope.IsLoggedIn = function() {
 		if (currUser.username === null) {
 			$state.go("login");
@@ -324,14 +359,13 @@ var editnote = function($scope, $state, $stateParams, notes, currUser) {
 	
 	$scope.ToEditNoteState = function() {
 		var noteID = $stateParams.noteID;
-		var note = getNoteByID(noteID, $scope.listOfNotes.notes);
+		var note = getNoteByID(noteID, currUser.notes);
 		
 		$scope.GoToEditNote(note);
 	};
 	
 	$scope.TestNoteID = function() {
-		var currNote = getNoteByID($stateParams.noteID, notes.notes);
-		console.log($stateParams.noteID);
+		var currNote = getNoteByID($stateParams.noteID, currUser.notes);
 		if (currNote !== null) {
 			$scope.editform = {
 				id: currNote.id,
@@ -368,11 +402,11 @@ var editnote = function($scope, $state, $stateParams, notes, currUser) {
 		if ($scope.editform.title.length > 0 && $scope.editform.body.length > 0) {
 			$scope.noError = true;
 			
-			var noteIndex = getNoteIndexByID($scope.editform.id, notes.notes);
+			var noteIndex = getNoteIndexByID($scope.editform.id, currUser.notes);
 			
-			notes.notes[noteIndex].title = $scope.editform.title;
-			notes.notes[noteIndex].content = $scope.editform.body;
-			notes.notes[noteIndex].recentEditDate = theDate(0);
+			currUser.notes[noteIndex].title = $scope.editform.title;
+			currUser.notes[noteIndex].content = $scope.editform.body;
+			currUser.notes[noteIndex].recentEditDate = theDate(0);
 			
 			$scope.ClearEditValues();
 			$scope.GoToViewNotes();
@@ -382,14 +416,16 @@ var editnote = function($scope, $state, $stateParams, notes, currUser) {
 	};
 }
 
-var viewdeletednotes = function($scope, $state, notes, deletedNotes, $anchorScroll, $location, currUser) {
+var viewdeletednotes = function($scope, $state, $anchorScroll, $location, currUser) {
 	$scope.IsLoggedIn = function() {
 		if (currUser.username === null) {
 			$state.go("login");
 		}
 	};
 	
-	$scope.listOfDeletedNotes = deletedNotes;
+	$scope.listOfDeletedNotes = {
+		notes: currUser.deleted
+	};
 	
 	$scope.scrollTo = function(id) {
       var newHash = id;
@@ -405,19 +441,24 @@ var viewdeletednotes = function($scope, $state, notes, deletedNotes, $anchorScro
     };
 	
 	$scope.DeleteNoteForever = function(note) {	
-		var noteIndex = getNoteIndexByID(note.id, $scope.listOfDeletedNotes.notes);
-		if (noteIndex !== -1) {
-			removeNote(noteIndex, $scope.listOfDeletedNotes.notes, 1);
+		var noteIndex = getNoteIndexByID(note.id, currUser.deleted);
+		if (noteIndex === -1) {
+			return;
 		}
+		
+		removeNote(noteIndex, currUser.deleted, 1);
+		currUser.amountDeleted = currUser.deleted.length;
 	};
 	
 	$scope.RestoreNote = function(note) {
-		var noteIndex = getNoteIndexByID(note.id, $scope.listOfDeletedNotes.notes);
+		var noteIndex = getNoteIndexByID(note.id, currUser.deleted);
 		if (noteIndex !== -1) {
-			removeNote(noteIndex, $scope.listOfDeletedNotes.notes, 1);
+			removeNote(noteIndex, currUser.deleted, 1);
 		}
 		
-		notes.notes.unshift(note);
+		currUser.notes.unshift(note);
+		currUser.amountOfNotes = currUser.notes.length;
+		currUser.amountDeleted = currUser.deleted.length;
 		$scope.GoToViewNotes();
 	};
 }
@@ -441,12 +482,6 @@ var profile = function($scope, $stateParams, $state, currUser, users) {
         amountOfEdits: ""
     };
 	
-	$scope.IsLoggedIn = function() {
-		if (currUser.username === null) {
-			$state.go("login");
-		}
-	};
-	
     $scope.toNoUserFoundState = function () {
         $state.go('profile.noUser');
         $scope.message = "Please log in to view your profile.";
@@ -468,16 +503,16 @@ var profile = function($scope, $stateParams, $state, currUser, users) {
             return;
         }
 
-        var currUser = users.users[index];
+        var aUser = users.users[index];
 
         $scope.user = {
-            name: currUser.name,
-            username: currUser.username,
-            email: currUser.email,
-            about: currUser.about,
-            dateSignUp: currUser.dateSignedUp,
-            amountOfReviews: currUser.amountOfReviews,
-            amountOfEdits: currUser.amountOfEdits
+            name: aUser.name,
+            username: aUser.username,
+            email: aUser.email,
+            about: aUser.about,
+            dateSignUp: aUser.dateSignedUp,
+            amountOfReviews: aUser.amountOfReviews,
+            amountOfEdits: aUser.amountOfEdits
         };
     };
 
@@ -532,42 +567,124 @@ var profile = function($scope, $stateParams, $state, currUser, users) {
     };
 };
 
-var loginSignup = function($scope, $state, currUser, users) {
+var login = function($scope, $state, currUser, initialUser, users) {
+	$scope.errorMessage = "";
+	
+	$scope.IsLoggedOut = function () {
+        return (currUser.id === null);
+    };
+	
+	var setLoginTitle = function() {
+		if($scope.IsLoggedOut()) {
+			return "Log In";
+		}
+		
+		return "Log Out";
+	};
+	
+	$scope.text = setLoginTitle();
+	
     $scope.incomingUser = {
         username: "",
         password: ""
     };
 
-    $scope.newUserInfo = {
-        firstName: "",
-        lastName: "",
-        username:"",
-        email: "",
-        password: "",
-        passwordAgain: ""
-    };
-
-    var showIfLoggedIn = function () {
-        if (user.username !== ""
-            && user.username !== null) {
-            $scope.loginText = "Log Out";
-        }
-        else {
-            $scope.loginText = "Log In";
-        }
-    };
-
     $scope.toLoginState = function() {
-        $state.go('login.login');
-        showIfLoggedIn();
-        $scope.text = "Login";
         $scope.errorMessage = "";
+		$state.go('login');
     };
 
     $scope.toSignupState = function() {
-        $state.go('login.signUp');
-        $scope.text = "Sign Up";
         $scope.errorMessage = "";
+		$state.go('signup');
+    };
+
+    $scope.Login = function() {
+        if ($scope.incomingUser.username === ''
+            || $scope.incomingUser.username === null
+            || $scope.incomingUser.password === ''
+            || $scope.incomingUser.password === null) {
+            $scope.errorMessage = "Please fill in all required fields.";
+            return;
+        }
+
+        if ($scope.incomingUser.username === currUser.username
+            || $scope.incomingUser.password === currUser.password) {
+            $scope.errorMessage = "Already logged in.";
+            return;
+        }
+
+        var index = findUserByCredentials($scope.incomingUser.username, $scope.incomingUser.password, users.users);
+
+        if (index === -1) {
+            $scope.errorMessage = "Wrong email/username or password.";
+            return;
+        }
+
+        $scope.errorMessage = "";
+		
+		currUser.id = users.users[index].id;
+        currUser.name = users.users[index].name;
+        currUser.username = users.users[index].username;
+        currUser.email = users.users[index].email;
+        currUser.password = users.users[index].password;
+        currUser.about = users.users[index].about;
+        currUser.signupDate = users.users[index].signupDate;
+        currUser.amountOfNotes = users.users[index].amountOfNotes;
+		currUser.amountFavorited = users.users[index].amountFavorited;
+		currUser.amountDeleted = users.users[index].amountDeleted;
+		currUser.notes = users.users[index].notes;
+		currUser.favs = users.users[index].favs;
+		currUser.deleted = users.users[index].deleted;
+
+        $state.go('profile', {userID: currUser.id});
+    };
+
+    $scope.Logout = function () {
+        if ($scope.IsLoggedOut()) {
+            return;
+        }
+		
+		currUser.id = null;
+        currUser.name = null;
+        currUser.username = null;
+        currUser.email = null;
+        currUser.password = null;
+        currUser.about = null;
+        currUser.signupDate = null;
+        currUser.amountOfNotes = -1;
+		currUser.amountFavorited = -1;
+		currUser.amountDeleted = -1;
+		currUser.notes = null;
+		currUser.favs = null;
+		currUser.deleted = null;
+		
+        $scope.toLoginState();
+		
+		$scope.text = setLoginTitle();
+    };
+};
+
+var signup = function($scope, $state, users) {
+	$scope.errorMessage = "";
+
+	$scope.newUserInfo = {
+		firstName: "",
+		lastName: "",
+		username: "",
+		email: "",
+		password: "",
+		passwordAgain: ""
+    };
+	
+    $scope.toLoginState = function() {
+        $scope.errorMessage = "";
+		$state.go('login');
+    };
+
+    $scope.toSignupState = function() {
+        $scope.errorMessage = "";
+		$state.go('signup');
     };
 
     $scope.SignUp = function() {
@@ -647,84 +764,28 @@ var loginSignup = function($scope, $state, currUser, users) {
         $scope.toLoginState();
         $scope.errorMessage = "Log in with new account.";
     };
-
-    $scope.Login = function() {
-        if ($scope.incomingUser.username === ''
-            || $scope.incomingUser.username === null
-            || $scope.incomingUser.password === ''
-            || $scope.incomingUser.password === null) {
-            $scope.errorMessage = "Please fill in all required fields.";
-            return;
-        }
-
-        if ($scope.incomingUser.username === user.username
-            || $scope.incomingUser.password === user.password) {
-            $scope.errorMessage = "Already logged in.";
-            return;
-        }
-
-        var index = findUserByCredentials($scope.incomingUser.username, $scope.incomingUser.password, users.users);
-
-        if (index === -1) {
-            $scope.errorMessage = "Wrong email/username or password.";
-            return;
-        }
-
-        $scope.errorMessage = "";
-
-        user.id = users.users[index].id;
-        user.name = users.users[index].name;
-        user.username = users.users[index].username;
-        user.email = users.users[index].email;
-        user.password = users.users[index].password;
-        user.about = users.users[index].about;
-        user.dateSignedUp = users.users[index].dateSignedUp;
-        user.amountOfEdits = users.users[index].amountOfEdits;
-        user.amountOfReviews = users.users[index].amountOfReviews;
-
-        $state.go('profile', {userID: user.id});
-    };
-
-    $scope.logout = function () {
-        if (!$scope.isLoggedOut()) {
-            return;
-        }
-
-        user.id = '';
-        user.name = '';
-        user.username = '';
-        user.email = '';
-        user.password = '';
-        user.about = '';
-        user.dateSignedUp = '';
-        user.amountOfEdits = '';
-        user.amountOfReviews = '';
-
-        $scope.toLoginState();
-    };
-
-    $scope.isLoggedOut = function () {
-        return (user.username !== '' && user.username !== null);
-    };
 };
 
 AirPadApp.controller('NotePad', [
 	'$scope',
     '$state',
+	'CurrUser',
+    notepad
+]);
+
+AirPadApp.controller('Home', [
+	'$scope',
+    '$state',
     '$stateParams',
-	'FavoriteNotes',
 	'CurrUser',
 	'$anchorScroll',
 	'$location',
-    notepad
+    home
 ]);
 
 AirPadApp.controller('ViewNotes', [
 	'$scope',
     '$state',
-	'FavoriteNotes',
-	'Notes',
-	'DeletedNotes',
 	'CurrUser',
 	'$anchorScroll',
 	'$location',
@@ -735,7 +796,6 @@ AirPadApp.controller('ViewNote', [
 	'$scope',
     '$state',
 	'$stateParams',
-	'Notes',
 	'CurrUser',
     viewnote
 ]);
@@ -745,8 +805,6 @@ AirPadApp.controller('ViewFavoriteNotes', [
     '$state',
 	'$anchorScroll',
 	'$location',
-	'FavoriteNotes',
-	'Notes',
 	'CurrUser',
     viewfavoritenotes
 ]);
@@ -754,7 +812,6 @@ AirPadApp.controller('ViewFavoriteNotes', [
 AirPadApp.controller('AddNote', [
 	'$scope',
     '$state',
-	'Notes',
 	'CurrUser',
     addnote
 ]);
@@ -763,7 +820,6 @@ AirPadApp.controller('EditNote', [
 	'$scope',
     '$state',
 	'$stateParams',
-	'Notes',
 	'CurrUser',
     editnote
 ]);
@@ -771,8 +827,6 @@ AirPadApp.controller('EditNote', [
 AirPadApp.controller('ViewDeletedNotes', [
 	'$scope',
     '$state',
-	'Notes',
-	'DeletedNotes',
 	'$anchorScroll',
 	'$location',
 	'CurrUser',
@@ -783,8 +837,16 @@ AirPadApp.controller('LoginController', [
     '$scope',
     '$state',
 	'CurrUser',
+	'InitialUser',
     'Users',
-    loginSignup
+    login
+]);
+
+AirPadApp.controller('SignupController', [
+    '$scope',
+    '$state',
+    'Users',
+    signup
 ]);
 
 AirPadApp.controller('ProfileController', [

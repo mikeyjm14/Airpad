@@ -5,8 +5,10 @@
 			<h2 id="headerViewNotes" class="whitesmokeText">{{currUser}}'s Notes</h2>
 		</section>
 		<section class="item-width" ng-repeat="note in listOfNotes.notes">
-			<section id="item" class="item alignText border">
-					<section class="noteTitle-viewnotes"><a href="" ng-click="GoToNote(note)">{{note.title}}</a></section>
+			<section class="item alignText border" data-title="{{note.title}}">
+					<section class="noteTitle-viewnotes">
+						<a href="" ng-click="GoToNote(note)">{{note.title}}</a>
+					</section>
 					<a href="" ng-click="GoToNote(note)"><i class="fa fa-file-text fa-4x"></i></a>
 					<br/>
 					<section class="options" ng-click="">

@@ -1,7 +1,8 @@
-<form ng-submit="Login()">
+<form>
     <section id="loginBox" class="center border">
-        <p class="title">{{loginText}}</p>
-        <section ng-show="!isLoggedOut()" id="loginFrame" class="center">
+        <p class="title">{{text}}</p>
+		<h6 id="header-add-note" class="whitesmokeText">{{text}}</h6>
+        <section ng-show="IsLoggedOut() === true" id="loginFrame" class="center">
             <label class="bold smallerMinorTitle labelAlign">Email/Username:</label>
             <input align="left"
                    type="text"
@@ -19,11 +20,11 @@
                     />
         </section>
         <section id="buttonSection">
-            <button ng-show="!isLoggedOut()" class="alignCenter" type="submit">Log In</button>
-            <button ng-show="isLoggedOut()" class="alignCenter" type="button" ng-click="logout()">Log Out</button>
-            <span ng-show="!isLoggedOut()"> | </span>
-            <button ng-show="!isLoggedOut()" class="alignCenter" type="button" ng-click="toSignupState()">Create an Account</button>
+            <button ng-show="IsLoggedOut() === true" class="alignCenter" type="submit" ng-click="Login()">Log In</button>
+            <button ng-show="IsLoggedOut() === false" class="alignCenter" type="button" ng-click="Logout()">Log Out</button>
+            <span ng-show="IsLoggedOut() === true" class="whitesmokeText"> | </span>
+            <button ng-show="IsLoggedOut() === true" type="button" ng-click="toSignupState()">Create an Account</button>
         </section>
-        <span class="errorText">{{errorMessage}}</span>
+        <span class="error">{{errorMessage}}</span>
     </section>
 </form>

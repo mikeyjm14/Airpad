@@ -56,14 +56,38 @@
 	text-decoration: none;
 }
 
+.item[data-title]:hover:after {
+	content: attr(data-title);
+	font-size: large;
+	font-weight: bolder;
+	padding: 4px 8px;
+	position: absolute;
+	color: black;
+	left: auto;
+	top: auto;
+	margin-left: -80px;
+	margin-top: -170px;
+	white-space: nowrap;
+	background-color: whitesmoke;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	-moz-box-shadow: 0px 0px 4px #222;
+	-webkit-box-shadow: 0px 0px 4px #222;
+	box-shadow: 0px 0px 4px #222;
+	-webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
 .noteTitle-viewnotes {
 	font-size: x-large;
     font-weight: bolder;
-	overflow-x: auto;
-	overflow-y: auto;
+	white-space: nowrap;
+	overflow: hidden;
     text-overflow:ellipsis;
 	height: 40px;
-	width: 100%;
 }
 
 /*

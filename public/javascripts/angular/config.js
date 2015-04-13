@@ -13,7 +13,7 @@ AirPadApp.config(function($stateProvider, $urlRouterProvider, $locationProvider)
         .state('home', {
             url: '/home',
             templateUrl: '/home.html',
-			controller: 'NotePad'
+			controller: 'Home'
         })
 
         // Add Note
@@ -68,25 +68,18 @@ AirPadApp.config(function($stateProvider, $urlRouterProvider, $locationProvider)
 			controller: 'ViewDeletedNotes'
         })
 
-        // Login/Sign Up
-        .state('login', {
-            url: '/login',
-            templateUrl: '/loginView/userLogin.html',
-            controller: 'LoginController'
-        })
-
         // Login
-        .state('login.login', {
-            url: '^/userLogin',
-            templateUrl: '/userLogin.html',
-            controller: 'LoginController'
+        .state('login', {
+            url: '^/login',
+            templateUrl: '/LoginView/userLogin.html',
+			controller: 'LoginController'
         })
 
         // Sign Up
-        .state('login.signUp', {
+        .state('signup', {
             url: '^/signUp',
-            templateUrl: '/userSignup.html',
-            controller: 'LoginController'
+            templateUrl: '/LoginView/userSignup.html',
+			controller: 'SignupController'
         })
 
         // User Profile
@@ -103,16 +96,16 @@ AirPadApp.config(function($stateProvider, $urlRouterProvider, $locationProvider)
 
         .state('profile.view', {
             url: '/view',
-            templateUrl: '/public/htmls/userProfileViews/viewUserProfile.html'
+            templateUrl: '/UserProfileViews/viewUserProfile.html'
         })
 
         .state('profile.edit', {
             url: '/edit',
-            templateUrl: '/public/htmls/userProfileViews/editUserProfile.html'
+            templateUrl: '/UserProfileViews/editUserProfile.html'
         })
 
         .state('profile.noUser', {
             url: '/no-user',
-            templateUrl: '/public/htmls/userProfileViews/userNotFound.html'
+            templateUrl: '/UserProfileViews/userNotFound.html'
         })
 });

@@ -33,6 +33,7 @@ app.use(express.static(path.join(__dirname, '/public')));
 app.use(express.static(__dirname + '/public/stylesheets'));
 app.use(express.static(__dirname + '/public/javascripts/angular'));
 app.use(express.static(__dirname + '/public/javascripts/summernote'));
+app.use(express.static(__dirname + '/public/javascripts/popover'));
 app.use(express.static(__dirname + '/public/htmls'));
 app.use(express.static(__dirname + '/public/images'));
 app.use(express.static(__dirname + '/model'));

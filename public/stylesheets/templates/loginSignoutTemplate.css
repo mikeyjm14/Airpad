@@ -1,14 +1,12 @@
-#loginBox {
-    text-align: center;
-    width: 390px;
-}
-
-#signupBox {
+#loginBox, #signupBox {
+	background-color: rgba(0, 0, 0, 0.4); 
+	border-color: whitesmoke;
     text-align: center;
     width: 390px;
 }
 
 #loginFrame {
+	padding-top: 15px;
     width: 93%;
     margin: 10px 0;
     overflow: hidden;
@@ -29,9 +27,4 @@
 
 #buttonSection {
     margin-bottom: 10px;
-}
-
-#loginBox {
-	background-color: rgba(0, 0, 0, 0.4); 
-	border-color: white;
 }

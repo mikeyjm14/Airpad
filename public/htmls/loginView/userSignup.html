@@ -1,6 +1,6 @@
 <form ng-submit="SignUp()">
     <section id="signupBox" class="center border">
-        <p class="title">Sign Up</p>
+        <h6 id="header-add-note" class="whitesmokeText">Sign Up</h6>
         <section id="loginFrame" class="center">
             <label class="bold smallerMinorTitle labelAlign">First Name:</label>
             <input type="text"
@@ -48,10 +48,10 @@
             />
         </section>
         <section id="buttonSection">
-            <button class="alignCenter" type="submit">Sign Up</button>
-            <span> | </span>
-            <a class="alignCenter" ng-click="toLoginState()">Log In with Account</a>
+            <button type="submit">Sign Up</button>
+            <span class="whitesmokeText"> | </span>
+            <a ng-click="toLoginState()" class="whitesmokeText bold">Log In with Account</a>
         </section>
-        <span class="errorText">{{errorMessage}}</span>
+        <span class="error">{{errorMessage}}</span>
     </section>
 </form>
