@@ -1,7 +1,12 @@
 .textTitle {
-    font-size: 25px;
+    font-size: 30px;
     font-weight: bolder;
     text-transform: uppercase;
+}
+
+.textContent {
+    font-size: 25px;
+    font-weight: bold;
 }
 
 #header-view-note {

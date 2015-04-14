@@ -40,7 +40,6 @@ AirPadApp.factory('Notes', [function() {
                 creator: "John Doe",
                 creationDate: theDate(1),
                 recentEditDate: theDate(0),
-                categories: ["none yet", "none added yet", "none to add yet"],
                 id: "RandomNess",//randomString(10),
 				favored: false
             },
@@ -50,7 +49,6 @@ AirPadApp.factory('Notes', [function() {
                 creator: "John Doe",
                 creationDate: theDate(1),
                 recentEditDate: theDate(0),
-                categories: ["none yet"],
                 id: randomString(10),
 				favored: false
             },
@@ -60,7 +58,6 @@ AirPadApp.factory('Notes', [function() {
                 creator: "John Doe",
                 creationDate: theDate(1),
                 recentEditDate: theDate(0),
-                categories: ["none yet"],
                 id: randomString(10),
 				favored: false
             },
@@ -70,7 +67,6 @@ AirPadApp.factory('Notes', [function() {
                 creator: "John Doe",
                 creationDate: theDate(1),
                 recentEditDate: theDate(0),
-                categories: ["none yet"],
                 id: randomString(10),
 				favored: false
             },
@@ -80,7 +76,6 @@ AirPadApp.factory('Notes', [function() {
                 creator: "John Doe",
                 creationDate: theDate(1),
                 recentEditDate: theDate(0),
-                categories: ["none yet"],
                 id: randomString(10),
 				favored: false
             },
@@ -90,7 +85,6 @@ AirPadApp.factory('Notes', [function() {
                 creator: "John Doe",
                 creationDate: theDate(1),
                 recentEditDate: theDate(0),
-                categories: ["none yet", "none added yet", "none to add yet"],
                 id: randomString(10),
 				favored: false
             },
@@ -100,7 +94,6 @@ AirPadApp.factory('Notes', [function() {
                 creator: "John Doe",
                 creationDate: theDate(1),
                 recentEditDate: theDate(0),
-                categories: ["none yet"],
                 id: randomString(10),
 				favored: false
             },
@@ -110,7 +103,6 @@ AirPadApp.factory('Notes', [function() {
                 creator: "John Doe",
                 creationDate: theDate(1),
                 recentEditDate: theDate(0),
-                categories: ["none yet"],
                 id: randomString(10),
 				favored: false
             },
@@ -120,7 +112,6 @@ AirPadApp.factory('Notes', [function() {
                 creator: "John Doe",
                 creationDate: theDate(1),
                 recentEditDate: theDate(0),
-                categories: ["none yet"],
                 id: randomString(10),
 				favored: false
             },
@@ -130,7 +121,6 @@ AirPadApp.factory('Notes', [function() {
                 creator: "John Doe",
                 creationDate: theDate(1),
                 recentEditDate: theDate(0),
-                categories: ["none yet"],
                 id: randomString(10),
 				favored: false
             },
@@ -140,7 +130,6 @@ AirPadApp.factory('Notes', [function() {
                 creator: "John Doe",
                 creationDate: theDate(1),
                 recentEditDate: theDate(0),
-                categories: ["none yet", "none added yet", "none to add yet"],
                 id: randomString(10),
 				favored: false
             },
@@ -150,7 +139,6 @@ AirPadApp.factory('Notes', [function() {
                 creator: "John Doe",
                 creationDate: theDate(1),
                 recentEditDate: theDate(0),
-                categories: ["none yet"],
                 id: randomString(10),
 				favored: false
             },
@@ -160,7 +148,6 @@ AirPadApp.factory('Notes', [function() {
                 creator: "John Doe",
                 creationDate: theDate(1),
                 recentEditDate: theDate(0),
-                categories: ["none yet"],
                 id: randomString(10),
 				favored: false
             },
@@ -170,7 +157,6 @@ AirPadApp.factory('Notes', [function() {
                 creator: "John Doe",
                 creationDate: theDate(1),
                 recentEditDate: theDate(0),
-                categories: ["none yet"],
                 id: randomString(10),
 				favored: false
             },
@@ -180,7 +166,6 @@ AirPadApp.factory('Notes', [function() {
                 creator: "John Doe",
                 creationDate: theDate(1),
                 recentEditDate: theDate(0),
-                categories: ["none yet"],
                 id: randomString(10),
 				favored: false
             },
@@ -190,7 +175,6 @@ AirPadApp.factory('Notes', [function() {
                 creator: "John Doe",
                 creationDate: theDate(1),
                 recentEditDate: theDate(0),
-                categories: ["none yet", "none added yet", "none to add yet"],
                 id: randomString(10),
 				favored: false
             },
@@ -200,7 +184,6 @@ AirPadApp.factory('Notes', [function() {
                 creator: "John Doe",
                 creationDate: theDate(1),
                 recentEditDate: theDate(0),
-                categories: ["none yet"],
                 id: randomString(10),
 				favored: false
             },
@@ -210,7 +193,6 @@ AirPadApp.factory('Notes', [function() {
                 creator: "John Doe",
                 creationDate: theDate(1),
                 recentEditDate: theDate(0),
-                categories: ["none yet"],
                 id: randomString(10),
 				favored: false
             },
@@ -220,7 +202,6 @@ AirPadApp.factory('Notes', [function() {
                 creator: "John Doe",
                 creationDate: theDate(1),
                 recentEditDate: theDate(0),
-                categories: ["none yet"],
                 id: randomString(10),
 				favored: false
             },
@@ -230,7 +211,6 @@ AirPadApp.factory('Notes', [function() {
                 creator: "John Doe",
                 creationDate: theDate(1),
                 recentEditDate: theDate(0),
-                categories: ["none yet"],
                 id: randomString(10),
 				favored: false
             },
@@ -240,7 +220,6 @@ AirPadApp.factory('Notes', [function() {
                 creator: "John Doe",
                 creationDate: theDate(1),
                 recentEditDate: theDate(0),
-                categories: ["none yet", "none added yet", "none to add yet"],
                 id: randomString(10),
 				favored: false
             },
@@ -250,7 +229,6 @@ AirPadApp.factory('Notes', [function() {
                 creator: "John Doe",
                 creationDate: theDate(1),
                 recentEditDate: theDate(0),
-                categories: ["none yet"],
                 id: randomString(10),
 				favored: false
             },
@@ -260,7 +238,6 @@ AirPadApp.factory('Notes', [function() {
                 creator: "John Doe",
                 creationDate: theDate(1),
                 recentEditDate: theDate(0),
-                categories: ["none yet"],
                 id: randomString(10),
 				favored: false
             },
@@ -270,7 +247,6 @@ AirPadApp.factory('Notes', [function() {
                 creator: "John Doe",
                 creationDate: theDate(1),
                 recentEditDate: theDate(0),
-                categories: ["none yet"],
                 id: randomString(10),
 				favored: false
             },
@@ -280,7 +256,6 @@ AirPadApp.factory('Notes', [function() {
                 creator: "John Doe",
                 creationDate: theDate(1),
                 recentEditDate: theDate(0),
-                categories: ["none yet"],
                 id: randomString(10),
 				favored: false
             },
@@ -290,7 +265,6 @@ AirPadApp.factory('Notes', [function() {
                 creator: "John Doe",
                 creationDate: theDate(1),
                 recentEditDate: theDate(0),
-                categories: ["none yet", "none added yet", "none to add yet"],
                 id: randomString(10),
 				favored: false
             },
@@ -300,7 +274,6 @@ AirPadApp.factory('Notes', [function() {
                 creator: "John Doe",
                 creationDate: theDate(1),
                 recentEditDate: theDate(0),
-                categories: ["none yet"],
                 id: randomString(10),
 				favored: false
             },
@@ -310,7 +283,6 @@ AirPadApp.factory('Notes', [function() {
                 creator: "John Doe",
                 creationDate: theDate(1),
                 recentEditDate: theDate(0),
-                categories: ["none yet"],
                 id: randomString(10),
 				favored: false
             },
@@ -320,7 +292,6 @@ AirPadApp.factory('Notes', [function() {
                 creator: "John Doe",
                 creationDate: theDate(1),
                 recentEditDate: theDate(0),
-                categories: ["none yet"],
                 id: randomString(10),
 				favored: false
             },
@@ -330,7 +301,6 @@ AirPadApp.factory('Notes', [function() {
                 creator: "John Doe",
                 creationDate: theDate(1),
                 recentEditDate: theDate(0),
-                categories: ["none yet"],
                 id: randomString(10),
 				favored: false
             }
@@ -381,7 +351,6 @@ AirPadApp.factory('Users', [function() {
 						creator: "John Doe",
 						creationDate: theDate(1),
 						recentEditDate: theDate(0),
-						categories: ["none yet"],
 						id: randomString(10),
 						favored: false
 					},
@@ -391,7 +360,6 @@ AirPadApp.factory('Users', [function() {
 						creator: "John Doe",
 						creationDate: theDate(1),
 						recentEditDate: theDate(0),
-						categories: ["none yet"],
 						id: randomString(10),
 						favored: false
 					},
@@ -401,7 +369,6 @@ AirPadApp.factory('Users', [function() {
 						creator: "John Doe",
 						creationDate: theDate(1),
 						recentEditDate: theDate(0),
-						categories: ["none yet"],
 						id: randomString(10),
 						favored: false
 					},
@@ -411,7 +378,6 @@ AirPadApp.factory('Users', [function() {
 						creator: "John Doe",
 						creationDate: theDate(1),
 						recentEditDate: theDate(0),
-						categories: ["none yet"],
 						id: randomString(10),
 						favored: false
 					}
@@ -437,7 +403,6 @@ AirPadApp.factory('Users', [function() {
 						creator: "John Doe",
 						creationDate: theDate(1),
 						recentEditDate: theDate(0),
-						categories: ["none yet", "none added yet", "none to add yet"],
 						id: "RandomNess",//randomString(10),
 						favored: false
 					},
@@ -447,7 +412,6 @@ AirPadApp.factory('Users', [function() {
 						creator: "John Doe",
 						creationDate: theDate(1),
 						recentEditDate: theDate(0),
-						categories: ["none yet"],
 						id: randomString(10),
 						favored: false
 					},
@@ -457,7 +421,6 @@ AirPadApp.factory('Users', [function() {
 						creator: "John Doe",
 						creationDate: theDate(1),
 						recentEditDate: theDate(0),
-						categories: ["none yet"],
 						id: randomString(10),
 						favored: false
 					},
@@ -467,7 +430,6 @@ AirPadApp.factory('Users', [function() {
 						creator: "John Doe",
 						creationDate: theDate(1),
 						recentEditDate: theDate(0),
-						categories: ["none yet"],
 						id: randomString(10),
 						favored: false
 					},
@@ -477,7 +439,6 @@ AirPadApp.factory('Users', [function() {
 						creator: "John Doe",
 						creationDate: theDate(1),
 						recentEditDate: theDate(0),
-						categories: ["none yet"],
 						id: randomString(10),
 						favored: false
 					},
@@ -487,7 +448,6 @@ AirPadApp.factory('Users', [function() {
 						creator: "John Doe",
 						creationDate: theDate(1),
 						recentEditDate: theDate(0),
-						categories: ["none yet", "none added yet", "none to add yet"],
 						id: randomString(10),
 						favored: false
 					},
@@ -497,7 +457,6 @@ AirPadApp.factory('Users', [function() {
 						creator: "John Doe",
 						creationDate: theDate(1),
 						recentEditDate: theDate(0),
-						categories: ["none yet"],
 						id: randomString(10),
 						favored: false
 					},
@@ -507,7 +466,6 @@ AirPadApp.factory('Users', [function() {
 						creator: "John Doe",
 						creationDate: theDate(1),
 						recentEditDate: theDate(0),
-						categories: ["none yet"],
 						id: randomString(10),
 						favored: false
 					},
@@ -517,7 +475,6 @@ AirPadApp.factory('Users', [function() {
 						creator: "John Doe",
 						creationDate: theDate(1),
 						recentEditDate: theDate(0),
-						categories: ["none yet"],
 						id: randomString(10),
 						favored: false
 					},
@@ -527,7 +484,6 @@ AirPadApp.factory('Users', [function() {
 						creator: "John Doe",
 						creationDate: theDate(1),
 						recentEditDate: theDate(0),
-						categories: ["none yet"],
 						id: randomString(10),
 						favored: false
 					}

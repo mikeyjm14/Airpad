@@ -31,7 +31,7 @@ function findUserByCredentials(username, password, users) {
     return index;
 }
 
-function findUserByID(id, users) {
+function getUserByID(id, users) {
     var index = -1;
     for (var i = 0; i < users.length; i++) {
         if ((id === users[i].id)) {

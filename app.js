@@ -9,6 +9,7 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 
 var mongoose = require('mongoose');
+//https://thinkster.io/mean-stack-tutorial/
 mongoose.connect('mongodb://admin:password@ds061288.mongolab.com:61288/cs3212-shaffer', function(err) {
     if(err) {
         console.log('connection error', err);

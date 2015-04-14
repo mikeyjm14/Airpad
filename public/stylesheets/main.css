@@ -30,15 +30,12 @@ header {
     width: 100%;
 }
 
-a:hover, a:active {
-	font-weight: bold;
-}
-
 a:link, a:visited, a:hover, a:active {
-	text-decoration: none; color: whitesmoke;
+	text-decoration: none;
+	color: whitesmoke;
 }
 
-button, input, a:link, a:visited, a:hover, a:active {
+button, input, a:link, a:visited, a:hover, a:active, .cursor {
 	cursor: url(images/jet.cur), auto;
 	/*http://www.cursor.cc/*/
 }

@@ -3,8 +3,19 @@
 	<section id="itemSection" class="center" ng-show="listOfNotes.notes.length > 0">
 		<section id="full-length-section-left-align">
 			<h2 id="headerViewNotes" class="whitesmokeText">{{currUser}}'s Notes</h2>
+			<section >
+				<span class="noteTitle-viewnotes whitesmokeText">Order by:</span>&nbsp;&nbsp;
+				<select 
+					name="order"
+					class="dropdown-viewnotes"
+					ng-model="selectedValue"
+					ng-change="changedValue(selectedValue)"
+					data-ng-options="sortOption as sortOption.name for sortOption in sortOptions">
+					<option value="">Select an option</option>
+				</select>
+			</section>
 		</section>
-		<section class="item-width" ng-repeat="note in listOfNotes.notes">
+		<section class="item-width" ng-repeat="note in listOfNotes.notes | orderBy:predicate:reverse">
 			<section class="item alignText border" data-title="{{note.title}}">
 					<section class="noteTitle-viewnotes">
 						<a href="" ng-click="GoToNote(note)">{{note.title}}</a>
