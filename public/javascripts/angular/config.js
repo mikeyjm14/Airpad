@@ -1,4 +1,4 @@
-AirPadApp.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
+AirPadApp.config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
 	$locationProvider.html5Mode(false);
 	$urlRouterProvider.when('/', '/home');
 	$urlRouterProvider.when('', '/home');
@@ -107,5 +107,5 @@ AirPadApp.config(function($stateProvider, $urlRouterProvider, $locationProvider)
         .state('profile.noUser', {
             url: '/no-user',
             templateUrl: '/UserProfileViews/userNotFound.html'
-        })
+        });
 });

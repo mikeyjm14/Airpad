@@ -10,7 +10,7 @@ var users = require('./routes/users');
 
 var mongoose = require('mongoose');
 //https://thinkster.io/mean-stack-tutorial/
-mongoose.connect('mongodb://admin:password@ds061288.mongolab.com:61288/cs3212-shaffer', function(err) {
+mongoose.connect('mongodb://admin:password@ds061288.mongolab.com:61288/cs3212-shaffer', function (err) {
     if(err) {
         console.log('connection error', err);
     } else {
@@ -43,7 +43,7 @@ app.use('/', routes);
 app.use('/users', users);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     var err = new Error('Not Found');
     err.status = 404;
     next(err);
@@ -54,7 +54,7 @@ app.use(function(req, res, next) {
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
-    app.use(function(err, req, res, next) {
+    app.use(function (err, req, res, next) {
         res.status(err.status || 500);
         res.render('error', {
             message: err.message,
@@ -65,7 +65,7 @@ if (app.get('env') === 'development') {
 
 // production error handler
 // no stacktraces leaked to user
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
     res.status(err.status || 500);
     res.render('error', {
         message: err.message,

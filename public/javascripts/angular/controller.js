@@ -1,55 +1,55 @@
-var notepad = function($scope, $state, currUser) {
-	$scope.SetName = function() {
+var notepad = function ($scope, $state, currUser) {
+	$scope.SetName = function () {
 		return currUser.username;
 	};
 	
-	var setUserID = function() {
+	var setUserID = function () {
 		return currUser.id;
-	}
+	};
 	
-	$scope.LoggedIn = function() {
+	$scope.LoggedIn = function () {
 		return (currUser.id !== null);
-	}
+	};
 	
-	$scope.GoToLogin = function() {
+	$scope.GoToLogin = function () {
 		$state.go('login');
     };
 	
-	$scope.GoToProfile = function() {
+	$scope.GoToProfile = function () {
         $state.go('profile', {userID: currUser.id});
     };
 };
 
-var home = function($scope, $state, $stateParams, currUser, $anchorScroll, $location) {
+var home = function ($scope, $state, $stateParams, currUser, $anchorScroll, $location) {
 	$scope.currUser = currUser;
 	
-	$scope.IsLoggedIn = function() {
+	$scope.IsLoggedIn = function () {
 		if (currUser.id === null) {
 			$state.go("login");
 		}
 	};
 	
-	$scope.LoggedIn = function() {
+	$scope.LoggedIn = function () {
 		return (currUser.id !== null);
-	}
+	};
 	
-	$scope.GoToAddNote = function() {
+	$scope.GoToAddNote = function () {
         $state.go("addnote");
     };
 	
-	$scope.GoToViewNotes = function() {
+	$scope.GoToViewNotes = function () {
         $state.go("viewnotes");
     };
 	
-	$scope.GoToViewDeletedNotes = function() {
+	$scope.GoToViewDeletedNotes = function () {
         $state.go("viewdeletednotes");
     };
 	
-	$scope.GoToViewFavoriteNotes = function() {
+	$scope.GoToViewFavoriteNotes = function () {
         $state.go("viewfavnotes");
     };
 	
-	$scope.GoToHome = function() {
+	$scope.GoToHome = function () {
         $state.go("home");
     };
 	
@@ -58,7 +58,7 @@ var home = function($scope, $state, $stateParams, currUser, $anchorScroll, $loca
         focus: true,
         airMode: true,
         toolbar: [
-            ['edit',['undo','redo']],
+            ['edit', ['undo', 'redo']],
             ['headline', ['style']],
             ['style', ['bold', 'italic', 'underline', 'superscript', 'subscript', 'strikethrough', 'clear']],
             ['fontface', ['fontname']],
@@ -67,7 +67,7 @@ var home = function($scope, $state, $stateParams, currUser, $anchorScroll, $loca
             ['alignment', ['ul', 'ol', 'paragraph', 'lineheight']],
             ['height', ['height']],
             ['table', ['table']],
-            ['insert', ['link','hr']],
+            ['insert', ['link', 'hr']],
             ['view', ['fullscreen', 'codeview']],
             ['help', ['help']]
         ]
@@ -83,73 +83,89 @@ var home = function($scope, $state, $stateParams, currUser, $anchorScroll, $loca
     };
 };
 
-var viewnotes = function($scope, $state, currUser, $anchorScroll, $location) {
+var viewnotes = function ($scope, $state, currUser, $anchorScroll, $location) {
 	$scope.listOfNotes = {
 		notes: currUser.notes
 	};
 	
 	$scope.sortOptions = [
-		{id:0, name:"Title Ascending"},
-		{id:1, name:"Title Descending"},
-		{id:2, name:"Date Created Ascending"},
-		{id:3, name:"Date Created Descending"},
-		{id:4, name:"Date Edited Ascending"},
-		{id:5, name:"Date Edited Descending"},
-		{id:6, name:"Favorited Ascending"},
-		{id:7, name:"Favorited Descending"}
+		{id: 0, name: "Title Ascending"},
+		{id: 1, name: "Title Descending"},
+		{id: 2, name: "Date Created Ascending"},
+		{id: 3, name: "Date Created Descending"},
+		{id: 4, name: "Date Edited Ascending"},
+		{id: 5, name: "Date Edited Descending"},
+		{id: 6, name: "Favorited Ascending"},
+		{id: 7, name: "Favorited Descending"}
 	];
 	
 	$scope.selectedValue = null;
 	$scope.predicate = "";
 	$scope.reverse = false;
 	
-	var setSort = function(predicate, reversed) {
+	var setSort = function (predicate, reversed) {
 		$scope.predicate = predicate;
 		$scope.reverse = reversed;
 	};
 	
-	$scope.changedValue = function(value) {
+	$scope.changedValue = function (value) {
 		$scope.selectedValue = value;
 		
 		if ($scope.selectedValue === null) {
-			setSort("title", false);
+			setSort("", false);
 			return;
 		}
 		
 		switch ($scope.selectedValue.id) {
-			case 0: setSort("title", false); break;
-			case 1: setSort("title", true); break;
-			case 2: setSort("creationDate", false); break;
-			case 3: setSort("creationDate", true); break;
-			case 4: setSort("recentEditDate", false); break;
-			case 5: setSort("recentEditDate", true); break;
-			case 6: setSort("favored", true); break;
-			case 7: setSort("favored", false); break;
+		case 0:
+			setSort("title", false);
+			break;
+		case 1:
+			setSort("title", true);
+			break;
+		case 2:
+			setSort("creationDate", false);
+			break;
+		case 3:
+			setSort("creationDate", true);
+			break;
+		case 4:
+			setSort("recentEditDate", false);
+			break;
+		case 5:
+			setSort("recentEditDate", true);
+			break;
+		case 6:
+			setSort("favored", true);
+			break;
+		case 7:
+			setSort("favored", false);
+			break;
 		}
 	};
 	
 	$scope.currUser = currUser.name;
 	
-	$scope.IsLoggedIn = function() {
+	$scope.IsLoggedIn = function () {
 		if (currUser.id === null) {
 			$state.go("login");
 		}
 	};
 	
-	$scope.scrollTo = function(id) {
-      var newHash = id;
-      if ($location.hash() !== newHash) {
-        $location.hash(id);
-      } else {
-        $anchorScroll();
-      }
-    };
+	$scope.scrollTo = function (id) {
+		var newHash = id;
+		if ($location.hash() !== newHash) {
+			$location.hash(id);
+		} else {
+			$anchorScroll();
+		}
+	};
 	
-	$scope.GoToAddNote = function() {
+	$scope.GoToAddNote = function () {
         $state.go("addnote");
     };
 	
-	$scope.GoToEditNote = function(note) {
+	$scope.GoToEditNote = function (note) {
 		if (note === null || note === undefined) {
 			return;
 		}
@@ -171,7 +187,7 @@ var viewnotes = function($scope, $state, currUser, $anchorScroll, $location) {
 		}
     };
 
-    $scope.GoToNote = function(note) {
+    $scope.GoToNote = function (note) {
 		if (note === null || note === undefined) {
 			return;
 		}
@@ -180,7 +196,7 @@ var viewnotes = function($scope, $state, currUser, $anchorScroll, $location) {
 		$scope.currNote = getNoteByID(note.id, currUser.notes);
     };
 	
-	$scope.AddNoteToFavorites = function(note) {
+	$scope.AddNoteToFavorites = function (note) {
 		var tempNote = getNoteByID(note.id, currUser.notes);
 		
 		if (tempNote === null || tempNote === undefined) {
@@ -203,18 +219,16 @@ var viewnotes = function($scope, $state, currUser, $anchorScroll, $location) {
 		currUser.amountFavorited = currUser.favs.length;
 	};
 	
-	$scope.DeleteNote = function(note) {
+	$scope.DeleteNote = function (note) {
 		if (note === null || note === undefined) {
 			return;
 		}
 		
-		var noteFavIndex = getNoteIndexByID(note.id, currUser.favs);
-		if (noteFavIndex !== -1) {
+		if (getNoteIndexByID(note.id, currUser.favs) !== -1) {
 			removeNote(noteFavIndex, currUser.favs, 1);
 		}
 		
-		var noteMainIndex = getNoteIndexByID(note.id, currUser.notes);
-		if (noteMainIndex !== -1) {
+		if (getNoteIndexByID(note.id, currUser.notes) !== -1) {
 			removeNote(noteMainIndex, currUser.notes, 1);
 		} else {
 			return;
@@ -225,12 +239,12 @@ var viewnotes = function($scope, $state, currUser, $anchorScroll, $location) {
 	};
 };
 
-var viewnote = function($scope, $state, $stateParams, currUser) {
+var viewnote = function ($scope, $state, $stateParams, currUser) {
 	if (currUser.notes === null) {
 		return;
 	}
 	
-	$scope.IsLoggedIn = function() {
+	$scope.IsLoggedIn = function () {
 		if (currUser.id === null) {
 			$state.go("login");
 		}
@@ -238,7 +252,7 @@ var viewnote = function($scope, $state, $stateParams, currUser) {
 	
 	$scope.currNote = getNoteByID($stateParams.noteID, currUser.notes);
 	
-	$scope.InjectContent = function(elementID, note) {
+	$scope.InjectContent = function (elementID, note) {
 		if (note === null) {
 			return;
 		}
@@ -246,14 +260,13 @@ var viewnote = function($scope, $state, $stateParams, currUser) {
 		injectHTML(elementID, note.content);
 	};
 	
-	$scope.ToViewNoteState = function() {
-		var noteID = $stateParams.noteID;
-		var note = getNoteByID(noteID, currUser.notes);
+	$scope.ToViewNoteState = function () {
+		var note = getNoteByID($stateParams.noteID, currUser.notes);
 		
 		$scope.GoToNote(note);
 	};
 
-    $scope.GoToNote = function(note) {
+    $scope.GoToNote = function (note) {
 		if (note === null || note === undefined) {
 			return;
 		}
@@ -262,33 +275,32 @@ var viewnote = function($scope, $state, $stateParams, currUser) {
     };
 };
 
-var viewfavoritenotes = function($scope, $state, $anchorScroll, $location, currUser) {
+var viewfavoritenotes = function ($scope, $state, $anchorScroll, $location, currUser) {
 	$scope.listOfFavorites = {
 		favs: currUser.favs
 	};
 	
 	$scope.currUser = currUser.name;
 	
-	$scope.IsLoggedIn = function() {
+	$scope.IsLoggedIn = function () {
 		if (currUser.id === null) {
 			$state.go("login");
 		}
 	};
 	
-	$scope.scrollTo = function(id) {
-      var newHash = id;
-      if ($location.hash() !== newHash) {
-        $location.hash(id);
-      } else {
-        $anchorScroll();
-      }
+	$scope.scrollTo = function (id) {
+        if ($location.hash() !== id) {
+            $location.hash(id);
+        } else {
+            $anchorScroll();
+        }
     };
 	
-	$scope.GoToViewNotes = function() {
+	$scope.GoToViewNotes = function () {
         $state.go("viewnotes");
     };
 	
-	$scope.GoToNote = function(note) {
+	$scope.GoToNote = function (note) {
 		if (note === null || note === undefined) {
 			return;
 		}
@@ -297,7 +309,7 @@ var viewfavoritenotes = function($scope, $state, $anchorScroll, $location, currU
 		$scope.currNote = getNoteByID(note.id, currUser.notes);
     };
 	
-	$scope.RemoveNoteFromFavorites = function(note) {
+	$scope.RemoveNoteFromFavorites = function (note) {
 		var noteIndex = getNoteIndexByID(note.id, currUser.favs);
 		if (noteIndex === -1) {
 			return;
@@ -311,8 +323,8 @@ var viewfavoritenotes = function($scope, $state, $anchorScroll, $location, currU
 	};
 };
 
-var addnote = function($scope, $state, currUser) {
-	$scope.IsLoggedIn = function() {
+var addnote = function ($scope, $state, currUser) {
+	$scope.IsLoggedIn = function () {
 		if (currUser.id === null) {
 			$state.go("login");
 		}
@@ -325,7 +337,7 @@ var addnote = function($scope, $state, currUser) {
 		body: ""
 	};
 	
-	$scope.GoToViewNotes = function() {
+	$scope.GoToViewNotes = function () {
         $state.go("viewnotes");
     };
 	
@@ -340,7 +352,7 @@ var addnote = function($scope, $state, currUser) {
 		$scope.noError = true;
     };
 	
-	$scope.AddNote = function() {
+	$scope.AddNote = function () {
 		if ($scope.form.title.length > 0 && $scope.form.body.length > 0) {
 			$scope.noError = true;
 			currUser.notes.unshift(
@@ -363,8 +375,8 @@ var addnote = function($scope, $state, currUser) {
 	};
 };
 
-var editnote = function($scope, $state, $stateParams, currUser) {
-	$scope.IsLoggedIn = function() {
+var editnote = function ($scope, $state, $stateParams, currUser) {
+	$scope.IsLoggedIn = function () {
 		if (currUser.username === null) {
 			$state.go("login");
 		}
@@ -379,14 +391,14 @@ var editnote = function($scope, $state, $stateParams, currUser) {
 		body: ""
 	};
 	
-	$scope.ToEditNoteState = function() {
+	$scope.ToEditNoteState = function () {
 		var noteID = $stateParams.noteID;
 		var note = getNoteByID(noteID, currUser.notes);
 		
 		$scope.GoToEditNote(note);
 	};
 	
-	$scope.TestNoteID = function() {
+	$scope.TestNoteID = function () {
 		var currNote = getNoteByID($stateParams.noteID, currUser.notes);
 		if (currNote !== null) {
 			$scope.editform = {
@@ -399,9 +411,9 @@ var editnote = function($scope, $state, $stateParams, currUser) {
 		} else {
 			$scope.noInvalidIDError = false;
 		}
-	}
+	};
 	
-	$scope.GoToViewNotes = function() {
+	$scope.GoToViewNotes = function () {
         $state.go("viewnotes");
     };
 	
@@ -418,7 +430,7 @@ var editnote = function($scope, $state, $stateParams, currUser) {
 		$scope.noError = true;
     };
 	
-	$scope.UpdateNote = function() {
+	$scope.UpdateNote = function () {
 		if ($scope.editform.title.length > 0 && $scope.editform.body.length > 0) {
 			$scope.noError = true;
 			
@@ -436,8 +448,8 @@ var editnote = function($scope, $state, $stateParams, currUser) {
 	};
 }
 
-var viewdeletednotes = function($scope, $state, $anchorScroll, $location, currUser) {
-	$scope.IsLoggedIn = function() {
+var viewdeletednotes = function ($scope, $state, $anchorScroll, $location, currUser) {
+	$scope.IsLoggedIn = function () {
 		if (currUser.username === null) {
 			$state.go("login");
 		}
@@ -447,7 +459,7 @@ var viewdeletednotes = function($scope, $state, $anchorScroll, $location, currUs
 		notes: currUser.deleted
 	};
 	
-	$scope.scrollTo = function(id) {
+	$scope.scrollTo = function (id) {
       var newHash = id;
       if ($location.hash() !== newHash) {
         $location.hash(id);
@@ -456,11 +468,11 @@ var viewdeletednotes = function($scope, $state, $anchorScroll, $location, currUs
       }
     };
 	
-	$scope.GoToViewNotes = function() {
+	$scope.GoToViewNotes = function () {
         $state.go("viewnotes");
     };
 	
-	$scope.DeleteNoteForever = function(note) {	
+	$scope.DeleteNoteForever = function (note) {
 		var noteIndex = getNoteIndexByID(note.id, currUser.deleted);
 		if (noteIndex === -1) {
 			return;
@@ -470,7 +482,7 @@ var viewdeletednotes = function($scope, $state, $anchorScroll, $location, currUs
 		currUser.amountDeleted = currUser.deleted.length;
 	};
 	
-	$scope.RestoreNote = function(note) {
+	$scope.RestoreNote = function (note) {
 		var noteIndex = getNoteIndexByID(note.id, currUser.deleted);
 		if (noteIndex !== -1) {
 			removeNote(noteIndex, currUser.deleted, 1);
@@ -481,27 +493,27 @@ var viewdeletednotes = function($scope, $state, $anchorScroll, $location, currUs
 		currUser.amountDeleted = currUser.deleted.length;
 		$scope.GoToViewNotes();
 	};
-}
+};
 
-var profile = function($scope, $stateParams, $state, currUser, users) {
+var profile = function ($scope, $stateParams, $state, currUser, users) {
 	$scope.noInvalidIDError = true;
 	$scope.user = null;
 	
-	$scope.IsLoggedIn = function() {
+	$scope.IsLoggedIn = function () {
 		if (currUser.id === null) {
 			$state.go("login");
 		}
 	};
 	
-	$scope.GoToViewNotes = function() {
+	$scope.GoToViewNotes = function () {
         $state.go("viewnotes");
     };
 	
-	$scope.GoToViewDeletedNotes = function() {
+	$scope.GoToViewDeletedNotes = function () {
         $state.go("viewdeletednotes");
     };
 	
-	$scope.GoToViewFavoriteNotes = function() {
+	$scope.GoToViewFavoriteNotes = function () {
         $state.go("viewfavnotes");
     };
 
@@ -513,7 +525,7 @@ var profile = function($scope, $stateParams, $state, currUser, users) {
         $state.go('profile.edit');
     };
 	
-	$scope.TestUserID = function() {
+	$scope.TestUserID = function () {
 		if (users.users.length === 0 || currUser.id === null || currUser.id !== $stateParams.userID) {
 			$scope.noInvalidIDError = false;
 			return;
@@ -528,14 +540,14 @@ var profile = function($scope, $stateParams, $state, currUser, users) {
 	};
 };
 
-var login = function($scope, $state, currUser, initialUser, users) {
+var login = function ($scope, $state, currUser, initialUser, users) {
 	$scope.errorMessage = "";
 	
 	$scope.IsLoggedOut = function () {
         return (currUser.id === null);
     };
 	
-	var setLoginTitle = function() {
+	var setLoginTitle = function () {
 		if($scope.IsLoggedOut()) {
 			return "Log In";
 		}
@@ -550,27 +562,27 @@ var login = function($scope, $state, currUser, initialUser, users) {
         password: ""
     };
 
-    $scope.toLoginState = function() {
+    $scope.toLoginState = function () {
         $scope.errorMessage = "";
 		$state.go('login');
     };
 
-    $scope.toSignupState = function() {
+    $scope.toSignupState = function () {
         $scope.errorMessage = "";
 		$state.go('signup');
     };
 
-    $scope.Login = function() {
+    $scope.Login = function () {
         if ($scope.incomingUser.username === ''
-            || $scope.incomingUser.username === null
-            || $scope.incomingUser.password === ''
-            || $scope.incomingUser.password === null) {
+                || $scope.incomingUser.username === null
+                || $scope.incomingUser.password === ''
+                || $scope.incomingUser.password === null) {
             $scope.errorMessage = "Please fill in all required fields.";
             return;
         }
 
         if ($scope.incomingUser.username === currUser.username
-            || $scope.incomingUser.password === currUser.password) {
+                || $scope.incomingUser.password === currUser.password) {
             $scope.errorMessage = "Already logged in.";
             return;
         }
@@ -626,7 +638,7 @@ var login = function($scope, $state, currUser, initialUser, users) {
     };
 };
 
-var signup = function($scope, $state, users) {
+var signup = function ($scope, $state, users) {
 	$scope.errorMessage = "";
 
 	$scope.newUserInfo = {
@@ -638,17 +650,17 @@ var signup = function($scope, $state, users) {
 		passwordAgain: ""
     };
 	
-    $scope.toLoginState = function() {
+    $scope.toLoginState = function () {
         $scope.errorMessage = "";
 		$state.go('login');
     };
 
-    $scope.toSignupState = function() {
+    $scope.toSignupState = function () {
         $scope.errorMessage = "";
 		$state.go('signup');
     };
 
-    $scope.SignUp = function() {
+    $scope.SignUp = function () {
         var completed = true;
         $scope.errorMessage = "Please enter data into the required field ";
 
@@ -681,8 +693,8 @@ var signup = function($scope, $state, users) {
         }
 
         if ($scope.newUserInfo.passwordAgain === ''
-            || $scope.newUserInfo.passwordAgain === null
-            || $scope.newUserInfo.passwordAgain != $scope.newUserInfo.password) {
+                || $scope.newUserInfo.passwordAgain === null
+                || $scope.newUserInfo.passwordAgain !== $scope.newUserInfo.password) {
             $scope.errorMessage = "Please enter same value in both PASSWORD and PASSWORD_AGAIN fields";
             return;
         }

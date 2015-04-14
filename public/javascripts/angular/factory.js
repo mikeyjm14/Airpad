@@ -1,4 +1,4 @@
-AirPadApp.factory('OrigSummernoteConfig', [function() {
+AirPadApp.factory('OrigSummernoteConfig', [function () {
 	return {
         styleWithSpan: true,
         focus: true,
@@ -20,7 +20,7 @@ AirPadApp.factory('OrigSummernoteConfig', [function() {
     };
 }]);
 
-AirPadApp.factory('CustSummernoteConfig', [function() {
+AirPadApp.factory('CustSummernoteConfig', [function () {
 	return {
         styleWithSpan: true,
         focus: true,
@@ -31,7 +31,7 @@ AirPadApp.factory('CustSummernoteConfig', [function() {
     };
 }]);
 
-AirPadApp.factory('Notes', [function() {
+AirPadApp.factory('Notes', [function () {
 	return {
         notes: [
 			{
@@ -308,19 +308,19 @@ AirPadApp.factory('Notes', [function() {
     };
 }]);
 
-AirPadApp.factory('DeletedNotes', [function() {
+AirPadApp.factory('DeletedNotes', [function () {
 	return {
         notes: []
     };
 }]);
 
-AirPadApp.factory('FavoriteNotes', [function() {
+AirPadApp.factory('FavoriteNotes', [function () {
 	return {
         favs: []
     };
 }]);
 
-AirPadApp.factory('Users', [function() {
+AirPadApp.factory('Users', [function () {
 	return {
 		users: [
 			{

@@ -36,8 +36,20 @@ a:link, a:visited, a:hover, a:active {
 }
 
 button, input, a:link, a:visited, a:hover, a:active, .cursor {
-	cursor: url(images/jet.cur), auto;
+	/*cursor: url(images/jet.cur), auto;*/
+    cursor: pointer;
 	/*http://www.cursor.cc/*/
+}
+
+button {
+    -moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+    border: solid whitesmoke thin;
+	background-color: rgba(0, 0, 0, .5);
+    color: whitesmoke;
+    font-weight: bold;
+    font-size: large;
 }
 
 #wrapper, .sidebar-nav li:hover,

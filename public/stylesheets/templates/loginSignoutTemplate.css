@@ -17,12 +17,23 @@
     display: inline-block;
     margin-top: 0;
     width: 180px;
-    height: 20px;
+    height: 30px;
 }
 
 .labelAlign {
     text-align: left;
 	color: white;
+    font-size: 20px;
+}
+
+.xlarge {
+    font-size: x-large;
+    font-weight: bold;
+}
+
+.large {
+    font-size: large;
+    font-weight: bold;
 }
 
 #buttonSection {

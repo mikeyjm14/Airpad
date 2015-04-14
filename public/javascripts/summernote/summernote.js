@@ -4788,7 +4788,7 @@
           $btn.parents('.popover').hide();
         }
 
-        if ($.isFunction($.summernote.pluginEvents[eventName])) {
+        if ($.isfunction ($.summernote.pluginEvents[eventName])) {
           $.summernote.pluginEvents[eventName](event, editor, layoutInfo, value);
         } else if (editor[eventName]) { // on command
           var $editable = layoutInfo.editable();
@@ -4997,7 +4997,7 @@
         if (eventName) {
           if ($.summernote.pluginEvents[eventName]) {
             var plugin = $.summernote.pluginEvents[eventName];
-            if ($.isFunction(plugin)) {
+            if ($.isfunction (plugin)) {
               plugin(event, editor, layoutInfo);
             }
           } else if (editor[eventName]) {
@@ -5018,14 +5018,14 @@
      *
      * @param {Object} layoutInfo - layout Informations
      * @param {Object} options - user options include custom event handlers
-     * @param {function(event)} [options.onenter] - enter key handler
-     * @param {function(event)} [options.onfocus]
-     * @param {function(event)} [options.onblur]
-     * @param {function(event)} [options.onkeyup]
-     * @param {function(event)} [options.onkeydown]
-     * @param {function(event)} [options.onpaste]
-     * @param {function(event)} [options.onToolBarclick]
-     * @param {function(event)} [options.onChange]
+     * @param {function (event)} [options.onenter] - enter key handler
+     * @param {function (event)} [options.onfocus]
+     * @param {function (event)} [options.onblur]
+     * @param {function (event)} [options.onkeyup]
+     * @param {function (event)} [options.onkeydown]
+     * @param {function (event)} [options.onpaste]
+     * @param {function (event)} [options.onToolBarclick]
+     * @param {function (event)} [options.onChange]
      */
     this.attach = function (layoutInfo, options) {
       // handlers for editable
@@ -5930,7 +5930,7 @@
         for (var i = 0, btnLength = groupButtons.length; i < btnLength; i++) {
           var buttonInfo = tplButtonInfo[groupButtons[i]];
           // continue creating toolbar even if a button doesn't exist
-          if (!$.isFunction(buttonInfo)) { continue; }
+          if (!$.isfunction (buttonInfo)) { continue; }
           toolbarHTML += buttonInfo(langInfo, options);
         }
         toolbarHTML += '</div>';
@@ -6040,9 +6040,9 @@
     /**
      *
      * @return {Object}
-     * @return {function(label, options=):string} return.button {@link #tplButton function to make text button}
-     * @return {function(iconClass, options=):string} return.iconButton {@link #tplIconButton function to make icon button}
-     * @return {function(className, title=, body=, footer=):string} return.dialog {@link #tplDialog function to make dialog}
+     * @return {function (label, options=):string} return.button {@link #tplButton function to make text button}
+     * @return {function (iconClass, options=):string} return.iconButton {@link #tplIconButton function to make icon button}
+     * @return {function (className, title=, body=, footer=):string} return.dialog {@link #tplDialog function to make dialog}
      */
     this.getTemplate = function () {
       return {
@@ -6115,7 +6115,7 @@
      * ``` 
      * $.summernote.addPlugin({
      *     events : {
-     *          'hello' : function(layoutInfo, value, $target) {
+     *          'hello' : function (layoutInfo, value, $target) {
      *              console.log('event name is hello, value is ' + value );
      *          }
      *     }     
@@ -6145,7 +6145,7 @@
    * $.summernote.addPlugin({
    *     buttons : {
    *        // "hello"  is button's namespace.      
-   *        "hello" : function(lang, options) {
+   *        "hello" : function (lang, options) {
    *            // make icon button by template function          
    *            return tmpl.iconButton('fa fa-header', {
    *                // callback function name when button clicked 
@@ -6159,7 +6159,7 @@
    *     }, 
    *     
    *     events : {
-   *        "hello" : function(layoutInfo, value) {
+   *        "hello" : function (layoutInfo, value) {
    *            // here is event code 
    *        }
    *     }     

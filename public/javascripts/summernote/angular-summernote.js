@@ -6,7 +6,7 @@
 /* global angular */
 var summerNote = angular.module('summernote', []);
 
-summerNote.controller('SummernoteController', ['$scope', '$attrs', '$timeout', function($scope, $attrs, $timeout) {
+summerNote.controller('SummernoteController', ['$scope', '$attrs', '$timeout', function ($scope, $attrs, $timeout) {
     'use strict';
 
     var currentElement,
@@ -23,29 +23,29 @@ summerNote.controller('SummernoteController', ['$scope', '$attrs', '$timeout', f
     }
 
     summernoteConfig.oninit = $scope.init;
-    summernoteConfig.onenter = function(evt) { $scope.enter({evt:evt}); };
-    summernoteConfig.onfocus = function(evt) { $scope.focus({evt:evt}); };
-    summernoteConfig.onblur = function(evt) { $scope.blur({evt:evt}); };
-    summernoteConfig.onpaste = function(evt) { $scope.paste({evt:evt}); };
-    summernoteConfig.onkeyup = function(evt) { $scope.keyup({evt:evt}); };
-    summernoteConfig.onkeydown = function(evt) { $scope.keydown({evt:evt}); };
+    summernoteConfig.onenter = function (evt) { $scope.enter({evt:evt}); };
+    summernoteConfig.onfocus = function (evt) { $scope.focus({evt:evt}); };
+    summernoteConfig.onblur = function (evt) { $scope.blur({evt:evt}); };
+    summernoteConfig.onpaste = function (evt) { $scope.paste({evt:evt}); };
+    summernoteConfig.onkeyup = function (evt) { $scope.keyup({evt:evt}); };
+    summernoteConfig.onkeydown = function (evt) { $scope.keydown({evt:evt}); };
     if (angular.isDefined($attrs.onImageUpload)) {
-      summernoteConfig.onImageUpload = function(files, editor) {
+      summernoteConfig.onImageUpload = function (files, editor) {
         $scope.imageUpload({files:files, editor:editor, editable: $scope.editable});
       };
     }
 
-    this.activate = function(scope, element, ngModel) {
-      var updateNgModel = function() {
+    this.activate = function (scope, element, ngModel) {
+      var updateNgModel = function () {
         var newValue = element.code();
         if (ngModel && ngModel.$viewValue !== newValue) {
-          $timeout(function() {
+          $timeout(function () {
             ngModel.$setViewValue(newValue);
           }, 0);
         }
       };
 
-      summernoteConfig.onChange = function(contents) {
+      summernoteConfig.onChange = function (contents) {
         updateNgModel();
         $scope.change({contents:contents, editable: $scope.editable});
       };
@@ -54,7 +54,7 @@ summerNote.controller('SummernoteController', ['$scope', '$attrs', '$timeout', f
 
       var editor$ = element.next('.note-editor'),
           unwatchNgModel;
-      editor$.find('.note-toolbar').click(function() {
+      editor$.find('.note-toolbar').click(function () {
         updateNgModel();
 
         // sync ngModel in codeview mode
@@ -63,20 +63,20 @@ summerNote.controller('SummernoteController', ['$scope', '$attrs', '$timeout', f
           if (ngModel) {
             unwatchNgModel = scope.$watch(function () {
               return ngModel.$modelValue;
-            }, function(newValue) {
+            }, function (newValue) {
               editor$.find('.note-codable').val(newValue);
             });
           }
         } else {
           editor$.off('keyup', updateNgModel);
-          if (angular.isFunction(unwatchNgModel)) {
+          if (angular.isfunction (unwatchNgModel)) {
             unwatchNgModel();
           }
         }
       });
 
       if (ngModel) {
-        ngModel.$render = function() {
+        ngModel.$render = function () {
           element.code(ngModel.$viewValue || '');
         };
       }
@@ -88,7 +88,7 @@ summerNote.controller('SummernoteController', ['$scope', '$attrs', '$timeout', f
 
       currentElement = element;
       // use jquery Event binding instead $on('$destroy') to preserve options data of DOM
-      element.on('$destroy', function() {
+      element.on('$destroy', function () {
         element.destroy();
         $scope.summernoteDestroyed = true;
       });
@@ -101,7 +101,7 @@ summerNote.controller('SummernoteController', ['$scope', '$attrs', '$timeout', f
       }
     });
   }]);
-summerNote.directive('summernote', [function() {
+summerNote.directive('summernote', [function () {
     'use strict';
 
     return {
@@ -124,7 +124,7 @@ summerNote.directive('summernote', [function() {
         imageUpload: '&onImageUpload'
       },
       template: '<div class="summernote"></div>',
-      link: function(scope, element, attrs, ctrls) {
+      link: function (scope, element, attrs, ctrls) {
         var summernoteController = ctrls[0],
             ngModel = ctrls[1];
 
