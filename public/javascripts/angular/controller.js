@@ -85,7 +85,7 @@ var home = function($scope, $state, $stateParams, currUser, $anchorScroll, $loca
 
 var viewnotes = function($scope, $state, currUser, $anchorScroll, $location) {
 	$scope.listOfNotes = {
-		notes: angular.copy(currUser.notes)
+		notes: currUser.notes
 	};
 	
 	$scope.sortOptions = [
