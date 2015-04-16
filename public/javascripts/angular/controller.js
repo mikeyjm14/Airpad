@@ -361,7 +361,7 @@ var addnote = function ($scope, $state, currUser) {
 					content: $scope.form.body,
 					creator: currUser.name,
 					creationDate: theDate(1),
-					recentEditDate: theDate(0),
+					recentEditDate: theDate(1),
 					id: randomString(10),
 					favored: false
 				}
@@ -639,6 +639,7 @@ var login = function ($scope, $state, currUser, initialUser, users) {
 };
 
 var signup = function ($scope, $state, users) {
+	//http://passportjs.org/
 	$scope.errorMessage = "";
 
 	$scope.newUserInfo = {
@@ -661,26 +662,27 @@ var signup = function ($scope, $state, users) {
     };
 
     $scope.SignUp = function () {
+		//http://eloquentjavascript.net/18_forms.html
         var completed = true;
         $scope.errorMessage = "Please enter data into the required field ";
 
         if ($scope.newUserInfo.firstName === '' || $scope.newUserInfo.firstName === null) {
-            $scope.errorMessage += "FIRST NAME ";
+            $scope.errorMessage += "FIRST NAME, ";
             completed = false;
         }
 
         if ($scope.newUserInfo.lastName === '' || $scope.newUserInfo.lastName === null) {
-            $scope.errorMessage += "LAST NAME ";
+            $scope.errorMessage += "LAST NAME, ";
             completed = false;
         }
 
         if ($scope.newUserInfo.username === '' || $scope.newUserInfo.username === null) {
-            $scope.errorMessage += "USERNAME ";
+            $scope.errorMessage += "USERNAME, ";
             completed = false;
         }
 
         if ($scope.newUserInfo.email === '' || $scope.newUserInfo.email === null) {
-            $scope.errorMessage += "EMAIL ";
+            $scope.errorMessage += "EMAIL, ";
         }
 
         if ($scope.newUserInfo.password === '' || $scope.newUserInfo.password === null) {
@@ -695,7 +697,20 @@ var signup = function ($scope, $state, users) {
         if ($scope.newUserInfo.passwordAgain === ''
                 || $scope.newUserInfo.passwordAgain === null
                 || $scope.newUserInfo.passwordAgain !== $scope.newUserInfo.password) {
-            $scope.errorMessage = "Please enter same value in both PASSWORD and PASSWORD_AGAIN fields";
+            $scope.errorMessage = "Please enter same value in both PASSWORD and PASSWORD_AGAIN fields.";
+            return;
+        }
+		
+		if ($scope.newUserInfo.password === $scope.newUserInfo.username
+                || $scope.newUserInfo.password === $scope.newUserInfo.email
+                || $scope.newUserInfo.password === $scope.newUserInfo.firstName
+				|| $scope.newUserInfo.password === $scope.newUserInfo.lastName) {
+            $scope.errorMessage = "Please enter a password that is not the same as your FIRST NAME, LAST NAME, USERNAME, or EMAIL.";
+            return;
+        }
+		
+		if ($scope.newUserInfo.password.length < 5) {
+            $scope.errorMessage = "Please enter a password that is longer than 5 characters.";
             return;
         }
 
@@ -712,15 +727,19 @@ var signup = function ($scope, $state, users) {
         $scope.errorMessage = "";
 
         users.users.push({
-            id: randomString(5) + "",
-            name: $scope.newUserInfo.firstName + " " + $scope.newUserInfo.lastName,
-            username: $scope.newUserInfo.username,
-            email: $scope.newUserInfo.email,
-            password: $scope.newUserInfo.password,
-            about: "New member",
-            dateSignedUp: time(0),
-            amountOfReviews: 0,
-            amountOfEdits: 0
+			id: randomString(15),
+			name: $scope.newUserInfo.firstName + " " + $scope.newUserInfo.lastName,
+			username: $scope.newUserInfo.username,
+			email: $scope.newUserInfo.email,
+			password: $scope.newUserInfo.password,
+			about: 'New member',
+			signupDate: theDate(0),
+			amountOfNotes: 0,
+			amountFavorited: 0,
+			amountDeleted: 0,
+			notes: [],
+			favs: [],
+			deleted: []
         });
 
         $scope.newUserInfo = null;
