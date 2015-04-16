@@ -13,7 +13,7 @@
 /* Toggle Styles */
 
 body {
-	background: url("../images/paper.jpg") no-repeat;
+	background: url("./images/paper.jpg") no-repeat;
 	background-origin: content-box;
 	background-size: cover;
     padding-top: 20px;

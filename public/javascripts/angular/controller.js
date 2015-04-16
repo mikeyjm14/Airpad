@@ -610,7 +610,7 @@ var login = function ($scope, $state, currUser, initialUser, users) {
 		currUser.favs = users.users[index].favs;
 		currUser.deleted = users.users[index].deleted;
 
-        $state.go('profile', {userID: currUser.id});
+        $state.go('home');
     };
 
     $scope.Logout = function () {
