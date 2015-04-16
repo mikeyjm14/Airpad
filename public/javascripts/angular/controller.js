@@ -224,11 +224,13 @@ var viewnotes = function ($scope, $state, currUser, $anchorScroll, $location) {
 			return;
 		}
 		
-		if (getNoteIndexByID(note.id, currUser.favs) !== -1) {
+		var noteFavIndex = getNoteIndexByID(note.id, currUser.favs);
+		if (noteFavIndex !== -1) {
 			removeNote(noteFavIndex, currUser.favs, 1);
 		}
 		
-		if (getNoteIndexByID(note.id, currUser.notes) !== -1) {
+		var noteMainIndex = getNoteIndexByID(note.id, currUser.notes);
+		if (noteMainIndex !== -1) {
 			removeNote(noteMainIndex, currUser.notes, 1);
 		} else {
 			return;
