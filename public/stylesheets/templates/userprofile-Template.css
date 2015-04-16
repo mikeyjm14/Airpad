@@ -34,6 +34,12 @@
 	font-weight: bold;
 }
 
+#header-profile {
+	padding-left: 10px;
+	font-weight: bolder;
+	font-size: 50px;
+}
+
 .infoTitle {
 	font-size: 25px;
 	font-weight: bolder;
