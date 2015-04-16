@@ -96,8 +96,6 @@ button {
     padding: 5px;
 	background-color: rgba(0, 0, 0, .3);
 	border-radius: 16px 16px 16px 16px;
-	overflow: hidden;
-	overflow-y: auto;
 }
 
 #wrapper.toggled #page-content-wrapper {
@@ -198,8 +196,8 @@ button {
     text-align: center;
     width: 100%;
     height: 100%;
-	overflow: hidden;
-	overflow-y: auto;
+    overflow: hidden;
+    overflow-y: auto;
 }
 
 .padding-bottom {

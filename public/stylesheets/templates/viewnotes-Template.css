@@ -1,6 +1,7 @@
 #items {
 	width: 90%;
 	overflow: hidden;
+	overflow-y: auto;
 }
 
 #itemSection {
