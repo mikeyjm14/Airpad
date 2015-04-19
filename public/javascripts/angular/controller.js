@@ -550,7 +550,7 @@ var profile = function ($scope, $stateParams, $state, currUser, users) {
 	};
 };
 
-var login = function ($scope, $state, currUser, initialUser, users) {
+var login = function ($scope, $state, $http, $q, currUser, initialUser, users) {
 	$scope.errorMessage = "";
 	
 	$scope.IsLoggedOut = function () {
@@ -597,28 +597,32 @@ var login = function ($scope, $state, currUser, initialUser, users) {
             return;
         }
 
-        var index = findUserByCredentials($scope.incomingUser.username, $scope.incomingUser.password, users.users);
-
-        if (index === -1) {
-            $scope.errorMessage = "Wrong email/username or password.";
-            return;
-        }
+        $http.get('/users/login', {params:
+        {username: $scope.incomingUser.username,
+         password: $scope.incomingUser.password}}).
+            success(function(data, status, headers, config) {
+                console.log('Great Success!');
+                $scope.user = data;
+            }).
+            error(function(data, status, headers, config) {
+                console.log('BAD! ' + status);
+            });
 
         $scope.errorMessage = "";
-		
-		currUser.id = users.users[index].id;
-        currUser.name = users.users[index].name;
-        currUser.username = users.users[index].username;
-        currUser.email = users.users[index].email;
-        currUser.password = users.users[index].password;
-        currUser.about = users.users[index].about;
-        currUser.signupDate = users.users[index].signupDate;
-        currUser.amountOfNotes = users.users[index].amountOfNotes;
-		currUser.amountFavorited = users.users[index].amountFavorited;
-		currUser.amountDeleted = users.users[index].amountDeleted;
-		currUser.notes = users.users[index].notes;
-		currUser.favs = users.users[index].favs;
-		currUser.deleted = users.users[index].deleted;
+
+        currUser.id = $scope.user.id;
+        currUser.name = $scope.user.name;
+        currUser.username = $scope.user.username;
+        currUser.email = $scope.user.email;
+        currUser.password = $scope.user.password;
+        currUser.about = $scope.user.about;
+        currUser.signupDate = $scope.user.signupDate;
+        currUser.amountOfNotes = $scope.user.amountOfNotes;
+        currUser.amountFavorited = $scope.user.amountFavorited;
+        currUser.amountDeleted = $scope.user.amountDeleted;
+        currUser.notes = $scope.user.notes;
+        currUser.favs = $scope.user.favs;
+        currUser.deleted = $scope.user.deleted;
 
         $state.go('home');
     };
@@ -648,8 +652,7 @@ var login = function ($scope, $state, currUser, initialUser, users) {
     };
 };
 
-var signup = function ($scope, $state, users) {
-	//http://passportjs.org/
+var signup = function ($scope, $state, $http, $q, users) {
 	$scope.errorMessage = "";
 
 	$scope.newUserInfo = {
@@ -736,21 +739,27 @@ var signup = function ($scope, $state, users) {
 
         $scope.errorMessage = "";
 
-        users.users.push({
-			id: randomString(15),
-			name: $scope.newUserInfo.firstName + " " + $scope.newUserInfo.lastName,
-			username: $scope.newUserInfo.username,
-			email: $scope.newUserInfo.email,
-			password: $scope.newUserInfo.password,
-			about: 'New member',
-			signupDate: theDate(0),
-			amountOfNotes: 0,
-			amountFavorited: 0,
-			amountDeleted: 0,
-			notes: [],
-			favs: [],
-			deleted: []
-        });
+        var user = {
+            name: $scope.newUserInfo.firstName + " " + $scope.newUserInfo.lastName,
+            username: $scope.newUserInfo.username,
+            email: $scope.newUserInfo.email,
+            password: $scope.newUserInfo.password,
+            about: 'New member',
+            signupDate: theDate(0),
+            amountOfNotes: 0,
+            amountFavorited: 0,
+            amountDeleted: 0,
+            notes: [],
+            favs: [],
+            deleted: []
+        };
+
+        $http.post('/users/signUp', user).
+            success(function(data, status, headers, config) {
+                console.log('Great success!' + data);
+            }).error(function(data, status, headers, config) {
+                console.log('Failure' + status);
+            });
 
         $scope.newUserInfo = null;
 
@@ -838,6 +847,8 @@ AirPadApp.controller('ViewDeletedNotes', [
 AirPadApp.controller('LoginController', [
     '$scope',
     '$state',
+    '$http',
+    '$q',
 	'CurrUser',
 	'InitialUser',
     'Users',
@@ -847,6 +858,8 @@ AirPadApp.controller('LoginController', [
 AirPadApp.controller('SignupController', [
     '$scope',
     '$state',
+    '$http',
+    '$q',
     'Users',
     signup
 ]);

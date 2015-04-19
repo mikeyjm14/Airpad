@@ -91,7 +91,7 @@ AirPadApp.config(function ($stateProvider, $urlRouterProvider, $locationProvider
 
         .state('profile.redirect', {
             url: '/redirect',
-            templateUrl: '/public/htmls/userProfileViews/redirect.html'
+            templateUrl: '/userProfileViews/redirect.html'
         })
 
         .state('profile.view', {

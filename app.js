@@ -4,11 +4,12 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
+var fileSystem = require('fs');
+var mongoose = require('mongoose');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
-var mongoose = require('mongoose');
+
 //https://thinkster.io/mean-stack-tutorial/
 mongoose.connect('mongodb://admin:password@ds061288.mongolab.com:61288/cs3212-shaffer', function (err) {
     if(err) {
@@ -16,6 +17,12 @@ mongoose.connect('mongodb://admin:password@ds061288.mongolab.com:61288/cs3212-sh
     } else {
         console.log('connection successful');
     }
+});
+
+//load all files
+
+fileSystem.readdirSync(__dirname + '/model').forEach(function(fileName) {
+    require(__dirname + '/model/' + fileName);
 });
 
 var app = express();
