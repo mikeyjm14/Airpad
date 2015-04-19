@@ -218,6 +218,14 @@ var viewnotes = function ($scope, $state, currUser, $anchorScroll, $location) {
 		note.favored = true;
 		currUser.amountFavorited = currUser.favs.length;
 	};
+
+	$scope.ShareNote = function (note) {
+		if (note === null || note === undefined) {
+			return;
+		}
+
+        window.open('mailto:?subject=' + note.title + '&body=' + note.content);
+	};
 	
 	$scope.DeleteNote = function (note) {
 		if (note === null || note === undefined) {
