@@ -19,30 +19,6 @@ function randomString(length){
     return string;
 }
 
-function findUserByCredentials(username, password, users) {
-    var index = -1;
-    for (var i = 0; i < users.length; i++) {
-        if ((username === users[i].username || username === users[i].email)
-            && (password === users[i].password)) {
-            index = i;
-            i = users.length;
-        }
-    }
-    return index;
-}
-
-function getUserByID(id, users) {
-    var index = -1;
-    for (var i = 0; i < users.length; i++) {
-        if ((id === users[i].id)) {
-            index = i;
-            i = users.length;
-        }
-    }
-
-    return index;
-}
-
 function findUserByUsername(username, users) {
     var index = -1;
     for (var i = 0; i < users.length; i++) {
@@ -74,7 +50,7 @@ function getNoteByID(id, notes) {
 	}
 	
     for (var i = 0; i < notes.length; i++) {
-        if ((id === notes[i].id)) {
+        if ((id === notes[i]._id)) {
             note = notes[i];
             i = notes.length;
         }
@@ -84,6 +60,7 @@ function getNoteByID(id, notes) {
 }
 
 function injectHTML(elementID, text) {
+    console.log(text);
 	document.getElementById(elementID).innerHTML = text;
 }
 

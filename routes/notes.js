@@ -36,23 +36,12 @@ router.post('/edit_note', function (req, res) {
 
 router.get('/get_note', function (req, res) {
     var users = mongoose.model('users', mongoose.model('users').schema);
-    //var newNote = new note(req.body);
 
     var userQuery = { _id: req.query.userId};
-    var noteQuery = { 'user.notes._id': req.query.noteId};
+
     users.find(userQuery,
         function(err, user) {
-
-            var aNote = null;
-
-            console.log(user);
-            for (var note in user.notes) {
-                if (note._id === req.query.id) {
-                    aNote = user.notes[i];
-                }
-            }
-
-            res.send(aNote);
+            res.send(user);
         });
 
 });

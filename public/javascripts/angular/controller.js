@@ -260,24 +260,16 @@ var viewnote = function ($scope, $state, $http, $stateParams, currUser) {
 			$state.go("login");
 		}
 	};
-	
 
 	$scope.GetNote = function() {
-		$scope.currNote = null;
+		$scope.currNote = "";
 		$http.get('/notes/get_note', {params: {userId: currUser.id, noteId: $stateParams.noteID}})
-			.then(function(result) {
-				console.log(result);
-				$scope.currNote = result;
-			});
-	};
+		.then(function(result) {
+			console.log(result);
+			$scope.currNote = getNoteByID($stateParams.noteID, result.data[0].notes);
 
-	
-	$scope.InjectContent = function (elementID, note) {
-		if (note === null) {
-			return;
-		}
-		
-		injectHTML(elementID, note.content);
+			injectHTML('noteContent', $scope.currNote.content);
+		});
 	};
 	
 	$scope.ToViewNoteState = function () {
