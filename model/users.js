@@ -1,6 +1,5 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var notesSchema = mongoose.model('notes', notesSchema);
 
 var usersSchema = new Schema({
     name: String,
@@ -12,9 +11,9 @@ var usersSchema = new Schema({
     amountOfNotes: Number,
     amountFavorited: Number,
     amountDeleted: Number,
-    notes: [notesSchema],
-    favs: [notesSchema],
-    deleted: [notesSchema]
+    notes: [],
+    favs: [],
+    deleted: []
 });
 
 mongoose.model('users', usersSchema);
