@@ -8,6 +8,7 @@ var fileSystem = require('fs');
 var mongoose = require('mongoose');
 var routes = require('./routes/index');
 var users = require('./routes/users');
+var notes = require('./routes/notes');
 
 
 //https://thinkster.io/mean-stack-tutorial/
@@ -20,7 +21,6 @@ mongoose.connect('mongodb://admin:password@ds061288.mongolab.com:61288/cs3212-sh
 });
 
 //load all files
-
 fileSystem.readdirSync(__dirname + '/model').forEach(function(fileName) {
     require(__dirname + '/model/' + fileName);
 });
@@ -48,6 +48,7 @@ app.use(express.static(__dirname + '/model'));
 
 app.use('/', routes);
 app.use('/users', users);
+app.use('/notes', notes);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -79,6 +80,5 @@ app.use(function (err, req, res, next) {
         error: {}
     });
 });
-
 
 module.exports = app;

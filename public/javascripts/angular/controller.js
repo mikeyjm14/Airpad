@@ -333,7 +333,7 @@ var viewfavoritenotes = function ($scope, $state, $anchorScroll, $location, curr
 	};
 };
 
-var addnote = function ($scope, $state, currUser) {
+var addnote = function ($scope, $state, $http, currUser) {
 	$scope.IsLoggedIn = function () {
 		if (currUser.id === null) {
 			$state.go("login");
@@ -365,18 +365,29 @@ var addnote = function ($scope, $state, currUser) {
 	$scope.AddNote = function () {
 		if ($scope.form.title.length > 0 && $scope.form.body.length > 0) {
 			$scope.noError = true;
-			currUser.notes.unshift(
-				{
-					title: $scope.form.title,
-					content: $scope.form.body,
-					creator: currUser.name,
-					creationDate: theDate(1),
-					recentEditDate: theDate(1),
-					id: randomString(10),
-					favored: false
-				}
-			);
-			$scope.ClearValues();
+
+            var note = {
+                title: $scope.form.title,
+                content: $scope.form.body,
+                creator: currUser.name,
+                creationDate: theDate(0),
+                recentEditDate: theDate(0),
+                favored: false,
+                user: {
+                    type: currUser.id,
+                    ref: 'users'
+                }
+            };
+
+            $http.post('/notes/add_note', note).
+                success(function(data, status, headers, config) {
+                    console.log('Great success!');
+                }).error(function(data, status, headers, config) {
+                    console.log('Failure: ' + status);
+                });
+
+
+            $scope.ClearValues();
 			currUser.amountOfNotes = currUser.notes.length;
 			$scope.GoToViewNotes();
 		} else {
@@ -603,26 +614,26 @@ var login = function ($scope, $state, $http, $q, currUser, initialUser, users) {
             success(function(data, status, headers, config) {
                 console.log('Great Success!');
                 $scope.user = data;
+
+                currUser.id = $scope.user._id;
+                currUser.name = $scope.user.name;
+                currUser.username = $scope.user.username;
+                currUser.email = $scope.user.email;
+                currUser.password = $scope.user.password;
+                currUser.about = $scope.user.about;
+                currUser.signupDate = $scope.user.signupDate;
+                currUser.amountOfNotes = $scope.user.amountOfNotes;
+                currUser.amountFavorited = $scope.user.amountFavorited;
+                currUser.amountDeleted = $scope.user.amountDeleted;
+                currUser.notes = $scope.user.notes;
+                currUser.favs = $scope.user.favs;
+                currUser.deleted = $scope.user.deleted;
             }).
             error(function(data, status, headers, config) {
-                console.log('BAD! ' + status);
+                console.log('Failure: ' + status);
             });
 
         $scope.errorMessage = "";
-
-        currUser.id = $scope.user.id;
-        currUser.name = $scope.user.name;
-        currUser.username = $scope.user.username;
-        currUser.email = $scope.user.email;
-        currUser.password = $scope.user.password;
-        currUser.about = $scope.user.about;
-        currUser.signupDate = $scope.user.signupDate;
-        currUser.amountOfNotes = $scope.user.amountOfNotes;
-        currUser.amountFavorited = $scope.user.amountFavorited;
-        currUser.amountDeleted = $scope.user.amountDeleted;
-        currUser.notes = $scope.user.notes;
-        currUser.favs = $scope.user.favs;
-        currUser.deleted = $scope.user.deleted;
 
         $state.go('home');
     };
@@ -823,6 +834,7 @@ AirPadApp.controller('ViewFavoriteNotes', [
 AirPadApp.controller('AddNote', [
 	'$scope',
     '$state',
+    '$http',
 	'CurrUser',
     addnote
 ]);
