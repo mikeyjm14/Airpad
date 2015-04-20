@@ -1,5 +1,6 @@
 <section class="content-section center border">
 	<span ng-init="IsLoggedIn()"></span>
+    <span ng-init="GetNote()"></span>
 	<section ng-show="currNote !== null" class="innerContentSection">
         <section>
             <h2 id="header-view-note" class="whitesmokeText">{{currNote.title}}</h2>

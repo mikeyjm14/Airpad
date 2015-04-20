@@ -83,11 +83,29 @@ var home = function ($scope, $state, $stateParams, currUser, $anchorScroll, $loc
     };
 };
 
-var viewnotes = function ($scope, $state, currUser, $anchorScroll, $location) {
-	$scope.listOfNotes = {
-		notes: currUser.notes
+var viewnotes = function ($scope, $state, $http, currUser, $anchorScroll, $location) {
+	$scope.currUser = currUser.name;
+
+	$scope.GetNotes = function() {
+		$scope.list = [];
+		$http.get('/notes/get_notes', { params: { userId: currUser.id } })
+			.then(function(result) {
+				if (result === undefined || result === null) {
+					return;
+				}
+
+				for (var i = 0; i < result.data[0].notes.length; i++) {
+					$scope.list.push(result.data[0].notes[i]);
+				}
+			});
+		currUser.notes = $scope.list;
+		return $scope.list;
 	};
-	
+
+	$scope.listOfNotes = {
+		notes: $scope.GetNotes()
+	};
+
 	$scope.sortOptions = [
 		{id: 0, name: "Title Ascending"},
 		{id: 1, name: "Title Descending"},
@@ -98,60 +116,58 @@ var viewnotes = function ($scope, $state, currUser, $anchorScroll, $location) {
 		{id: 6, name: "Favorited Ascending"},
 		{id: 7, name: "Favorited Descending"}
 	];
-	
+
 	$scope.selectedValue = null;
 	$scope.predicate = "";
 	$scope.reverse = false;
-	
+
 	var setSort = function (predicate, reversed) {
 		$scope.predicate = predicate;
 		$scope.reverse = reversed;
 	};
-	
+
 	$scope.changedValue = function (value) {
 		$scope.selectedValue = value;
-		
+
 		if ($scope.selectedValue === null) {
 			setSort("", false);
 			return;
 		}
-		
+
 		switch ($scope.selectedValue.id) {
-		case 0:
-			setSort("title", false);
-			break;
-		case 1:
-			setSort("title", true);
-			break;
-		case 2:
-			setSort("creationDate", false);
-			break;
-		case 3:
-			setSort("creationDate", true);
-			break;
-		case 4:
-			setSort("recentEditDate", false);
-			break;
-		case 5:
-			setSort("recentEditDate", true);
-			break;
-		case 6:
-			setSort("favored", true);
-			break;
-		case 7:
-			setSort("favored", false);
-			break;
+			case 0:
+				setSort("title", false);
+				break;
+			case 1:
+				setSort("title", true);
+				break;
+			case 2:
+				setSort("creationDate", false);
+				break;
+			case 3:
+				setSort("creationDate", true);
+				break;
+			case 4:
+				setSort("recentEditDate", false);
+				break;
+			case 5:
+				setSort("recentEditDate", true);
+				break;
+			case 6:
+				setSort("favored", true);
+				break;
+			case 7:
+				setSort("favored", false);
+				break;
 		}
 	};
-	
-	$scope.currUser = currUser.name;
-	
+
 	$scope.IsLoggedIn = function () {
 		if (currUser.id === null) {
 			$state.go("login");
 		}
 	};
-	
+
 	$scope.scrollTo = function (id) {
 		var newHash = id;
 		if ($location.hash() !== newHash) {
@@ -160,61 +176,46 @@ var viewnotes = function ($scope, $state, currUser, $anchorScroll, $location) {
 			$anchorScroll();
 		}
 	};
-	
+
 	$scope.GoToAddNote = function () {
-        $state.go("addnote");
-    };
-	
+		$state.go("addnote");
+	};
+
 	$scope.GoToEditNote = function (note) {
 		if (note === null || note === undefined) {
 			return;
 		}
-		
-        $state.go("editnote", {noteID: note.id});
-		
-		var currNote = getNoteByID(note.id, currUser.notes);
-		if (currNote !== null) {
-			$scope.editform = {
-				id: currNote.id,
-				title: currNote.title,
-				body: currNote.content
-			};
-			
-			$scope.noInvalidIDError = true;
-			currNote.recentEditDate = theDate(1);
-		} else {
-			$scope.noInvalidIDError = false;
-		}
-    };
 
-    $scope.GoToNote = function (note) {
+		$state.go("editnote", {noteID: note._id});
+	};
+
+	$scope.GoToNote = function (note) {
 		if (note === null || note === undefined) {
 			return;
 		}
-		
-        $state.go("viewnote", {noteID: note.id});
-		$scope.currNote = getNoteByID(note.id, currUser.notes);
-    };
-	
+
+		$state.go("viewnote", {noteID: note._id});
+	};
+
 	$scope.AddNoteToFavorites = function (note) {
 		var tempNote = getNoteByID(note.id, currUser.notes);
-		
+
 		if (tempNote === null || tempNote === undefined) {
 			return;
 		}
-		
+
 		var existingNote = getNoteByID(tempNote.id, currUser.favs);
 		if (existingNote !== null) {
 			return;
 		}
-		
+
 		currUser.favs.unshift(
 			{
 				id: tempNote.id,
 				title: tempNote.title
 			}
 		);
-		
+
 		note.favored = true;
 		currUser.amountFavorited = currUser.favs.length;
 	};
@@ -224,32 +225,32 @@ var viewnotes = function ($scope, $state, currUser, $anchorScroll, $location) {
 			return;
 		}
 
-        window.open('mailto:?subject=' + note.title + '&body=' + note.content);
+		window.open('mailto:?subject=' + note.title + '&body=' + note.content);
 	};
-	
+
 	$scope.DeleteNote = function (note) {
 		if (note === null || note === undefined) {
 			return;
 		}
-		
+
 		var noteFavIndex = getNoteIndexByID(note.id, currUser.favs);
 		if (noteFavIndex !== -1) {
 			removeNote(noteFavIndex, currUser.favs, 1);
 		}
-		
+
 		var noteMainIndex = getNoteIndexByID(note.id, currUser.notes);
 		if (noteMainIndex !== -1) {
 			removeNote(noteMainIndex, currUser.notes, 1);
 		} else {
 			return;
 		}
-		
+
 		currUser.deleted.push(note);
 		currUser.amountDeleted = currUser.deleted.length;
 	};
 };
 
-var viewnote = function ($scope, $state, $stateParams, currUser) {
+var viewnote = function ($scope, $state, $http, $stateParams, currUser) {
 	if (currUser.notes === null) {
 		return;
 	}
@@ -260,7 +261,16 @@ var viewnote = function ($scope, $state, $stateParams, currUser) {
 		}
 	};
 	
-	$scope.currNote = getNoteByID($stateParams.noteID, currUser.notes);
+
+	$scope.GetNote = function() {
+		$scope.currNote = null;
+		$http.get('/notes/get_note', {params: {userId: currUser.id, noteId: $stateParams.noteID}})
+			.then(function(result) {
+				console.log(result);
+				$scope.currNote = result;
+			});
+	};
+
 	
 	$scope.InjectContent = function (elementID, note) {
 		if (note === null) {
@@ -381,10 +391,12 @@ var addnote = function ($scope, $state, $http, currUser) {
 
             $http.post('/notes/add_note', note).
                 success(function(data, status, headers, config) {
-                    console.log('Great success!');
+					console.log('Great Success');
                 }).error(function(data, status, headers, config) {
                     console.log('Failure: ' + status);
                 });
+
+
 
 
             $scope.ClearValues();
@@ -467,7 +479,7 @@ var editnote = function ($scope, $state, $stateParams, currUser) {
 			$scope.noError = false;
 		}
 	};
-}
+};
 
 var viewdeletednotes = function ($scope, $state, $anchorScroll, $location, currUser) {
 	$scope.IsLoggedIn = function () {
@@ -561,7 +573,7 @@ var profile = function ($scope, $stateParams, $state, currUser, users) {
 	};
 };
 
-var login = function ($scope, $state, $http, $q, currUser, initialUser, users) {
+var login = function ($scope, $state, $http, currUser, users) {
 	$scope.errorMessage = "";
 	
 	$scope.IsLoggedOut = function () {
@@ -612,8 +624,14 @@ var login = function ($scope, $state, $http, $q, currUser, initialUser, users) {
         {username: $scope.incomingUser.username,
          password: $scope.incomingUser.password}}).
             success(function(data, status, headers, config) {
-                console.log('Great Success!');
                 $scope.user = data;
+
+				if($scope.user._id === null || $scope.user._id === undefined) {
+					$scope.errorMessage = "User does not exist. Please try again with different credentials.";
+					return;
+				}
+
+				$scope.errorMessage = "";
 
                 currUser.id = $scope.user._id;
                 currUser.name = $scope.user.name;
@@ -628,14 +646,12 @@ var login = function ($scope, $state, $http, $q, currUser, initialUser, users) {
                 currUser.notes = $scope.user.notes;
                 currUser.favs = $scope.user.favs;
                 currUser.deleted = $scope.user.deleted;
+
+				$state.go('home');
             }).
             error(function(data, status, headers, config) {
-                console.log('Failure: ' + status);
+				$scope.errorMessage = "User does not exist. Please try again.";
             });
-
-        $scope.errorMessage = "";
-
-        $state.go('home');
     };
 
     $scope.Logout = function () {
@@ -663,7 +679,7 @@ var login = function ($scope, $state, $http, $q, currUser, initialUser, users) {
     };
 };
 
-var signup = function ($scope, $state, $http, $q, users) {
+var signup = function ($scope, $state, $http, users) {
 	$scope.errorMessage = "";
 
 	$scope.newUserInfo = {
@@ -765,26 +781,30 @@ var signup = function ($scope, $state, $http, $q, users) {
             deleted: []
         };
 
-        $http.post('/users/signUp', user).
-            success(function(data, status, headers, config) {
-                console.log('Great success!' + data);
-            }).error(function(data, status, headers, config) {
-                console.log('Failure' + status);
-            });
+		$http.post('/users/signUp', user)
+			.success(function(data, status, headers, config) {
+				if (data === "New user created successfully!") {
+					$scope.newUserInfo = null;
 
-        $scope.newUserInfo = null;
+					$scope.newUserInfo = {
+						firstName: "",
+						lastName: "",
+						username:"",
+						email: "",
+						password: "",
+						passwordAgain: ""
+					};
 
-        $scope.newUserInfo = {
-            firstName: "",
-            lastName: "",
-            username:"",
-            email: "",
-            password: "",
-            passwordAgain: ""
-        };
+					$scope.errorMessage = "";
+					$scope.toLoginState();
+				} else {
+					$scope.errorMessage = data;
+				}
+			}).error(function(data, status, headers, config) {
+				console.log('Failure' + status);
+			});
 
-        $scope.toLoginState();
-        $scope.errorMessage = "Log in with new account.";
+
     };
 };
 
@@ -808,6 +828,7 @@ AirPadApp.controller('Home', [
 AirPadApp.controller('ViewNotes', [
 	'$scope',
     '$state',
+	'$http',
 	'CurrUser',
 	'$anchorScroll',
 	'$location',
@@ -817,6 +838,7 @@ AirPadApp.controller('ViewNotes', [
 AirPadApp.controller('ViewNote', [
 	'$scope',
     '$state',
+	'$http',
 	'$stateParams',
 	'CurrUser',
     viewnote
@@ -860,9 +882,7 @@ AirPadApp.controller('LoginController', [
     '$scope',
     '$state',
     '$http',
-    '$q',
 	'CurrUser',
-	'InitialUser',
     'Users',
     login
 ]);
@@ -871,7 +891,6 @@ AirPadApp.controller('SignupController', [
     '$scope',
     '$state',
     '$http',
-    '$q',
     'Users',
     signup
 ]);
