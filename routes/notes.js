@@ -16,6 +16,19 @@ router.post('/add_note', function (req, res) {
 
 });
 
+router.post('/favorite_note', function (req, res) {
+    var users = mongoose.model('users', mongoose.model('users').schema);
+    var note = mongoose.model('notes', mongoose.model('notes').schema);
+    var newNote = new note(req.body);
+
+    var query = { _id: req.body.user.type};
+    users.findByIdAndUpdate(query,
+        {$push: {"favs": newNote}},
+        {safe: true, upsert: false}, function(err, user) {
+            res.send(err);
+        });
+});
+
 router.post('/edit_note', function (req, res) {
     var users = mongoose.model('users', mongoose.model('users').schema);
     var note = mongoose.model('notes', mongoose.model('notes').schema);

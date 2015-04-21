@@ -198,26 +198,29 @@ var viewnotes = function ($scope, $state, $http, currUser, $anchorScroll, $locat
 	};
 
 	$scope.AddNoteToFavorites = function (note) {
-		var tempNote = getNoteByID(note.id, currUser.notes);
+		var note1 = {
+			title: note.title,
+			content: note.content,
+			creator: note.creator,
+			creationDate: note.creationDate,
+			recentEditDate: note.recentEditDate,
+			favored: note.favored,
+			user: {
+				type: currUser.id,
+				ref: 'users'
+			},
+            _id: note._id
+		};
 
-		if (tempNote === null || tempNote === undefined) {
-			return;
-		}
+        note1.favored = true;
 
-		var existingNote = getNoteByID(tempNote.id, currUser.favs);
-		if (existingNote !== null) {
-			return;
-		}
+		$http.post('/notes/favorite_note', note1).
+			success(function(data, status, headers, config) {
+				console.log('Great Success');
+			}).error(function(data, status, headers, config) {
+				console.log('Failure: ' + status);
+			});
 
-		currUser.favs.unshift(
-			{
-				id: tempNote.id,
-				title: tempNote.title
-			}
-		);
-
-		note.favored = true;
-		currUser.amountFavorited = currUser.favs.length;
 	};
 
 	$scope.ShareNote = function (note) {
@@ -287,12 +290,28 @@ var viewnote = function ($scope, $state, $http, $stateParams, currUser) {
     };
 };
 
-var viewfavoritenotes = function ($scope, $state, $anchorScroll, $location, currUser) {
-	$scope.listOfFavorites = {
-		favs: currUser.favs
-	};
-	
-	$scope.currUser = currUser.name;
+var viewfavoritenotes = function ($scope, $state, $http, $anchorScroll, $location, currUser) {
+    $scope.currUser = currUser.name;
+
+    $scope.GetNotes = function() {
+        $scope.list = [];
+        $http.get('/notes/get_notes', { params: { userId: currUser.id } })
+            .then(function(result) {
+                if (result === undefined || result === null) {
+                    return;
+                }
+
+                for (var i = 0; i < result.data[0].favs.length; i++) {
+                    $scope.list.push(result.data[0].favs[i]);
+                }
+            });
+        currUser.favs = $scope.list;
+        return $scope.list;
+    };
+
+    $scope.listOfNotes = {
+        notes: $scope.GetNotes()
+    };
 	
 	$scope.IsLoggedIn = function () {
 		if (currUser.id === null) {
@@ -839,6 +858,7 @@ AirPadApp.controller('ViewNote', [
 AirPadApp.controller('ViewFavoriteNotes', [
 	'$scope',
     '$state',
+    '$http',
 	'$anchorScroll',
 	'$location',
 	'CurrUser',
