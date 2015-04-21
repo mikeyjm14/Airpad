@@ -200,26 +200,33 @@ var viewnotes = function ($scope, $state, $http, currUser, $anchorScroll, $locat
 	};
 
 	$scope.AddNoteToFavorites = function (note) {
-		var tempNote = getNoteByID(note.id, currUser.notes);
-
-		if (tempNote === null || tempNote === undefined) {
-			return;
-		}
-
-		var existingNote = getNoteByID(tempNote.id, currUser.favs);
-		if (existingNote !== null) {
-			return;
-		}
-
-		currUser.favs.unshift(
-			{
-				id: tempNote.id,
-				title: tempNote.title
-			}
-		);
-
 		note.favored = true;
-		currUser.amountFavorited = currUser.favs.length;
+		var note1 = {
+			title: note.title,
+			content: note.content,
+			creator: note.creator,
+			creationDate: note.creationDate,
+			recentEditDate: theDate(0),
+			favored: note.favored,
+			user: {
+				type: currUser.id,
+				ref: 'users'
+			},
+			_id: note._id
+		};
+		$http.post('/notes/realEdit_note', note1).
+			success(function(data, status, headers, config) {
+				console.log('Great Success');
+			}).error(function(data, status, headers, config) {
+				console.log('Failure: ' + status);
+			});
+
+		$http.post('/notes/favorite_note', note1).
+			success(function(data, status, headers, config) {
+				console.log('Great Success');
+			}).error(function(data, status, headers, config) {
+				console.log('Failure: ' + status);
+			});
 	};
 
 	$scope.ShareNote = function (note) {
@@ -231,24 +238,27 @@ var viewnotes = function ($scope, $state, $http, currUser, $anchorScroll, $locat
 	};
 
 	$scope.DeleteNote = function (note) {
-		if (note === null || note === undefined) {
-			return;
-		}
-
-		var noteFavIndex = getNoteIndexByID(note.id, currUser.favs);
-		if (noteFavIndex !== -1) {
-			removeNote(noteFavIndex, currUser.favs, 1);
-		}
-
-		var noteMainIndex = getNoteIndexByID(note.id, currUser.notes);
-		if (noteMainIndex !== -1) {
-			removeNote(noteMainIndex, currUser.notes, 1);
-		} else {
-			return;
-		}
-
-		currUser.deleted.push(note);
-		currUser.amountDeleted = currUser.deleted.length;
+		var noteIndex = getNoteIndexByID(note.id, currUser.notes);
+		var note1 = {
+			title: note.title,
+			content: note.content,
+			creator: note.creator,
+			creationDate: note.creationDate,
+			recentEditDate: theDate(0),
+			favored: false,
+			user: {
+				type: currUser.id,
+				ref: 'users'
+			},
+			_id: note._id
+		};
+		$http.post('/notes/delete_note', note1).
+			success(function(data, status, headers, config) {
+				console.log('Great Success');
+			}).error(function(data, status, headers, config) {
+				console.log('Failure: ' + status);
+			});
+		currUser.notes.splice(noteIndex, 1);
 	};
 };
 
@@ -288,12 +298,32 @@ var viewnote = function ($scope, $state, $http, $stateParams, currUser) {
     };
 };
 
-var viewfavoritenotes = function ($scope, $state, $anchorScroll, $location, currUser) {
+var viewfavoritenotes = function ($scope, $state, $http, $anchorScroll, $location, currUser) {
 	$scope.listOfFavorites = {
 		favs: currUser.favs
 	};
 	
 	$scope.currUser = currUser.name;
+
+	$scope.GetNotes = function() {
+		$scope.list = [];
+		$http.get('/notes/get_notes', { params: { userId: currUser.id } })
+			.then(function(result) {
+				if (result === undefined || result === null) {
+					return;
+				}
+
+				for (var i = 0; i < result.data[0].favs.length; i++) {
+					$scope.list.push(result.data[0].favs[i]);
+				}
+			});
+		currUser.favs = $scope.list;
+		return $scope.list;
+	};
+
+	$scope.listOfNotes = {
+		notes: $scope.GetNotes()
+	};
 	
 	$scope.IsLoggedIn = function () {
 		if (currUser.id === null) {
@@ -324,15 +354,33 @@ var viewfavoritenotes = function ($scope, $state, $anchorScroll, $location, curr
 	
 	$scope.RemoveNoteFromFavorites = function (note) {
 		var noteIndex = getNoteIndexByID(note.id, currUser.favs);
-		if (noteIndex === -1) {
-			return;
-		}
-		
-		var realNote = getNoteByID(note.id, currUser.notes);
-		realNote.favored = false;
-		
+		var note1 = {
+			title: note.title,
+			content: note.content,
+			creator: note.creator,
+			creationDate: note.creationDate,
+			recentEditDate: theDate(0),
+			favored: false,
+			user: {
+				type: currUser.id,
+				ref: 'users'
+			},
+			_id: note._id
+		};
+		$http.post('/notes/realEdit_note', note1).
+			success(function(data, status, headers, config) {
+				console.log('Great Success');
+			}).error(function(data, status, headers, config) {
+				console.log('Failure: ' + status);
+			});
+
+		$http.post('/notes/deleteFavorite_note', note1).
+			success(function(data, status, headers, config) {
+				console.log('Great Success');
+			}).error(function(data, status, headers, config) {
+				console.log('Failure: ' + status);
+			});
 		currUser.favs.splice(noteIndex, 1);
-		currUser.amountFavorited = currUser.favs.length;
 	};
 };
 
@@ -444,17 +492,14 @@ var editnote = function ($scope, $state, $stateParams, $http, currUser) {
 	
 	$scope.ClearEditValues = function () {
 		var id = $scope.editform.id;
-		var index = $scope.editform.index;
+		$scope.editform = null;
 
-        $scope.editform = null;
-
-        $scope.editform = {
+		$scope.editform = {
 			id: id,
 			title: "",
-			body: "",
-			index: index
+			body: ""
 		};
-		
+
 		$scope.noError = true;
     };
 	
@@ -462,45 +507,60 @@ var editnote = function ($scope, $state, $stateParams, $http, currUser) {
 		if ($scope.editform.title.length > 0 && $scope.editform.body.length > 0) {
 			$scope.noError = true;
 
-			var noteIndex = $scope.editform.index;
-			if (noteIndex !== -1) {
-				currUser.notes[noteIndex].title = $scope.editform.title;
-				currUser.notes[noteIndex].content = $scope.editform.body;
-				currUser.notes[noteIndex].recentEditDate = theDate(0);
+			var note = getNoteByID($stateParams.noteID, currUser.notes);
+			var note1 = {
+				title: $scope.editform.title,
+				content: $scope.editform.body,
+				creator: note.creator,
+				creationDate: note.creationDate,
+				recentEditDate: theDate(0),
+				favored: note.favored,
+				user: {
+					type: currUser.id,
+					ref: 'users'
+				},
+				_id: $stateParams.noteID
+			};
+			$http.post('/notes/realEdit_note', note1).
+				success(function(data, status, headers, config) {
+					console.log('Great Success');
+				}).error(function(data, status, headers, config) {
+					console.log('Failure: ' + status);
+					$scope.errorMessage = "Database Error: " + status;
+					$scope.noError = false;
+				});
 
-				$http.post('/notes/edit_note',
-						{
-							userId: currUser.id.toString(),
-							note: currUser.notes[noteIndex],
-							index: noteIndex
-						}
-					).then(function(result) {
-						if (result === undefined || result === null) {
-							return;
-						}
-
-						currUser.notes = result.data;
-					});
-
-				$scope.ClearEditValues();
-				$scope.GoToViewNotes();
-			}
-
-		} else {
-			$scope.noError = false;
+			$scope.ClearEditValues();
+			$scope.GoToViewNotes();
 		}
 	};
 };
 
-var viewdeletednotes = function ($scope, $state, $anchorScroll, $location, currUser) {
+var viewdeletednotes = function ($scope, $state, $http, $anchorScroll, $location, currUser) {
 	$scope.IsLoggedIn = function () {
 		if (currUser.username === null) {
 			$state.go("login");
 		}
 	};
-	
-	$scope.listOfDeletedNotes = {
-		notes: currUser.deleted
+
+	$scope.GetNotes = function() {
+		$scope.list = [];
+		$http.get('/notes/get_notes', { params: { userId: currUser.id } })
+			.then(function(result) {
+				if (result === undefined || result === null) {
+					return;
+				}
+
+				for (var i = 0; i < result.data[0].deleted.length; i++) {
+					$scope.list.push(result.data[0].deleted[i]);
+				}
+			});
+		currUser.deleted = $scope.list;
+		return $scope.list;
+	};
+
+	$scope.listOfNotes = {
+		notes: $scope.GetNotes()
 	};
 	
 	$scope.scrollTo = function (id) {
@@ -517,24 +577,51 @@ var viewdeletednotes = function ($scope, $state, $anchorScroll, $location, currU
     };
 	
 	$scope.DeleteNoteForever = function (note) {
-		var noteIndex = getNoteIndexByID(note.id, currUser.deleted);
-		if (noteIndex === -1) {
-			return;
-		}
-		
-		removeNote(noteIndex, currUser.deleted, 1);
-		currUser.amountDeleted = currUser.deleted.length;
+		//var noteIndex = getNoteIndexByID(note.id, currUser.deleted);
+		var note1 = {
+			title: note.title,
+			content: note.content,
+			creator: note.creator,
+			creationDate: note.creationDate,
+			recentEditDate: theDate(0),
+			favored: false,
+			user: {
+				type: currUser.id,
+				ref: 'users'
+			},
+			_id: note._id
+		};
+		$http.post('/notes/deleteForever_note', note1).
+			success(function(data, status, headers, config) {
+				console.log('Great Success');
+			}).error(function(data, status, headers, config) {
+				console.log('Failure: ' + status);
+			});
+		currUser.deleted.splice(noteIndex, 1);
 	};
 	
 	$scope.RestoreNote = function (note) {
 		var noteIndex = getNoteIndexByID(note.id, currUser.deleted);
-		if (noteIndex !== -1) {
-			removeNote(noteIndex, currUser.deleted, 1);
-		}
-		
-		currUser.notes.unshift(note);
-		currUser.amountOfNotes = currUser.notes.length;
-		currUser.amountDeleted = currUser.deleted.length;
+		var note1 = {
+			title: note.title,
+			content: note.content,
+			creator: note.creator,
+			creationDate: note.creationDate,
+			recentEditDate: theDate(0),
+			favored: false,
+			user: {
+				type: currUser.id,
+				ref: 'users'
+			},
+			_id: note._id
+		};
+		$http.post('/notes/restore_note', note1).
+			success(function(data, status, headers, config) {
+				console.log('Great Success');
+			}).error(function(data, status, headers, config) {
+				console.log('Failure: ' + status);
+			});
+		currUser.deleted.splice(noteIndex, 1);
 		$scope.GoToViewNotes();
 	};
 };
@@ -843,6 +930,7 @@ AirPadApp.controller('ViewNote', [
 AirPadApp.controller('ViewFavoriteNotes', [
 	'$scope',
     '$state',
+	'$http',
 	'$anchorScroll',
 	'$location',
 	'CurrUser',
@@ -869,6 +957,7 @@ AirPadApp.controller('EditNote', [
 AirPadApp.controller('ViewDeletedNotes', [
 	'$scope',
     '$state',
+	'$http',
 	'$anchorScroll',
 	'$location',
 	'CurrUser',

@@ -1,10 +1,10 @@
 <section id="items" class="content-section center border">
 	<span ng-init="IsLoggedIn()"></span>
-	<section id="itemSection" class="center" ng-show="listOfFavorites.favs.length > 0">
+	<section id="itemSection" class="center" ng-show="listOfNotes.notes.length > 0">
 		<section id="full-length-section-left-align">
 			<h2 id="header-view-notes" class="whitesmokeText">{{currUser}}'s Favorite Notes</h2>
 		</section>
-		<section class="item-width" ng-repeat="note in listOfFavorites.favs">
+		<section class="item-width" ng-repeat="note in listOfNotes.notes">
 			<section class="item alignText border" data-title="{{note.title}}">
 				<section class="noteTitle-viewnotes"><a href="" ng-click="GoToNote(note)">{{note.title}}</a></section>
 				<a href="" ng-click="GoToNote(note)"><i class="fa fa-file-text fa-4x"></i></a>
