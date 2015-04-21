@@ -20,7 +20,7 @@ var notepad = function ($scope, $state, currUser) {
     };
 };
 
-var home = function ($scope, $state, $stateParams, currUser, $anchorScroll, $location) {
+var home = function ($scope, $state, $stateParams, currUser) {
 	$scope.currUser = currUser;
 	
 	$scope.IsLoggedIn = function () {
@@ -94,8 +94,10 @@ var viewnotes = function ($scope, $state, $http, currUser, $anchorScroll, $locat
 					return;
 				}
 
-				for (var i = 0; i < result.data[0].notes.length; i++) {
-					$scope.list.push(result.data[0].notes[i]);
+				if (result.data[0] !== undefined && result.data[0] !== null) {
+					for (var i = 0; i < result.data[0].notes.length; i++) {
+						$scope.list.push(result.data[0].notes[i]);
+					}
 				}
 			});
 		currUser.notes = $scope.list;
@@ -265,7 +267,6 @@ var viewnote = function ($scope, $state, $http, $stateParams, currUser) {
 		$scope.currNote = "";
 		$http.get('/notes/get_note', {params: {userId: currUser.id, noteId: $stateParams.noteID}})
 		.then(function(result) {
-			console.log(result);
 			$scope.currNote = getNoteByID($stateParams.noteID, result.data[0].notes);
 
 			injectHTML('noteContent', $scope.currNote.content);
@@ -400,7 +401,7 @@ var addnote = function ($scope, $state, $http, currUser) {
 	};
 };
 
-var editnote = function ($scope, $state, $stateParams, currUser) {
+var editnote = function ($scope, $state, $stateParams, $http, currUser) {
 	$scope.IsLoggedIn = function () {
 		if (currUser.username === null) {
 			$state.go("login");
@@ -464,6 +465,15 @@ var editnote = function ($scope, $state, $stateParams, currUser) {
 			currUser.notes[noteIndex].title = $scope.editform.title;
 			currUser.notes[noteIndex].content = $scope.editform.body;
 			currUser.notes[noteIndex].recentEditDate = theDate(0);
+
+			$http.post('/notes/edit_note', { userId: currUser.id.toString(), note: currUser.notes[noteIndex], index: noteIndex } )
+				.then(function(result) {
+					if (result === undefined || result === null) {
+						return;
+					}
+
+					console.log(result);
+				});
 			
 			$scope.ClearEditValues();
 			$scope.GoToViewNotes();
@@ -551,7 +561,7 @@ var profile = function ($scope, $stateParams, $state, currUser, users) {
     };
 	
 	$scope.TestUserID = function () {
-		if (users.users.length === 0 || currUser.id === null || currUser.id !== $stateParams.userID) {
+		if (currUser.id === null || currUser.id !== $stateParams.userID) {
 			$scope.noInvalidIDError = false;
 			return;
 		}
@@ -565,7 +575,7 @@ var profile = function ($scope, $stateParams, $state, currUser, users) {
 	};
 };
 
-var login = function ($scope, $state, $http, currUser, users) {
+var login = function ($scope, $state, $http, currUser) {
 	$scope.errorMessage = "";
 	
 	$scope.IsLoggedOut = function () {
@@ -671,7 +681,7 @@ var login = function ($scope, $state, $http, currUser, users) {
     };
 };
 
-var signup = function ($scope, $state, $http, users) {
+var signup = function ($scope, $state, $http) {
 	$scope.errorMessage = "";
 
 	$scope.newUserInfo = {
@@ -694,7 +704,6 @@ var signup = function ($scope, $state, $http, users) {
     };
 
     $scope.SignUp = function () {
-		//http://eloquentjavascript.net/18_forms.html
         var completed = true;
         $scope.errorMessage = "Please enter data into the required field ";
 
@@ -746,16 +755,6 @@ var signup = function ($scope, $state, $http, users) {
             return;
         }
 
-        if (findUserByUsername($scope.newUserInfo.username, users.users) !== -1) {
-            $scope.errorMessage = "The USERNAME has been taken.";
-            return;
-        }
-
-        if (findUserByEmail($scope.newUserInfo.email, users.users) !== -1) {
-            $scope.errorMessage = "The EMAIL is already registered for an account.";
-            return;
-        }
-
         $scope.errorMessage = "";
 
         var user = {
@@ -795,8 +794,6 @@ var signup = function ($scope, $state, $http, users) {
 			}).error(function(data, status, headers, config) {
 				console.log('Failure' + status);
 			});
-
-
     };
 };
 
@@ -812,8 +809,6 @@ AirPadApp.controller('Home', [
     '$state',
     '$stateParams',
 	'CurrUser',
-	'$anchorScroll',
-	'$location',
     home
 ]);
 
@@ -857,6 +852,7 @@ AirPadApp.controller('EditNote', [
 	'$scope',
     '$state',
 	'$stateParams',
+	'$http',
 	'CurrUser',
     editnote
 ]);
@@ -875,7 +871,6 @@ AirPadApp.controller('LoginController', [
     '$state',
     '$http',
 	'CurrUser',
-    'Users',
     login
 ]);
 
@@ -883,7 +878,6 @@ AirPadApp.controller('SignupController', [
     '$scope',
     '$state',
     '$http',
-    'Users',
     signup
 ]);
 
@@ -892,6 +886,5 @@ AirPadApp.controller('ProfileController', [
     '$stateParams',
     '$state',
 	'CurrUser',
-    'Users',
     profile
 ]);
