@@ -577,7 +577,6 @@ var viewdeletednotes = function ($scope, $state, $http, $anchorScroll, $location
     };
 	
 	$scope.DeleteNoteForever = function (note) {
-		//var noteIndex = getNoteIndexByID(note.id, currUser.deleted);
 		var note1 = {
 			title: note.title,
 			content: note.content,
