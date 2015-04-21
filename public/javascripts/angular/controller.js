@@ -389,9 +389,6 @@ var addnote = function ($scope, $state, $http, currUser) {
                     console.log('Failure: ' + status);
                 });
 
-
-
-
             $scope.ClearValues();
 			currUser.amountOfNotes = currUser.notes.length;
 			$scope.GoToViewNotes();
@@ -426,11 +423,13 @@ var editnote = function ($scope, $state, $stateParams, $http, currUser) {
 	
 	$scope.TestNoteID = function () {
 		var currNote = getNoteByID($stateParams.noteID, currUser.notes);
-		if (currNote !== null) {
+		var noteIndex = getNoteIndexByID($stateParams.noteID, currUser.notes);
+		if (currNote !== null || currNote !== undefined) {
 			$scope.editform = {
-				id: currNote.id,
+				id: currNote._id,
 				title: currNote.title,
-				body: currNote.content
+				body: currNote.content,
+				index: noteIndex
 			};
 			
 			$scope.noInvalidIDError = true;
@@ -445,12 +444,15 @@ var editnote = function ($scope, $state, $stateParams, $http, currUser) {
 	
 	$scope.ClearEditValues = function () {
 		var id = $scope.editform.id;
+		var index = $scope.editform.index;
+
         $scope.editform = null;
 
         $scope.editform = {
 			id: id,
 			title: "",
-			body: ""
+			body: "",
+			index: index
 		};
 		
 		$scope.noError = true;
@@ -459,24 +461,31 @@ var editnote = function ($scope, $state, $stateParams, $http, currUser) {
 	$scope.UpdateNote = function () {
 		if ($scope.editform.title.length > 0 && $scope.editform.body.length > 0) {
 			$scope.noError = true;
-			
-			var noteIndex = getNoteIndexByID($scope.editform.id, currUser.notes);
-			
-			currUser.notes[noteIndex].title = $scope.editform.title;
-			currUser.notes[noteIndex].content = $scope.editform.body;
-			currUser.notes[noteIndex].recentEditDate = theDate(0);
 
-			$http.post('/notes/edit_note', { userId: currUser.id.toString(), note: currUser.notes[noteIndex], index: noteIndex } )
-				.then(function(result) {
-					if (result === undefined || result === null) {
-						return;
-					}
+			var noteIndex = $scope.editform.index;
+			if (noteIndex !== -1) {
+				currUser.notes[noteIndex].title = $scope.editform.title;
+				currUser.notes[noteIndex].content = $scope.editform.body;
+				currUser.notes[noteIndex].recentEditDate = theDate(0);
 
-					console.log(result);
-				});
-			
-			$scope.ClearEditValues();
-			$scope.GoToViewNotes();
+				$http.post('/notes/edit_note',
+						{
+							userId: currUser.id.toString(),
+							note: currUser.notes[noteIndex],
+							index: noteIndex
+						}
+					).then(function(result) {
+						if (result === undefined || result === null) {
+							return;
+						}
+
+						currUser.notes = result.data;
+					});
+
+				$scope.ClearEditValues();
+				$scope.GoToViewNotes();
+			}
+
 		} else {
 			$scope.noError = false;
 		}

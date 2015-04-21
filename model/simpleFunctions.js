@@ -11,6 +11,10 @@ function theDate(timeBehind) {
 }
 
 function getNoteByID(id, notes) {
+    if (notes === null) {
+        return;
+    }
+
 	var note = null;
 	if (notes.length === 0) {
 		return note;
@@ -36,13 +40,17 @@ function removeNote(index, notes, amount) {
 }
 
 function getNoteIndexByID(id, notes) {
+    if (notes === null) {
+        return;
+    }
+
 	var noteIndex = -1;
 	if (notes.length === 0) {
 		return noteIndex;
 	}
-	
-    for (var i = 0; i < notes.length; i++) {
-        if ((id === notes[i].id)) {
+    var i = 0;
+    for (i = 0; i < notes.length; i++) {
+        if ((id === notes[i]._id)) {
             noteIndex = i;
             i = notes.length;
         }

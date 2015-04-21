@@ -10,7 +10,8 @@ router.post('/add_note', function (req, res) {
     var query = { _id: req.body.user.type};
     users.findByIdAndUpdate(query,
         {$push: {"notes": newNote}},
-        {safe: true, upsert: false}, function(err, user) {
+        {safe: true, upsert: false},
+        function(err, user) {
             res.send(err);
         });
 });
@@ -33,7 +34,7 @@ router.post('/edit_note', function (req, res) {
             user.markModified('notes');
             user.save(function(err, result) {
                 if(err) res.send(err);
-                else {res.send(result);}
+                else {res.send(user.notes);}
             });
 
         }
