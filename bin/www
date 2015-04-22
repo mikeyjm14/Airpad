@@ -5,7 +5,7 @@
  */
 
 var app = require('../app');
-var debug = require('debug')('AirPadOnServer:server');
+var debug = require('debug')('AirPadOnWebsite:server');
 var http = require('http');
 
 /**
