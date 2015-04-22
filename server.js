@@ -10,7 +10,6 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 var notes = require('./routes/notes');
 
-
 //https://thinkster.io/mean-stack-tutorial/
 mongoose.connect('mongodb://admin:password@ds061288.mongolab.com:61288/cs3212-shaffer', function (err) {
     if(err) {
@@ -49,10 +48,6 @@ app.use(express.static(__dirname + '/model'));
 app.use('/', routes);
 app.use('/users', users);
 app.use('/notes', notes);
-
-app.listen(app.get('port'), ipaddr, function(){
-	res.send('connected');
-});
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
