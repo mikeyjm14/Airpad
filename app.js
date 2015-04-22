@@ -50,6 +50,10 @@ app.use('/', routes);
 app.use('/users', users);
 app.use('/notes', notes);
 
+app.listen(app.get('port'), ipaddr, function(){
+	res.send('connected');
+});
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
     var err = new Error('Not Found');
