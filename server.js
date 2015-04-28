@@ -11,7 +11,7 @@ var users = require('./routes/users');
 var notes = require('./routes/notes');
 
 //https://thinkster.io/mean-stack-tutorial/
-mongoose.connect('mongodb://admin:password@ds061288.mongolab.com:61288/cs3212-shaffer', function (err) {
+mongoose.connect('mongodb://admin:password@ds061158.mongolab.com:61158/airpad', function (err) {
     if(err) {
         console.log('connection error', err);
     } else {
