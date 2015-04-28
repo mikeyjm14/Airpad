@@ -238,7 +238,7 @@ var viewnotes = function ($scope, $state, $http, currUser, $anchorScroll, $locat
 	};
 
 	$scope.DeleteNote = function (note) {
-		var noteIndex = getNoteIndexByID(note.id, currUser.notes);
+		var noteIndex = getNoteIndexByID(note._id, currUser.notes);
 		var note1 = {
 			title: note.title,
 			content: note.content,
