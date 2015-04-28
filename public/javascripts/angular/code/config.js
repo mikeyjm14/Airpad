@@ -71,14 +71,14 @@ AirPadApp.config(function ($stateProvider, $urlRouterProvider, $locationProvider
         // Login
         .state('login', {
             url: '^/login',
-            templateUrl: '/LoginView/userLogin.html',
+            templateUrl: '/loginView/userLogin.html',
 			controller: 'LoginController'
         })
 
         // Sign Up
         .state('signup', {
             url: '^/signUp',
-            templateUrl: '/LoginView/userSignup.html',
+            templateUrl: '/loginView/userSignup.html',
 			controller: 'SignupController'
         })
 
@@ -96,16 +96,16 @@ AirPadApp.config(function ($stateProvider, $urlRouterProvider, $locationProvider
 
         .state('profile.view', {
             url: '/view',
-            templateUrl: '/UserProfileViews/viewUserProfile.html'
+            templateUrl: '/userProfileViews/viewUserProfile.html'
         })
 
         .state('profile.edit', {
             url: '/edit',
-            templateUrl: '/UserProfileViews/editUserProfile.html'
+            templateUrl: '/userProfileViews/editUserProfile.html'
         })
 
         .state('profile.noUser', {
             url: '/no-user',
-            templateUrl: '/UserProfileViews/userNotFound.html'
+            templateUrl: '/userProfileViews/userNotFound.html'
         });
 });
