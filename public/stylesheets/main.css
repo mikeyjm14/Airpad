@@ -234,6 +234,14 @@ button {
     text-align: center;
 }
 
+.alignTextLeft {
+	text-align: left;
+}
+
+.alignTextRight {
+	text-align: right;
+}
+
 .burlywood-background {
     background-color: burlywood;
 }

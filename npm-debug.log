@@ -1,29 +1,29 @@
 0 info it worked if it ends with ok
-1 verbose cli [ 'D:\\NodeJS\\\\node.exe',
-1 verbose cli   'D:\\NodeJS\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli [ 'F:\\Bitnami Mean Stack\\nodejs\\\\node.exe',
+1 verbose cli   'F:\\Bitnami Mean Stack\\nodejs\\node_modules\\npm\\bin\\npm-cli.js',
 1 verbose cli   'start' ]
-2 info using npm@1.4.28
-3 info using node@v0.10.36
-4 verbose node symlink D:\NodeJS\\node.exe
+2 info using npm@1.4.3
+3 info using node@v0.12.2
+4 verbose node symlink F:\Bitnami Mean Stack\nodejs\\node.exe
 5 verbose run-script [ 'prestart', 'start', 'poststart' ]
-6 info prestart AirPadOnServer@0.0.0
-7 info start AirPadOnServer@0.0.0
+6 info prestart AirPadOnWebsite@0.0.0
+7 info start AirPadOnWebsite@0.0.0
 8 verbose unsafe-perm in lifecycle true
-9 info AirPadOnServer@0.0.0 Failed to exec start script
-10 error AirPadOnServer@0.0.0 start: `node ./bin/www`
-10 error Exit status 8
-11 error Failed at the AirPadOnServer@0.0.0 start script.
-11 error This is most likely a problem with the AirPadOnServer package,
+9 info AirPadOnWebsite@0.0.0 Failed to exec start script
+10 error AirPadOnWebsite@0.0.0 start: `node ./bin/www`
+10 error Exit status 1
+11 error Failed at the AirPadOnWebsite@0.0.0 start script.
+11 error This is most likely a problem with the AirPadOnWebsite package,
 11 error not with npm itself.
 11 error Tell the author that this fails on your system:
 11 error     node ./bin/www
 11 error You can get their info via:
-11 error     npm owner ls AirPadOnServer
+11 error     npm owner ls AirPadOnWebsite
 11 error There is likely additional logging output above.
-12 error System Windows_NT 6.2.9200
-13 error command "D:\\NodeJS\\\\node.exe" "D:\\NodeJS\\node_modules\\npm\\bin\\npm-cli.js" "start"
-14 error cwd C:\Users\Ben\Desktop\AirPadOnServer
-15 error node -v v0.10.36
-16 error npm -v 1.4.28
+12 error System Windows_NT 6.3.9600
+13 error command "F:\\Bitnami Mean Stack\\nodejs\\\\node.exe" "F:\\Bitnami Mean Stack\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "start"
+14 error cwd F:\Software II\AirPadOnWebsite
+15 error node -v v0.12.2
+16 error npm -v 1.4.3
 17 error code ELIFECYCLE
 18 verbose exit [ 1, true ]
