@@ -238,7 +238,7 @@ var viewnotes = function ($scope, $state, $http, currUser, $anchorScroll, $locat
 	};
 
 	$scope.DeleteNote = function (note) {
-		var noteIndex = getNoteIndexByID(note._id, currUser.notes);
+		var noteIndex = getNoteIndexByID(note.id, currUser.notes);
 		var note1 = {
 			title: note.title,
 			content: note.content,
@@ -348,8 +348,7 @@ var viewfavoritenotes = function ($scope, $state, $http, $anchorScroll, $locatio
 			return;
 		}
 		
-        $state.go("viewnote", {noteID: note.id});
-		$scope.currNote = getNoteByID(note.id, currUser.notes);
+        $state.go("viewnote", {noteID: note._id});
     };
 	
 	$scope.RemoveNoteFromFavorites = function (note) {
